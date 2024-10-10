@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/index.css or src/App.css */
+@font-face {
+  font-family: "helvetica"; /* Replace with your font family name */
+  src: url("./assets/fonts/Helvetica.ttf") format("truetype"); /* Adjust the path and format */
+  font-weight: normal; /* You can specify different font weights */
+  font-style: normal; /* You can specify italic, oblique, etc. */
+}
