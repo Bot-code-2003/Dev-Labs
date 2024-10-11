@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Nebula from "../../assets/nebula.jpeg";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signup } from "../../actions/user";
 
-const SignUp = ({ setIsLogin }) => {
+const SignUp = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -11,7 +17,8 @@ const SignUp = ({ setIsLogin }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+    dispatch(signup(formData, navigate));
   };
 
   return (
@@ -87,12 +94,12 @@ const SignUp = ({ setIsLogin }) => {
       <ul>
         <li className="text-gray-400 font-mono">
           <span className="m-0">*</span> Already have an account?{" "}
-          <span
-            onClick={() => setIsLogin(true)}
+          <Link
+            to="/login"
             className="text-purple-400 cursor-pointer hover:text-purple-500 transition-colors duration-200"
           >
             Log in
-          </span>
+          </Link>
         </li>
       </ul>
     </div>

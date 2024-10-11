@@ -22,11 +22,11 @@ const Homepage = () => {
             <div className="relative group cursor-pointer">
               <img
                 src={data.projectImage}
-                className="w-full h-[400px] sm:h-[315px] md:h-[270px] object-cover mb-2" // Adjusting height based on screen size
+                className="rounded-md w-full h-[400px] sm:h-[315px] md:h-[270px] object-cover mb-2" // Adjusting height based on screen size
                 alt={data.projectName}
               />
 
-              <h1 className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
+              <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
                 {data.projectName}
               </h1>
             </div>

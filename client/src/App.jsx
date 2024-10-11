@@ -1,9 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Authpage from "./Pages/Authpage";
 import Homepage from "./Pages/Homepage";
 import Navbar from "./components/Navbar";
+import Login from "./Pages/auth/Login";
+import SignUp from "./Pages/auth/Signup";
 
 const App = () => {
   return (
@@ -11,7 +12,8 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/auth" element={<Authpage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>
   );

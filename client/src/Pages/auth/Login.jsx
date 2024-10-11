@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Nebula from "../../assets/nebula.jpeg";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/user";
 
-const Login = ({ setIsLogin }) => {
+const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -10,6 +16,7 @@ const Login = ({ setIsLogin }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
+    dispatch(login(formData, navigate));
   };
   return (
     <div className="flex justify-start mt-10 items-center h-auto flex-col gap-5">
@@ -59,12 +66,12 @@ const Login = ({ setIsLogin }) => {
       <ul>
         <li className="text-gray-400 font-mono">
           <span className="m-0">*</span> Don't have an account?{" "}
-          <span
-            onClick={() => setIsLogin(false)}
+          <Link
+            to={"/signup"}
             className="text-purple-400 cursor-pointer hover:text-purple-500 transition-colors duration-200"
           >
             Sign up
-          </span>
+          </Link>
         </li>
       </ul>
     </div>
