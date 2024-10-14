@@ -39,7 +39,7 @@ export default function Filter() {
       className="text-gray-500 text-sm sm:text-xl relative w-full"
     >
       <button
-        className="px-4 py-2 sm:py-3 border rounded-full w-full flex gap-2 justify-center text-gray-500 font-bold"
+        className="px-4 py-2 sm:py-3 border rounded-full w-full flex gap-2 justify-center text-gray-500"
         onClick={toggleDropdown}
       >
         <TuneIcon />

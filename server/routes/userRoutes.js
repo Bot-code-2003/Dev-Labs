@@ -12,7 +12,7 @@ router.post("/signup", async (req, res) => {
   } else {
     await newUser.save();
     const token = jwt.sign({ email }, "secretkey");
-    res.status(200).send({ token });
+    res.status(200).send({ token, name: firstname });
   }
 });
 
@@ -26,7 +26,8 @@ router.post("/login", async (req, res) => {
   } else {
     if (user.password === password) {
       const token = jwt.sign({ email }, "secretkey");
-      res.status(200).send({ token });
+      const name = user.firstname;
+      res.status(200).send({ token, name });
     } else {
       res.status(400).send("Invalid password");
     }

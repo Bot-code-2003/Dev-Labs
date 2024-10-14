@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #f9fafb;
+}
+
 /* src/index.css or src/App.css */
 @font-face {
   font-family: "helvetica"; /* Replace with your font family name */

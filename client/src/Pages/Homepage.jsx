@@ -1,53 +1,158 @@
-import React, { useState, useEffect } from "react";
-import homepageData from "../sample/homepageData.json";
+import React, { useState, useEffect, useRef } from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Face4Icon from "@mui/icons-material/Face4";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getProjects } from "../actions/project";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const Homepage = () => {
-  // console.log(homepageData);
-
   const location = useLocation();
+  const navigate = useNavigate(); // useHistory to programmatically navigate
+  const dispatch = useDispatch();
 
+  // Get the projects directly from the Redux store
+  const { projects } = useSelector((state) => state.projects);
+  const loggedInUser = JSON.parse(localStorage.getItem("user")); // Parse the stored string into an object
+  const loggedInUserEmail = loggedInUser?.email;
+
+  // State to manage which project has the menu open
+  const [menuOpen, setMenuOpen] = useState(null);
+
+  // Ref to track the dropdown element
+  const menuRef = useRef(null);
+
+  // Fetch projects from backend
+  useEffect(() => {
+    // Check if projects are already in the Redux store
+    if (!projects || projects.length === 0) {
+      // Fetch the projects from the backend if not already loaded
+      dispatch(getProjects());
+    }
+  }, [dispatch, projects]);
+
+  // Scroll to top on location change
   useEffect(() => {
     scrollTo(0, 0);
   }, [location]);
 
+  // Handle clicks outside of the menu to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(null); // Close the menu if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
+  const handleMenuClick = (projectId) => {
+    setMenuOpen(menuOpen === projectId ? null : projectId); // Toggle menu visibility
+  };
+
+  const handleDelete = (projectId) => {
+    console.log(`Delete project with ID: ${projectId}`);
+    // Add your delete functionality here
+  };
+
+  const handleProjectClick = (event, projectId) => {
+    event.preventDefault(); // Prevent the default navigation
+    console.log(`Project with ID: ${projectId} clicked`);
+
+    // set the entire project with the id to local storage
+    const clickedProject = projects.find(
+      (project) => project._id === projectId
+    );
+    localStorage.setItem("project", JSON.stringify(clickedProject));
+
+    // Navigate programmatically to the project page after setting localStorage
+    navigate(`/project/${projectId}`);
+  };
+
   return (
     <div className="flex justify-center items-center h-auto flex-col p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {homepageData.map((data) => (
-          <div key={data.id}>
-            <div className="relative group cursor-pointer">
-              <img
-                src={data.projectImage}
-                className="rounded-md w-full h-[400px] sm:h-[315px] md:h-[270px] object-cover mb-2" // Adjusting height based on screen size
-                alt={data.projectName}
-              />
+        {projects.length > 0 &&
+          projects.map((project) => (
+            <a
+              href={`/project/${project._id}`} // Can be left as a normal link or changed to # for a tag
+              onClick={(event) => handleProjectClick(event, project._id)}
+              key={project._id}
+              className="relative"
+            >
+              <div className="relative group cursor-pointer">
+                {/* Display MoreHorizIcon if the logged-in user is the author */}
+                {loggedInUserEmail === project.authorEmail && (
+                  <div className="absolute top-2 right-2">
+                    <MoreHorizIcon
+                      className="text-white bg-black bg-opacity-20 hover:bg-opacity-25 rounded cursor-pointer"
+                      onClick={() => handleMenuClick(project.id)}
+                    />
+                    {/* Display the dropdown menu when MoreHorizIcon is clicked */}
+                    {menuOpen === project.id && (
+                      <div
+                        ref={menuRef}
+                        className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-10"
+                      >
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+                          onClick={() => handleDelete(project.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-              <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
-                {data.projectName}
-              </h1>
-            </div>
-            <div className="flex justify-between p-2">
-              <p className="text-gray-600 font-bold text-sm flex items-center gap-1">
-                <Face4Icon className="text-gray-500" fontSize="small" />
-                {data.author}
-              </p>
-              <div className="flex gap-2">
-                <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <ThumbUpAltIcon className="text-gray-500" fontSize="small" />
-                  {data.likes}
-                </p>
-                <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <VisibilityIcon className="text-gray-500" fontSize="small" />
-                  {data.views}
-                </p>
+                {/* Display Project Thumbnail */}
+                <img
+                  src={project.projectThumbnail}
+                  className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-sm"
+                  alt={project.projectName}
+                />
+
+                {/* Display Project Name */}
+                <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
+                  {project.projectName}
+                </h1>
               </div>
-            </div>
-          </div>
-        ))}
+
+              {/* Author and Optional Info */}
+              <div className="flex justify-between p-2">
+                {/* Display Author */}
+                <p className="text-gray-600 font-bold text-sm flex items-center gap-1">
+                  <Face4Icon className="text-gray-500" fontSize="small" />
+                  {project.author}
+                </p>
+
+                {/* Display Likes and Views (Optional) */}
+                <div className="flex gap-3">
+                  <p className="text-gray-500 text-sm flex items-center gap-1">
+                    <ThumbUpAltIcon
+                      className="text-gray-500"
+                      fontSize="small"
+                    />
+                    {project.likes || 0}
+                  </p>
+
+                  <p className="text-gray-500 text-sm flex items-center gap-1">
+                    <VisibilityIcon
+                      className="text-gray-500"
+                      fontSize="small"
+                    />
+                    {project.views || 0}
+                  </p>
+                </div>
+              </div>
+            </a>
+          ))}
       </div>
     </div>
   );

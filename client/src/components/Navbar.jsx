@@ -3,7 +3,7 @@ import Nebula from "../assets/nebula.jpeg";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Drawer, IconButton } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filter from "./Filter";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation } from "react-router-dom";
@@ -15,6 +15,7 @@ const Navbar = () => {
   const [filter, setFilter] = useState("");
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -26,6 +27,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setLoggedIn(false);
+    navigate("/login");
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -70,7 +72,13 @@ const Navbar = () => {
               <a
                 href={item.link}
                 key={item.text}
-                className="text-gray-700 hover:text-gray-500"
+                className={`text-gray-700 py-2 px-4 rounded-full border text-center ${
+                  location.pathname === item.link ? "bg-gray-200" : ""
+                } ${
+                  location.pathname === "/" && item.text === "Explore"
+                    ? "bg-gray-200 border-gray-400"
+                    : ""
+                }`}
               >
                 {item.text}
               </a>
@@ -89,7 +97,10 @@ const Navbar = () => {
         <div className="hidden sm:flex space-x-4">
           {loggedIn ? (
             <div className="flex space-x-4">
-              <button className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full">
+              <button
+                onClick={() => navigate("/shareproject")}
+                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
+              >
                 Share Project
               </button>
               <button
@@ -130,7 +141,6 @@ const Navbar = () => {
             placeholder="Search..."
             className="px-4 bg-gray-50 py-2 sm:py-3 w-full outline-none"
           />
-          {/* <button className="bg-gray-200 px-4 rounded-full">Search</button> */}
         </div>
       </div>
 
@@ -153,13 +163,36 @@ const Navbar = () => {
               />
             </div>
             <Filter />
+            <div className="flex flex-col space-y-4">
+              {menuItems.map((item) => (
+                <a
+                  onClick={toggleDrawer(false)}
+                  href={item.link}
+                  key={item.text}
+                  className={`text-gray-700 p-2 bg-gray-50 hover:text-gray-500 ${
+                    location.pathname === item.link ? "underline" : ""
+                  } ${
+                    location.pathname === "/" && item.text === "Explore"
+                      ? "underline"
+                      : ""
+                  }`}
+                >
+                  {item.text}
+                </a>
+              ))}
+            </div>
             {loggedIn ? (
               <div className="flex flex-col space-y-4">
-                <button className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full">
+                <button
+                  onClick={() => (
+                    navigate("/shareproject"), toggleDrawer(false)
+                  )}
+                  className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full"
+                >
                   Share Project
                 </button>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => (handleLogout, toggleDrawer(false))}
                   className="bg-blue-500 text-white px-4 py-2 rounded-full w-full"
                 >
                   Logout
@@ -168,12 +201,14 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
+                  onClick={toggleDrawer(false)}
                   to="/login"
                   className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full"
                 >
                   Log In
                 </Link>
                 <Link
+                  onClick={toggleDrawer(false)}
                   to="/signup"
                   className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full w-full"
                 >

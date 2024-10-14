@@ -11,6 +11,8 @@ const API = axios.create({ baseURL: "http://localhost:5000" });
 export const login = (formData, navigate) => async (dispatch) => {
   try {
     const { data } = await API.post("/user/login", formData); // Contains the {token: token}
+    console.log(data);
+
     const action = {
       type: "LOGIN",
       payload: data,

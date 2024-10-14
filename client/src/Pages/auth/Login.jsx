@@ -37,7 +37,7 @@ const Login = () => {
         onSubmit={handleSubmit}
       >
         <input
-          className="font-mono border-b-2 w-full pb-1 outline-none"
+          className="font-mono border-b-2 bg-transparent w-full pb-1 outline-none"
           name="email"
           type="email"
           placeholder="email"
@@ -47,7 +47,7 @@ const Login = () => {
 
         <input
           placeholder="password"
-          className="font-mono border-b-2 w-full pb-1 outline-none"
+          className="font-mono bg-transparent border-b-2 w-full pb-1 outline-none"
           name="password"
           type="password"
           onChange={(e) =>

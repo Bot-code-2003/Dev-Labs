@@ -5,16 +5,18 @@ import Hero3 from "../assets/svgs/hero3.svg";
 
 const Hero = () => {
   return (
-    <div className="relative flex justify-center items-center p-5 text-gray-600 sm:p-20 text-center">
-      <h1 className="text-xl sm:text-5xl font-bold leading-[40px] sm:leading-[55px]">
+    <div className="relative flex justify-center items-center p-5 text-gray-500 sm:p-20 text-center">
+      <h1 className="text-xl sm:text-5xl font-bold ">
         Welcome to <span className="text-[#245bff]">Nebula Labs </span>! <br />
-        Showcase your{" "}
-        <span className="border-b-4 border-[#2495ff]">projects</span>,{" "}
-        <span className="border-b-4 border-[#2495ff]">designs</span>, and
-        <span className="border-b-4 border-[#2495ff]"> artwork</span> while
-        connecting with real users who can test and provide valuable feedback.
-        Join our community to enhance your creations and elevate your creative
-        journey.
+        <span className="text-md sm:text-3xl font-normal ">
+          Showcase your{" "}
+          <span className="border-b-4 border-[#2495ff]">projects</span>,{" "}
+          <span className="border-b-4 border-[#2495ff]">designs</span>, and
+          <span className="border-b-4 border-[#2495ff]"> artwork</span> while
+          connecting with real users who can test and provide valuable feedback.
+          Join our community to enhance your creations and elevate your creative
+          journey.
+        </span>
       </h1>
 
       {/* <img
