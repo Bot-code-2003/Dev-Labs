@@ -10,6 +10,14 @@ const projectSchema = new mongoose.Schema({
   techStack: String,
   author: String,
   authorEmail: String,
+  projectLikes: {
+    type: Number,
+    default: 0,
+  },
+  projectViews: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export default mongoose.model("Project", projectSchema);

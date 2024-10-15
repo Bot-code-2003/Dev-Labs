@@ -4,12 +4,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Face4Icon from "@mui/icons-material/Face4";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getProjects } from "../actions/project";
+import { getProjects, clickedProjectAction } from "../actions/project";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const Homepage = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // useHistory to programmatically navigate
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Get the projects directly from the Redux store
@@ -69,7 +69,8 @@ const Homepage = () => {
     const clickedProject = projects.find(
       (project) => project._id === projectId
     );
-    localStorage.setItem("project", JSON.stringify(clickedProject));
+
+    dispatch(clickedProjectAction(clickedProject));
 
     // Navigate programmatically to the project page after setting localStorage
     navigate(`/project/${projectId}`);
@@ -84,7 +85,7 @@ const Homepage = () => {
               href={`/project/${project._id}`} // Can be left as a normal link or changed to # for a tag
               onClick={(event) => handleProjectClick(event, project._id)}
               key={project._id}
-              className="relative"
+              className="relative "
             >
               <div className="relative group cursor-pointer">
                 {/* Display MoreHorizIcon if the logged-in user is the author */}

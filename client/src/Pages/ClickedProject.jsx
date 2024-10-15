@@ -1,8 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const ClickedProject = () => {
-  // Retrieve project data from local storage
-  const projectData = JSON.parse(localStorage.getItem("project"));
+  // Retrieve project data from Redux state
+  const projectData = useSelector((state) => state.projects.clickedProject);
+
+  // Log the entire Redux state for debugging purposes
+  console.log(projectData);
 
   // Check if projectData exists
   if (!projectData) {
@@ -11,13 +15,6 @@ const ClickedProject = () => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      {/* Project Thumbnail */}
-      <img
-        src={projectData.projectThumbnail}
-        alt={projectData.projectName}
-        className="rounded-md w-[500px] object-cover mb-4 shadow-md"
-      />
-
       {/* Project Name */}
       <h1 className="text-3xl font-bold mb-2">{projectData.projectName}</h1>
 
@@ -26,6 +23,26 @@ const ClickedProject = () => {
 
       {/* Project Description */}
       <p className="text-gray-800 mb-4">{projectData.projectDescription}</p>
+
+      {/* Project Thumbnail */}
+      <img
+        src={projectData.projectThumbnail}
+        alt={projectData.projectName}
+        className="rounded-md w-[800px] object-cover mb-4 shadow-md"
+      />
+
+      {projectData.projectImages && projectData.projectImages.length > 0 && (
+        <div className="grid grid-cols-2 gap-4">
+          {projectData.projectImages.map((image) => (
+            <img
+              key={image}
+              src={image}
+              alt={projectData.projectName}
+              className="rounded-md object-cover shadow-md"
+            />
+          ))}
+        </div>
+      )}
 
       {/* Tech Stack */}
       {projectData.techStack && (

@@ -33,3 +33,19 @@ export const deleteProject = (projectId) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const likeProject = (projectId) => async (dispatch) => {
+  try {
+    await API.post("/project/likeProject", { projectId });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clickedProjectAction = (clickedProject) => async (dispatch) => {
+  try {
+    dispatch({ type: "CLICKED_PROJECT", payload: clickedProject });
+  } catch (error) {
+    console.log(error);
+  }
+};
