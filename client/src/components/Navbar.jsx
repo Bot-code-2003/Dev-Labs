@@ -8,6 +8,8 @@ import Filter from "./Filter";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation } from "react-router-dom";
 import Hero from "./Hero";
+import ScienceIcon from "@mui/icons-material/Science";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -99,14 +101,16 @@ const Navbar = () => {
             <div className="flex space-x-4">
               <button
                 onClick={() => navigate("/shareproject")}
-                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
+                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
               >
+                <ScienceIcon fontSize="small" />
                 Share Project
               </button>
               <button
                 onClick={handleLogout}
-                className="bg-blue-500 text-white px-4 py-2 rounded-full"
+                className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full"
               >
+                <LogoutIcon fontSize="small" />
                 Logout
               </button>
             </div>
@@ -187,14 +191,16 @@ const Navbar = () => {
                   onClick={() => (
                     navigate("/shareproject"), toggleDrawer(false)
                   )}
-                  className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full"
+                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 rounded-full w-full"
                 >
+                  <ScienceIcon fontSize="small" />
                   Share Project
                 </button>
                 <button
                   onClick={() => (handleLogout, toggleDrawer(false))}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-full w-full"
+                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full w-full"
                 >
+                  <LogoutIcon fontSize="small" />
                   Logout
                 </button>
               </div>

@@ -85,7 +85,7 @@ const Homepage = () => {
               href={`/project/${project._id}`} // Can be left as a normal link or changed to # for a tag
               onClick={(event) => handleProjectClick(event, project._id)}
               key={project._id}
-              className="relative "
+              className="relative"
             >
               <div className="relative group cursor-pointer">
                 {/* Display MoreHorizIcon if the logged-in user is the author */}

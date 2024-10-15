@@ -43,7 +43,7 @@ const ClickedProject = () => {
           <h1 className="text-center text-2xl text-gray-500 mb-2">
             Project Images
           </h1>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {projectData.projectImages.map((image) => (
               <img
                 key={image}
