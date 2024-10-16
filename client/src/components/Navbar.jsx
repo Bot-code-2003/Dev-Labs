@@ -65,7 +65,7 @@ const Navbar = () => {
             />
             <div className="absolute inset-0 bg-black opacity-20"></div>
             <p className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold z-10">
-              Nebula Labs
+              Dev Labs
             </p>
           </div>
 

@@ -79,7 +79,7 @@ const Homepage = () => {
   return (
     <div className="flex justify-center items-center h-auto flex-col p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {projects.length > 0 &&
+        {projects.length > 0 ? (
           projects.map((project) => (
             <a
               href={`/project/${project._id}`} // Can be left as a normal link or changed to # for a tag
@@ -153,7 +153,10 @@ const Homepage = () => {
                 </div>
               </div>
             </a>
-          ))}
+          ))
+        ) : (
+          <p>Fetching projects...</p>
+        )}
       </div>
     </div>
   );
