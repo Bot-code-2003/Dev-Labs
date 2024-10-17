@@ -10,7 +10,7 @@ import ClickedProject from "./Pages/ClickedProject";
 
 const App = () => {
   return (
-    <div className="font-helvetica bg-gray-50">
+    <div className="font-helvetica">
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />

@@ -11,8 +11,8 @@ const projectSchema = new mongoose.Schema({
   author: String,
   authorEmail: String,
   projectLikes: {
-    type: Number,
-    default: 0,
+    type: [String],
+    default: [],
   },
   projectViews: {
     type: Number,

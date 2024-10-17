@@ -74,7 +74,7 @@ const Navbar = () => {
               <a
                 href={item.link}
                 key={item.text}
-                className={`text-gray-700 py-2 px-4 rounded-full border text-center ${
+                className={`text-gray-700 py-2 px-4 rounded-full border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
                 } ${
                   location.pathname === "/" && item.text === "Explore"

@@ -5,7 +5,11 @@ export default (state = { authData: null }, action) => {
     case "LOGIN":
       const decodedData = jwtDecode(action.payload.token);
       const name = action.payload.name;
-      localStorage.setItem("user", JSON.stringify({ ...decodedData, name }));
+      const userId = action.payload.userId;
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...decodedData, name, userId })
+      );
       return { ...state, authData: action.payload };
     default:
       return state;

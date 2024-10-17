@@ -34,9 +34,28 @@ export const deleteProject = (projectId) => async (dispatch) => {
   }
 };
 
-export const likeProject = (projectId) => async (dispatch) => {
+export const likeProject = (projectId, userId) => async (dispatch) => {
   try {
-    await API.post("/project/likeProject", { projectId });
+    console.log("likeProject action called");
+    await API.patch("/project/likeProject", { projectId, userId }); // PATCH request
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unlikeProject = (projectId, userId) => async (dispatch) => {
+  try {
+    console.log("unlikeProject action called");
+    await API.post("/project/unlikeProject", { projectId, userId });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const incProjectView = (projectId) => async (dispatch) => {
+  try {
+    console.log("incProjectView action called");
+    await API.patch("/project/incProjectView", { projectId });
   } catch (error) {
     console.log(error);
   }

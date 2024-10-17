@@ -4,7 +4,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Face4Icon from "@mui/icons-material/Face4";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getProjects, clickedProjectAction } from "../actions/project";
+import {
+  getProjects,
+  clickedProjectAction,
+  incProjectView,
+} from "../actions/project";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const Homepage = () => {
@@ -70,6 +74,7 @@ const Homepage = () => {
       (project) => project._id === projectId
     );
 
+    dispatch(incProjectView(projectId));
     dispatch(clickedProjectAction(clickedProject));
 
     // Navigate programmatically to the project page after setting localStorage
@@ -115,7 +120,7 @@ const Homepage = () => {
                 {/* Display Project Thumbnail */}
                 <img
                   src={project.projectThumbnail}
-                  className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-sm"
+                  className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-md"
                   alt={project.projectName}
                 />
 
@@ -140,7 +145,7 @@ const Homepage = () => {
                       className="text-gray-500"
                       fontSize="small"
                     />
-                    {project.likes || 0}
+                    {project.projectLikes?.length || 0}
                   </p>
 
                   <p className="text-gray-500 text-sm flex items-center gap-1">
@@ -148,7 +153,7 @@ const Homepage = () => {
                       className="text-gray-500"
                       fontSize="small"
                     />
-                    {project.views || 0}
+                    {project.projectViews || 0}
                   </p>
                 </div>
               </div>

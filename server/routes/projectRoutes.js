@@ -24,25 +24,37 @@ router.delete("/deleteProject", async (req, res) => {
   res.status(200).send("Project deleted");
 });
 
-// New Route to like a project and increment the likes
-router.post("/likeProject", async (req, res) => {
-  const { projectId } = req.body;
+router.patch("/likeProject", async (req, res) => {
   try {
-    // Find project by ID and increment the projectLikes by 1
-    const updatedProject = await Project.findByIdAndUpdate(
-      projectId,
-      { $inc: { projectLikes: 1 } }, // Increment likes by 1
-      { new: true } // Return the updated project document
-    );
+    const { projectId, userId } = req.body;
+    const project = await Project.findById(projectId);
 
-    if (!updatedProject) {
-      return res.status(404).send("Project not found");
+    if (!project.projectLikes.includes(userId)) {
+      project.projectLikes.push(userId); // Only add if not already liked
     }
 
-    res.status(200).send(updatedProject);
+    await project.save();
+    res.status(200).send("Project liked");
   } catch (error) {
-    res.status(500).send("An error occurred while liking the project");
+    console.log(error);
+    res.status(500).send("Server error");
   }
+});
+
+router.post("/unlikeProject", async (req, res) => {
+  const { projectId, userId } = req.body;
+  const project = await Project.findById(projectId);
+  project.projectLikes = project.projectLikes.filter((id) => id !== userId);
+  await project.save();
+  res.status(200).send("Project unliked");
+});
+
+router.patch("/incProjectView", async (req, res) => {
+  const { projectId } = req.body;
+  const project = await Project.findById(projectId);
+  project.projectViews++;
+  await project.save();
+  res.status(200).send("Project viewed");
 });
 
 export default router;
