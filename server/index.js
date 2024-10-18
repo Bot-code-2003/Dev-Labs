@@ -11,13 +11,15 @@ dotenv.config();
 const app = express();
 
 // Use CORS middleware
-app.use(
-  cors({
-    origin: [""],
-    methods: ["POST", "GET"],
-    credentials: true,
-  })
-);
+
+const corsConfig = {
+  origin: "*",
+  credential: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+};
+app.use(cors(corsConfig));
+
+app.options("", cors(corsConfig));
 
 // Get MongoDB URL from environment variables
 const url = process.env.MONGODB_URL;
