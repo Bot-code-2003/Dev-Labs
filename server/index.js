@@ -1,6 +1,5 @@
 import express, { urlencoded } from "express";
 import mongoose from "mongoose";
-import path from "path";
 import userRoutes from "./routes/userRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import cors from "cors";
@@ -21,16 +20,13 @@ const url = process.env.MONGODB_URL;
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(urlencoded({ limit: "30mb", extended: true }));
 
-// Serve static files from the public directory
-app.use(express.static(path.join(process.cwd(), "public")));
-
 // Define routes
 app.use("/user", userRoutes);
 app.use("/project", projectRoutes);
 
 // Serve index.html for root route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "index.html"));
+  res.send("Welcome to Dev Labs Server");
 });
 
 // Connect to MongoDB and start the server
