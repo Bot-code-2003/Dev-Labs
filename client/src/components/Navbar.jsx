@@ -14,8 +14,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [filter, setFilter] = useState("");
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,12 +40,7 @@ const Navbar = () => {
     setDrawerOpen(open);
   };
 
-  const menuItems = [
-    { text: "Explore", link: "/" },
-    { text: "Web Designs", link: "#" },
-    { text: "Web Projects", link: "#" },
-    { text: "Arts", link: "#" },
-  ];
+  const menuItems = [{ text: "Explore", link: "/" }];
 
   return (
     <div>
@@ -71,8 +64,8 @@ const Navbar = () => {
 
           <div className="hidden sm:flex space-x-6">
             {menuItems.map((item) => (
-              <a
-                href={item.link}
+              <Link
+                to={item.link} // Changed from <a> to <Link>
                 key={item.text}
                 className={`text-gray-700 py-2 px-4 rounded-full border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
@@ -83,7 +76,7 @@ const Navbar = () => {
                 }`}
               >
                 {item.text}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -152,13 +145,13 @@ const Navbar = () => {
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         <div className="p-4 w-64">
           <div className="flex justify-between items-center mb-4">
-            <p className="text-lg font-bold">Nebula Labs</p>
+            <p className="text-lg font-bold">Dev Labs</p>
             <IconButton onClick={toggleDrawer(false)}>
               <CloseIcon />
             </IconButton>
           </div>
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center px-4 border border-gray-300 bg-gray-100 rounded-full overflow-hidden">
+            {/* <div className="flex items-center px-4 border border-gray-300 bg-gray-100 rounded-full overflow-hidden">
               <SearchIcon className="text-gray-400" />
               <input
                 type="text"
@@ -166,14 +159,14 @@ const Navbar = () => {
                 className="px-2 bg-gray-100 py-2 outline-none"
               />
             </div>
-            <Filter />
+            <Filter /> */}
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (
-                <a
+                <Link
                   onClick={toggleDrawer(false)}
-                  href={item.link}
+                  to={item.link}
                   key={item.text}
-                  className={`text-gray-700 p-2 bg-gray-50 hover:text-gray-500 ${
+                  className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full ${
                     location.pathname === item.link ? "underline" : ""
                   } ${
                     location.pathname === "/" && item.text === "Explore"
@@ -182,7 +175,7 @@ const Navbar = () => {
                   }`}
                 >
                   {item.text}
-                </a>
+                </Link>
               ))}
             </div>
             {loggedIn ? (
@@ -197,7 +190,7 @@ const Navbar = () => {
                   Share Project
                 </button>
                 <button
-                  onClick={() => (handleLogout, toggleDrawer(false))}
+                  onClick={() => (handleLogout(), toggleDrawer(false))}
                   className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full w-full"
                 >
                   <LogoutIcon fontSize="small" />

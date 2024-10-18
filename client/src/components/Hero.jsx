@@ -5,7 +5,7 @@ import Hero3 from "../assets/svgs/hero3.svg";
 
 const Hero = () => {
   return (
-    <div className="relative flex justify-center items-center p-5 text-gray-500 sm:p-20 text-center">
+    <div className="relative flex justify-center items-center p-5 text-gray-500 sm:py-10 sm:px-20 text-center">
       <h1 className="text-xl sm:text-5xl font-bold ">
         Welcome to <span className="text-[#245bff]">Nebula Labs </span>! <br />
         <span className="text-md sm:text-3xl font-normal ">

@@ -21,14 +21,14 @@ const Login = () => {
   return (
     <div className="flex justify-start mt-10 items-center h-auto flex-col gap-5">
       {/* <h1 className="text-3xl font-bold font-mono text-gray-500">Welcome</h1> */}
-      <div className="relative mb-5">
+      <Link to="/" className="relative mb-5">
         <img src={Nebula} className="w-[300px] h-[100px]" alt="Nebula Labs" />
         <div className="absolute inset-0 bg-black opacity-15"></div>{" "}
         {/* Dark overlay */}
         <h1 className="absolute inset-0 flex items-center justify-center text-3xl text-white font-bold font-mono">
           Dev Labs
         </h1>
-      </div>
+      </Link>
 
       <h1 className="text-3xl font-mono text-gray-500">Login</h1>
 

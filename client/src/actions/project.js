@@ -37,6 +37,7 @@ export const deleteProject = (projectId) => async (dispatch) => {
 export const likeProject = (projectId, userId) => async (dispatch) => {
   try {
     console.log("likeProject action called");
+    dispatch({ type: "LIKE_PROJECT", payload: { projectId, userId } });
     await API.patch("/project/likeProject", { projectId, userId }); // PATCH request
   } catch (error) {
     console.log(error);
@@ -46,6 +47,7 @@ export const likeProject = (projectId, userId) => async (dispatch) => {
 export const unlikeProject = (projectId, userId) => async (dispatch) => {
   try {
     console.log("unlikeProject action called");
+    dispatch({ type: "UNLIKE_PROJECT", payload: { projectId, userId } });
     await API.post("/project/unlikeProject", { projectId, userId });
   } catch (error) {
     console.log(error);
@@ -55,6 +57,7 @@ export const unlikeProject = (projectId, userId) => async (dispatch) => {
 export const incProjectView = (projectId) => async (dispatch) => {
   try {
     console.log("incProjectView action called");
+    dispatch({ type: "INC_PROJECT_VIEW", payload: projectId });
     await API.patch("/project/incProjectView", { projectId });
   } catch (error) {
     console.log(error);

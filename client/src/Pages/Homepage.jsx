@@ -11,6 +11,9 @@ import {
 } from "../actions/project";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
+import Lottie from "lottie-react";
+import Loading from "../assets/lotties/Animation - 1729259117182.json";
+
 const Homepage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,6 +21,8 @@ const Homepage = () => {
 
   // Get the projects directly from the Redux store
   const { projects } = useSelector((state) => state.projects);
+  console.log("Store projects: ", projects);
+
   const loggedInUser = JSON.parse(localStorage.getItem("user")); // Parse the stored string into an object
   const loggedInUserEmail = loggedInUser?.email;
 
@@ -30,7 +35,7 @@ const Homepage = () => {
   // Fetch projects from backend
   useEffect(() => {
     // Check if projects are already in the Redux store
-    if (!projects || projects.length === 0) {
+    if (projects.length === 0) {
       // Fetch the projects from the backend if not already loaded
       dispatch(getProjects());
     }
@@ -81,87 +86,88 @@ const Homepage = () => {
     navigate(`/project/${projectId}`);
   };
 
+  if (projects.length === 0) {
+    return (
+      <div className="w-full flex justify-center">
+        <Lottie
+          animationData={Loading}
+          className="mt-[100px] sm:mt-0 w-[200px] sm:w-[400px]"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center h-auto flex-col p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {projects.length > 0 ? (
-          projects.map((project) => (
-            <a
-              href={`/project/${project._id}`} // Can be left as a normal link or changed to # for a tag
-              onClick={(event) => handleProjectClick(event, project._id)}
-              key={project._id}
-              className="relative"
-            >
-              <div className="relative group cursor-pointer">
-                {/* Display MoreHorizIcon if the logged-in user is the author */}
-                {loggedInUserEmail === project.authorEmail && (
-                  <div className="absolute top-2 right-2">
-                    <MoreHorizIcon
-                      className="text-white bg-black bg-opacity-20 hover:bg-opacity-25 rounded cursor-pointer"
-                      onClick={() => handleMenuClick(project.id)}
-                    />
-                    {/* Display the dropdown menu when MoreHorizIcon is clicked */}
-                    {menuOpen === project.id && (
-                      <div
-                        ref={menuRef}
-                        className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-10"
+        {projects.map((project) => (
+          <Link
+            to={`/project/${project._id}`}
+            onClick={(event) => handleProjectClick(event, project._id)}
+            key={project._id}
+            className="relative"
+          >
+            <div className="relative group cursor-pointer">
+              {/* Display MoreHorizIcon if the logged-in user is the author */}
+              {loggedInUserEmail === project.authorEmail && (
+                <div className="absolute top-2 right-2">
+                  <MoreHorizIcon
+                    className="text-white bg-black bg-opacity-20 hover:bg-opacity-25 rounded cursor-pointer"
+                    onClick={() => handleMenuClick(project.id)}
+                  />
+                  {/* Display the dropdown menu when MoreHorizIcon is clicked */}
+                  {menuOpen === project.id && (
+                    <div
+                      ref={menuRef}
+                      className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-10"
+                    >
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+                        onClick={() => handleDelete(project.id)}
                       >
-                        <button
-                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
-                          onClick={() => handleDelete(project.id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-                {/* Display Project Thumbnail */}
-                <img
-                  src={project.projectThumbnail}
-                  className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-md"
-                  alt={project.projectName}
-                />
+              {/* Display Project Thumbnail */}
+              <img
+                src={project.projectThumbnail}
+                className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-sm"
+                alt={project.projectName}
+              />
 
-                {/* Display Project Name */}
-                <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
-                  {project.projectName}
-                </h1>
-              </div>
+              {/* Display Project Name */}
+              <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
+                {project.projectName}
+              </h1>
+            </div>
 
-              {/* Author and Optional Info */}
-              <div className="flex justify-between p-2">
-                {/* Display Author */}
-                <p className="text-gray-600 font-bold text-sm flex items-center gap-1">
-                  <Face4Icon className="text-gray-500" fontSize="small" />
-                  <a>{project.author}</a>
+            {/* Author and Optional Info */}
+            <div className="flex justify-between p-2">
+              {/* Display Author */}
+              <a className="text-gray-600 font-bold text-sm flex items-center gap-1">
+                <Face4Icon className="text-gray-500" fontSize="small" />
+                {project.author}
+              </a>
+
+              {/* Display Likes and Views (Optional) */}
+              <div className="flex gap-3">
+                <p className="text-gray-500 text-sm flex items-center gap-1">
+                  <ThumbUpAltIcon className="text-gray-500" fontSize="small" />
+                  {project.projectLikes?.length || 0}
                 </p>
 
-                {/* Display Likes and Views (Optional) */}
-                <div className="flex gap-3">
-                  <p className="text-gray-500 text-sm flex items-center gap-1">
-                    <ThumbUpAltIcon
-                      className="text-gray-500"
-                      fontSize="small"
-                    />
-                    {project.projectLikes?.length || 0}
-                  </p>
-
-                  <p className="text-gray-500 text-sm flex items-center gap-1">
-                    <VisibilityIcon
-                      className="text-gray-500"
-                      fontSize="small"
-                    />
-                    {project.projectViews || 0}
-                  </p>
-                </div>
+                <p className="text-gray-500 text-sm flex items-center gap-1">
+                  <VisibilityIcon className="text-gray-500" fontSize="small" />
+                  {project.projectViews || 0}
+                </p>
               </div>
-            </a>
-          ))
-        ) : (
-          <p>Fetching projects...</p>
-        )}
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

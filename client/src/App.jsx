@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Homepage from "./Pages/Homepage";
 import Navbar from "./components/Navbar";
@@ -9,9 +9,16 @@ import ShareProject from "./Pages/ShareProject";
 import ClickedProject from "./Pages/ClickedProject";
 
 const App = () => {
+  const location = useLocation();
+
+  // Conditionally render Navbar based on current path
+  const showNavbar =
+    location.pathname !== "/login" && location.pathname !== "/signup";
+
   return (
-    <div className="font-helvetica">
-      <Navbar />
+    <div className="font-helvetica bg-gray-50">
+      {/* Render Navbar only if the path is not /login or /signup */}
+      {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />

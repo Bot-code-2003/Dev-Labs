@@ -7,8 +7,10 @@ import Face4Icon from "@mui/icons-material/Face4";
 import { likeProject, unlikeProject } from "../actions/project";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ShortcutIcon from "@mui/icons-material/Shortcut";
+import { useMediaQuery } from "@mui/material";
 
 const ClickedProject = () => {
+  const largeScreen = useMediaQuery("(min-width: 600px)");
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const projectData = useSelector((state) => state.projects.clickedProject);
@@ -26,14 +28,14 @@ const ClickedProject = () => {
 
   // Like or unlike handler
   const handleLikeClick = () => {
-    if (liked) {
-      // Dispatch unlike action if the user has already liked the project
-      dispatch(unlikeProject(projectData._id, userId));
-      setLiked(false);
-    } else {
-      // Dispatch like action if the user hasn't liked the project yet
-      dispatch(likeProject(projectData._id, userId));
-      setLiked(true);
+    {
+      userId
+        ? liked
+          ? // Dispatch unlike action if the user has already liked the project
+            (dispatch(unlikeProject(projectData._id, userId)), setLiked(false))
+          : // Dispatch like action if the user hasn't liked the project yet
+            (dispatch(likeProject(projectData._id, userId)), setLiked(true))
+        : alert("Please login to like or unlike a project");
     }
   };
 
@@ -52,10 +54,10 @@ const ClickedProject = () => {
   const closeModal = () => setSelectedImage(null);
 
   return (
-    <div className="relative project-container flex flex-col justify-center items-center w-full p-6 bg-white text-gray-900">
+    <div className="relative project-container flex flex-col justify-center items-center w-full p-6 k text-gray-900">
       {/* Like button */}
       <div
-        className="fixed right-5 "
+        className="fixed right-2 sm:right-5 z-50"
         style={{
           top: "50%", // Vertically centered
           transform: "translateY(-50%)", // Center the element on the Y axis
@@ -63,26 +65,26 @@ const ClickedProject = () => {
       >
         <div
           onClick={handleLikeClick}
-          className={`mb-2 flex items-center justify-center text-lg p-3 rounded-full cursor-pointer transition-colors duration-200 ${
+          className={`mb-2 flex items-center justify-center p-2 sm:p-3 rounded-full cursor-pointer transition-colors duration-200 ${
             liked ? "bg-red-600" : "bg-blue-500"
           }`}
         >
-          <ThumbUpAltIcon style={{ color: "white", fontSize: "2rem" }} />
+          <ThumbUpAltIcon style={{ color: "white" }} />
         </div>
         <a
           href={projectData.projectURL}
-          className="flex items-center justify-center text-lg p-3 rounded-full cursor-pointer transition-colors duration-200 bg-blue-500"
+          className="flex items-center justify-center  p-2 sm:p-3 rounded-full cursor-pointer transition-colors duration-200 bg-blue-500"
         >
-          <AdsClickIcon style={{ color: "white", fontSize: "2rem" }} />
+          <AdsClickIcon style={{ color: "white" }} />
         </a>
       </div>
 
       {/* Hero Section */}
-      <section className="hero w-full mb-10 text-center flex flex-col items-center justify-center">
-        <h1 className="text-4xl flex items-center gap-5 font-extrabold mb-4 text-gray-700">
+      <section className="hero w-full mb-10 text-left sm:text-center flex flex-col items-center justify-center">
+        <h1 className="text-2xl sm:text-4xl flex items-center gap-5 font-extrabold mb-4 text-gray-700">
           {projectData.projectName}
         </h1>
-        <p className="text-gray-700 text-xl max-w-5xl text-center mb-4">
+        <p className="text-gray-700 text-lg sm:text-xl max-w-5xl text-justify sm:text-center mb-4">
           {projectData.projectDescription}
         </p>
         {/* Tech Stack */}
@@ -112,10 +114,14 @@ const ClickedProject = () => {
       {/* Main Content */}
       <div className="w-full flex flex-col items-center">
         {/* Thumbnail and Images */}
-        <div className="flex flex-col gap-6 max-w-[80%] mb-4">
+        <div className="flex flex-col gap-6 w-full sm:max-w-[80%] mb-4">
           <div className="relative group">
             <img
-              onClick={() => setSelectedImage(projectData.projectThumbnail)}
+              onClick={
+                largeScreen
+                  ? () => setSelectedImage(projectData.projectThumbnail)
+                  : null
+              }
               src={projectData.projectThumbnail}
               alt={projectData.projectName}
               className="rounded-lg w-full h-auto object-cover cursor-pointer transition-transform transform group-hover:scale-[1.01] shadow-lg"
@@ -131,7 +137,7 @@ const ClickedProject = () => {
                     src={image}
                     alt={`Image ${index + 1}`}
                     className="rounded-md object-cover cursor-pointer shadow-md transition hover:scale-[1.02]"
-                    onClick={() => setSelectedImage(image)}
+                    onClick={largeScreen ? () => setSelectedImage(image) : null}
                   />
                 ))}
               </div>
@@ -139,7 +145,7 @@ const ClickedProject = () => {
         </div>
 
         {/* Project Details */}
-        <div className="flex gap-3">
+        <div className="flex sm:flex-row flex-col gap-3">
           {/* Project URL */}
           {projectData.projectURL && (
             <a
