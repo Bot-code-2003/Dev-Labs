@@ -10,23 +10,15 @@ dotenv.config();
 
 const app = express();
 
-// Use CORS middleware
-
-const corsConfig = {
-  origin: "*",
-  credential: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-};
-app.use(cors(corsConfig));
-
-app.options("", cors(corsConfig));
-
 // Get MongoDB URL from environment variables
 const url = process.env.MONGODB_URL;
 
 // Middleware to handle JSON and URL-encoded data
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(urlencoded({ limit: "30mb", extended: true }));
+
+// Use CORS middleware
+app.use(cors(corsConfig));
 
 // Define routes
 app.use("/user", userRoutes);
