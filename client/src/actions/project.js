@@ -68,3 +68,11 @@ export const clickedProjectAction = (clickedProject) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const authorClick = (userId) => async (dispatch) => {
+  try {
+    const { data } = await API.post("/project/authorClick", { userId });
+    console.log(data);
+    dispatch({ type: "AUTHOR_CLICK", payload: data });
+  } catch (error) {}
+};

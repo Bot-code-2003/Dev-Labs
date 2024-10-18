@@ -27,7 +27,7 @@ const SignUp = () => {
         <img src={Nebula} className="w-[300px] h-[100px]" alt="Nebula Labs" />
         <div className="absolute inset-0 bg-black opacity-15"></div>
         <h1 className="absolute inset-0 flex items-center justify-center text-3xl text-white font-bold font-mono">
-          Nebula Labs
+          Dev Labs
         </h1>
       </div>
 

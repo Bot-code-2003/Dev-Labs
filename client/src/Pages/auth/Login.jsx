@@ -26,7 +26,7 @@ const Login = () => {
         <div className="absolute inset-0 bg-black opacity-15"></div>{" "}
         {/* Dark overlay */}
         <h1 className="absolute inset-0 flex items-center justify-center text-3xl text-white font-bold font-mono">
-          Nebula Labs
+          Dev Labs
         </h1>
       </div>
 

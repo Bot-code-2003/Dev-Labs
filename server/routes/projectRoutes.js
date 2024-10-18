@@ -57,4 +57,10 @@ router.patch("/incProjectView", async (req, res) => {
   res.status(200).send("Project viewed");
 });
 
+router.post("/authorClick", async (req, res) => {
+  const { userId } = req.body;
+
+  //need to find the projects that the user has created.
+});
+
 export default router;

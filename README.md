@@ -1,5 +1,7 @@
 # Dev Labs
 
+![Dev Labs Logo](https://i.ibb.co/VVbxh7C/DEV-LABS.png)
+
 ## About
 
 Welcome to **Dev Labs**! Showcase your websites and web designs while connecting with real users who can test and provide valuable feedback. Join our community to enhance your creations and elevate your creative journey.
@@ -16,8 +18,7 @@ Welcome to **Dev Labs**! Showcase your websites and web designs while connecting
 - **Frontend**: React, Redux, HTML, CSS, JavaScript
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
-- **Deployment**: Heroku / Vercel (or specify your deployment method)
-
+- **Deployment**: Vercel
 
 ## Copyright
 
@@ -31,5 +32,3 @@ For any inquiries or suggestions, please reach out:
 - **Your Name**: [Dharmadeep Madisetty]
 - **Email**: [madisettydharmadeep@gmail.com]
 - **GitHub**: [bot-code-2003](https://github.com/Bot-code-2003)
-
-

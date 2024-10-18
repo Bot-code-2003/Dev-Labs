@@ -135,7 +135,7 @@ const Homepage = () => {
                 {/* Display Author */}
                 <p className="text-gray-600 font-bold text-sm flex items-center gap-1">
                   <Face4Icon className="text-gray-500" fontSize="small" />
-                  {project.author}
+                  <a>{project.author}</a>
                 </p>
 
                 {/* Display Likes and Views (Optional) */}
