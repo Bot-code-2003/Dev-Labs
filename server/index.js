@@ -4,30 +4,44 @@ import path from "path";
 import userRoutes from "./routes/userRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import cors from "cors";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 
+// Use CORS middleware
 app.use(cors());
-const uri =
-  "mongodb+srv://dharmadeep:nebula-lab-1@nebula-lab-1.3uiz2.mongodb.net/?retryWrites=true&w=majority&appName=nebula-lab-1";
 
+// Get MongoDB URL from environment variables
+const url = process.env.MONGODB_URL;
+
+// Middleware to handle JSON and URL-encoded data
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(urlencoded({ limit: "30mb", extended: true }));
+
+// Serve static files from the public directory
 app.use(express.static(path.join(process.cwd(), "public")));
 
+// Define routes
 app.use("/user", userRoutes);
 app.use("/project", projectRoutes);
 
+// Serve index.html for root route
 app.get("/", (req, res) => {
-  res.sendFile(process.cwd() + "/public/index.html");
+  res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 
+// Connect to MongoDB and start the server
 mongoose
-  .connect(uri, {
+  .connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() =>
-    app.listen(5000, () => console.log("Database connected. Server Running"))
+    app.listen(5000, () =>
+      console.log("Database connected. Server running on port 5000")
+    )
   )
   .catch((err) => console.log(err));
