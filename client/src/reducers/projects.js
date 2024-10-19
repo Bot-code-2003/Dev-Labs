@@ -1,6 +1,7 @@
 const initialState = {
   projects: [],
   clickedProject: null,
+  projectLikes: [],
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         clickedProject: action.payload,
+        // Set projectLikes based on the clicked project's likes
+        projectLikes: action.payload.projectLikes || [], // Ensure it has a default value if not available
       };
 
     case "LIKE_PROJECT":
@@ -21,7 +24,7 @@ export default (state = initialState, action) => {
           if (project._id === action.payload.projectId) {
             return {
               ...project,
-              projectLikes: [...projectLikes, action.payload.userId],
+              projectLikes: [...project.projectLikes, action.payload.userId], // Corrected to use project.projectLikes
             };
           }
           return project;
@@ -35,7 +38,8 @@ export default (state = initialState, action) => {
           if (project._id === action.payload.projectId) {
             return {
               ...project,
-              projectLikes: projectLikes.filrer(
+              projectLikes: project.projectLikes.filter(
+                // Fixed typo in filter method
                 (userId) => userId !== action.payload.userId
               ),
             };
@@ -51,12 +55,13 @@ export default (state = initialState, action) => {
           if (project._id === action.payload) {
             return {
               ...project,
-              projectViews: project.projectViews + 1,
+              projectViews: (project.projectViews || 0) + 1, // Handle projectViews being undefined
             };
           }
           return project;
         }),
       };
+
     default:
       return state;
   }

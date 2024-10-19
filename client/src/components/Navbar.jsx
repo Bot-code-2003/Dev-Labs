@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Filter from "./Filter";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation } from "react-router-dom";
-import Hero from "./Hero";
 import ScienceIcon from "@mui/icons-material/Science";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -218,9 +217,6 @@ const Navbar = () => {
           </div>
         </div>
       </Drawer>
-      <div className="sm:block hidden">
-        {location.pathname === "/" && !loggedIn && <Hero />}
-      </div>
     </div>
   );
 };

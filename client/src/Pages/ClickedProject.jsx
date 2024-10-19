@@ -1,41 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import AdsClickIcon from "@mui/icons-material/AdsClick";
 import { useLocation } from "react-router-dom";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import Face4Icon from "@mui/icons-material/Face4";
 import { likeProject, unlikeProject } from "../actions/project";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import ShortcutIcon from "@mui/icons-material/Shortcut";
-import { useMediaQuery } from "@mui/material";
+import Reviews from "../components/Reviews";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
+import { IconButton } from "@mui/material";
+import {
+  Visibility,
+  GitHub,
+  Person,
+  Favorite,
+  FavoriteBorder,
+} from "@mui/icons-material";
 
-const ClickedProject = () => {
-  const largeScreen = useMediaQuery("(min-width: 600px)");
+export default function ClickedProject() {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const projectData = useSelector((state) => state.projects.clickedProject);
-
   const localData = JSON.parse(localStorage.getItem("user"));
   const userId = localData?.userId;
-
-  // Check if userId is in projectLikes
   const userHasLiked = projectData?.projectLikes.includes(userId);
-  console.log("Type: ", projectData?.projectLikes);
-
-  console.log("userHasLiked: ", userHasLiked);
-
   const [liked, setLiked] = useState(userHasLiked);
 
-  // Like or unlike handler
   const handleLikeClick = () => {
-    {
-      userId
-        ? liked
-          ? // Dispatch unlike action if the user has already liked the project
-            (dispatch(unlikeProject(projectData._id, userId)), setLiked(false))
-          : // Dispatch like action if the user hasn't liked the project yet
-            (dispatch(likeProject(projectData._id, userId)), setLiked(true))
-        : alert("Please login to like or unlike a project");
+    if (userId) {
+      if (liked) {
+        dispatch(unlikeProject(projectData._id, userId));
+        setLiked(false);
+      } else {
+        dispatch(likeProject(projectData._id, userId));
+        setLiked(true);
+      }
+    } else {
+      alert("Please login to like or unlike a project");
     }
   };
 
@@ -51,126 +48,117 @@ const ClickedProject = () => {
     );
   }
 
-  const closeModal = () => setSelectedImage(null);
-
   return (
-    <div className="relative project-container flex flex-col justify-center items-center w-full p-6 k text-gray-900">
-      {/* Like button */}
-      <div
-        className="fixed right-2 sm:right-5 z-50"
-        style={{
-          top: "50%", // Vertically centered
-          transform: "translateY(-50%)", // Center the element on the Y axis
-        }}
-      >
-        <div
-          onClick={handleLikeClick}
-          className={`mb-2 flex items-center justify-center p-2 sm:p-3 rounded-full cursor-pointer transition-colors duration-200 ${
-            liked ? "bg-red-600" : "bg-blue-500"
-          }`}
-        >
-          <ThumbUpAltIcon style={{ color: "white" }} />
-        </div>
-        <a
-          href={projectData.projectURL}
-          className="flex items-center justify-center  p-2 sm:p-3 rounded-full cursor-pointer transition-colors duration-200 bg-blue-500"
-        >
-          <AdsClickIcon style={{ color: "white" }} />
-        </a>
-      </div>
-
-      {/* Hero Section */}
-      <section className="hero w-full mb-10 text-left sm:text-center flex flex-col items-center justify-center">
-        <h1 className="text-2xl sm:text-4xl flex items-center gap-5 font-extrabold mb-4 text-gray-700">
-          {projectData.projectName}
-        </h1>
-        <p className="text-gray-700 text-lg sm:text-xl max-w-5xl text-justify sm:text-center mb-4">
-          {projectData.projectDescription}
-        </p>
-        {/* Tech Stack */}
-        {projectData.techStack && (
-          <div className="mb-4">
-            <ul className="flex flex-wrap gap-2">
-              {projectData.techStack.split(",").map((tech, index) => (
-                <li
-                  key={index}
-                  className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-sm font-medium"
-                >
-                  {tech.trim()}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Author */}
-        {projectData.author && (
-          <p className="text-gray-700 flex items-center gap-2 text-lg">
-            <Face4Icon fontSize="small" /> {projectData.author}
-          </p>
-        )}
-      </section>
-
-      {/* Main Content */}
-      <div className="w-full flex flex-col items-center">
-        {/* Thumbnail and Images */}
-        <div className="flex flex-col gap-6 w-full sm:max-w-[80%] mb-4">
-          <div className="relative group">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+          {/* Hero Section */}
+          <div className="relative">
             <img
-              onClick={
-                largeScreen
-                  ? () => setSelectedImage(projectData.projectThumbnail)
-                  : null
-              }
               src={projectData.projectThumbnail}
               alt={projectData.projectName}
-              className="rounded-lg w-full h-auto object-cover cursor-pointer transition-transform transform group-hover:scale-[1.01] shadow-lg"
+              className="w-full h-80 sm:h-auto object-cover "
             />
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
+                  {projectData.projectName}
+                </h1>
+                <div className="flex justify-center space-x-4">
+                  <a
+                    href={projectData.projectURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-600 text-white py-2 px-6 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center space-x-2"
+                  >
+                    <span>View Project</span>
+                    <Visibility />
+                  </a>
+                  {projectData.githubURL && (
+                    <a
+                      href={projectData.githubURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-gray-800 text-white py-2 px-6 rounded-full text-lg font-semibold hover:bg-gray-900 transition duration-300 flex items-center space-x-2"
+                    >
+                      <span>View Github</span>
+                      <GitHub />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
-          {projectData.projectImages &&
-            projectData.projectImages.length > 0 && (
-              <div className="grid sm:grid-cols-3 gap-4">
-                {projectData.projectImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Image ${index + 1}`}
-                    className="rounded-md object-cover cursor-pointer shadow-md transition hover:scale-[1.02]"
-                    onClick={largeScreen ? () => setSelectedImage(image) : null}
-                  />
-                ))}
+          {/* Project Details */}
+          <div className="px-6 py-8">
+            <p className="text-gray-700 text-lg mb-6">
+              {projectData.projectDescription}
+            </p>
+
+            {projectData.techStack && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Tech Stack</h2>
+                <div className="flex flex-wrap gap-2">
+                  {projectData.techStack.split(",").map((tech, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full"
+                    >
+                      {tech.trim()}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
-        </div>
 
-        {/* Project Details */}
-        <div className="flex sm:flex-row flex-col gap-3">
-          {/* Project URL */}
-          {projectData.projectURL && (
-            <a
-              href={projectData.projectURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex gap-2 items-center "
-            >
-              View Project
-              <AdsClickIcon />
-            </a>
-          )}
+            {projectData.author && (
+              <div className="flex items-center space-x-2 mb-6">
+                <Person className="h-6 w-6 text-gray-600" />
+                <span className="text-gray-700 text-lg">
+                  {projectData.author}
+                </span>
+              </div>
+            )}
 
-          {/* Github URL */}
-          {projectData.githubURL && (
-            <a
-              href={projectData.githubURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gray-800 text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-gray-900 transition duration-300 flex gap-2 items-center"
+            {/* Like Button */}
+            <button
+              onClick={handleLikeClick}
+              className={`flex items-center space-x-2 ${
+                liked
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-blue-600 hover:bg-blue-700"
+              } text-white font-bold py-2 px-4 rounded-full transition duration-300`}
             >
-              View Github
-              <GitHubIcon />
-            </a>
-          )}
+              {liked ? <Favorite /> : <FavoriteBorder />}
+              <span>{liked ? "Unlike" : "Like"}</span>
+            </button>
+          </div>
+
+          {/* Project Images */}
+          {projectData.projectImages &&
+            projectData.projectImages.length > 0 && (
+              <div className="px-6 py-8 bg-gray-50">
+                <h2 className="text-2xl font-semibold mb-4">Project Images</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {projectData.projectImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Project Image ${index + 1}`}
+                      className="rounded-lg shadow-md hover:shadow-xl transition duration-300 cursor-pointer"
+                      onClick={() => setSelectedImage(image)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+          {/* Reviews Section */}
+          <div className="px-6 py-8">
+            {/* <Reviews /> */}
+            <h1>Reviews feature comming soon...</h1>
+          </div>
         </div>
       </div>
 
@@ -178,25 +166,25 @@ const ClickedProject = () => {
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-          onClick={closeModal}
+          onClick={() => setSelectedImage(null)}
         >
-          <div className="relative">
+          <div className="relative max-w-4xl max-h-full">
             <img
               src={selectedImage}
               alt="Selected"
-              className="max-w-screen-lg max-h-screen object-contain rounded-md"
+              className="max-w-full max-h-full object-contain rounded-lg"
             />
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-white shadow bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded-full text-2xl font-bold"
-            >
-              X
-            </button>
+            <div className="absolute top-0 right-0">
+              <IconButton
+                onClick={() => setSelectedImage(null)}
+                className="absolute text-white"
+              >
+                <CloseFullscreenIcon className="text-white" />
+              </IconButton>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-};
-
-export default ClickedProject;
+}
