@@ -114,7 +114,13 @@ export default function ClickedProject() {
 
             {projectData.author && (
               <div className="flex items-center space-x-2 mb-6">
-                <Person className="h-6 w-6 text-gray-600" />
+                {projectData.authorImage && (
+                  <img
+                    src={projectData.authorImage}
+                    alt={projectData.author}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                )}
                 <span className="text-gray-700 text-lg">
                   {projectData.author}
                 </span>

@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  authorImage: {
+    type: String,
+    default: "/placeholder.svg?height=40&width=40",
+  },
 });
 
 export default mongoose.model("User", userSchema);

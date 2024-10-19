@@ -35,6 +35,7 @@ const ShareProject = () => {
     projectImages: [],
     techStack: "",
     author: user,
+    authorImage: JSON.parse(localStorage.getItem("user"))?.authorImage,
     authorEmail: JSON.parse(localStorage.getItem("user"))?.email,
   });
 
@@ -124,6 +125,8 @@ const ShareProject = () => {
               />
             </div>
           </div>
+
+          {/* Taking image as thumbnail */}
           <div className="mt-5">
             <span className="text-red-400 text-sm">*required</span>
             <ThumbnailInput
@@ -132,6 +135,8 @@ const ShareProject = () => {
               }
             />
           </div>
+
+          {/* Taking multiple images */}
           <div className="mt-5">
             <ImageInput
               setProjectImages={(images) =>
@@ -139,6 +144,8 @@ const ShareProject = () => {
               }
             />
           </div>
+
+          {/* Project Description */}
           <div className="mt-5">
             <span className="text-red-400 text-sm">*required</span>
             <div className="border-2 border-gray-300 flex items-center px-2">

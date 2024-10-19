@@ -149,7 +149,15 @@ const Homepage = () => {
             <div className="flex justify-between p-2">
               {/* Display Author */}
               <a className="text-gray-600 font-bold text-sm flex items-center gap-1">
-                <Face4Icon className="text-gray-500" fontSize="small" />
+                {project.authorImage ? (
+                  <img
+                    src={project.authorImage}
+                    className="w-6 h-6 rounded-full"
+                    alt={project.author}
+                  />
+                ) : (
+                  <Face4Icon className="text-gray-500" fontSize="small" />
+                )}
                 {project.author}
               </a>
 

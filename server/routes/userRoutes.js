@@ -11,7 +11,7 @@ const saltRounds = 10;
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, authorImage } = req.body;
 
     // Check if user already exists
     if (await User.findOne({ email })) {
@@ -25,6 +25,7 @@ router.post("/signup", async (req, res) => {
       lastname,
       email,
       password: hashedPassword,
+      authorImage,
     });
 
     await newUser.save();
@@ -38,7 +39,9 @@ router.post("/signup", async (req, res) => {
       }
     );
 
-    res.status(201).send({ token, name: firstname, userId: newUser._id });
+    res
+      .status(201)
+      .send({ token, name: firstname, userId: newUser._id, authorImage });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).send("Server error during signup");
@@ -71,7 +74,14 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.status(200).send({ token, name: user.firstname, userId: user._id });
+    res
+      .status(200)
+      .send({
+        token,
+        name: user.firstname,
+        userId: user._id,
+        authorImage: user.authorImage,
+      });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).send("Server error during login");

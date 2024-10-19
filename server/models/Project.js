@@ -10,6 +10,7 @@ const projectSchema = new mongoose.Schema({
   techStack: String,
   author: String,
   authorEmail: String,
+  authorImage: String,
   projectLikes: {
     type: [String],
     default: [],
