@@ -52,9 +52,10 @@ export const signup = (formData, navigate) => async (dispatch) => {
 export const editImage = (changedImage, userId) => async (dispatch) => {
   try {
     console.log("editImage action called");
-    console.log(changedImage);
+    // console.log(changedImage);
     console.log(userId);
     await API.patch("/user/editImage", { changedImage, userId });
+    console.log("Image updated successfully");
   } catch (error) {
     console.log(error);
   }

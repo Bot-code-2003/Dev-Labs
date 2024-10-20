@@ -89,8 +89,6 @@ router.post("/login", async (req, res) => {
 router.patch("/editImage", async (req, res) => {
   try {
     const { userId, changedImage } = req.body;
-    // console.log("Edit image route called", userId, changedImage);
-
     const user = await User.findById(userId);
     user.authorImage = changedImage;
     await user.save();
