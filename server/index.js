@@ -18,7 +18,7 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(urlencoded({ limit: "30mb", extended: true }));
 
 // Use CORS middleware
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 // Define routes
 app.use("/user", userRoutes);

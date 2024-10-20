@@ -79,10 +79,10 @@ const PersonalSpace = () => {
     setNewImage(compressedImageDataUrl);
   };
 
-  const handleSaveImage = () => {
+  const handleSaveImage = async () => {
     if (newImage) {
       // Dispatch an action or save image to backend
-      dispatch(editImage(newImage, loggedInUserId)); // Assuming this function sends a request to the backend
+      await dispatch(editImage(newImage, loggedInUserId)); // Assuming this function sends a request to the backend
 
       // Update the local storage and state after successful save
       const updatedUser = { ...loggedInUser, authorImage: newImage };
