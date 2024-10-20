@@ -16,10 +16,15 @@ router.post("/submitProject", async (req, res) => {
   }
 });
 
-// Route to get all projects
+// Route to get all projects with author details
 router.get("/getProjects", async (req, res) => {
   try {
-    const projects = await Project.find();
+    // Use populate to get author details from User model
+    const projects = await Project.find().populate(
+      "author",
+      "firstname lastname authorImage email"
+    );
+
     res.status(200).send(projects);
   } catch (error) {
     console.error("Error fetching projects:", error);
@@ -100,6 +105,22 @@ router.post("/authorClick", async (req, res) => {
   } catch (error) {
     console.error("Error fetching author's projects:", error);
     res.status(500).send("Server error while fetching author's projects");
+  }
+});
+
+// Route to get projects related to the logged-in user
+router.post("/getUserProjects", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    // Find the projects that the user has created (filter by the author field)
+    const userProjects = await Project.find({ author: userId }).populate(
+      "author",
+      "firstname lastname authorImage email"
+    );
+    res.status(200).send(userProjects);
+  } catch (error) {
+    console.error("Error fetching user projects:", error);
+    res.status(500).send("Server error while fetching user projects");
   }
 });
 

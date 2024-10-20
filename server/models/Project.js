@@ -8,9 +8,11 @@ const projectSchema = new mongoose.Schema({
   projectThumbnail: String,
   projectImages: [String],
   techStack: String,
-  author: String,
-  authorEmail: String,
-  authorImage: String,
+  author: {
+    type: mongoose.Schema.Types.ObjectId, // Reference to the User schema
+    ref: "User",
+    required: true,
+  },
   projectLikes: {
     type: [String],
     default: [],

@@ -18,7 +18,7 @@ export default function ClickedProject() {
   const [selectedImage, setSelectedImage] = useState(null);
   const projectData = useSelector((state) => state.projects.clickedProject);
   const localData = JSON.parse(localStorage.getItem("user"));
-  const userId = localData?.userId;
+  const userId = localData?._id || localData?.userId;
   const userHasLiked = projectData?.projectLikes.includes(userId);
   const [liked, setLiked] = useState(userHasLiked);
 
@@ -48,6 +48,10 @@ export default function ClickedProject() {
     );
   }
 
+  // Extract author details (populated fields)
+  const authorName = `${projectData.author.firstname} ${projectData.author.lastname}`;
+  const authorImage = projectData.author.authorImage;
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -57,29 +61,30 @@ export default function ClickedProject() {
             <img
               src={projectData.projectThumbnail}
               alt={projectData.projectName}
-              className="w-full h-80 sm:h-auto object-cover "
+              className="w-full h-80 sm:h-auto object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="text-center">
                 <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
                   {projectData.projectName}
                 </h1>
-                <div className="flex justify-center space-x-4">
+                <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-6">
                   <a
                     href={projectData.projectURL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-blue-600 text-white py-2 px-6 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center space-x-2"
+                    className="bg-blue-500 text-white py-3 px-8 rounded-full text-lg font-bold shadow-lg transform hover:scale-105 transition-all duration-300 ease-out flex justify-center items-center space-x-3"
                   >
                     <span>View Project</span>
                     <Visibility />
                   </a>
+
                   {projectData.githubURL && (
                     <a
                       href={projectData.githubURL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-gray-800 text-white py-2 px-6 rounded-full text-lg font-semibold hover:bg-gray-900 transition duration-300 flex items-center space-x-2"
+                      className="bg-gray-700 text-white py-3 px-8 rounded-full text-lg font-bold shadow-sm transform hover:scale-105 transition-all duration-300 ease-out flex justify-center items-center space-x-3"
                     >
                       <span>View Github</span>
                       <GitHub />
@@ -114,16 +119,14 @@ export default function ClickedProject() {
 
             {projectData.author && (
               <div className="flex items-center space-x-2 mb-6">
-                {projectData.authorImage && (
+                {authorImage && (
                   <img
-                    src={projectData.authorImage}
-                    alt={projectData.author}
+                    src={authorImage}
+                    alt={authorName}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                 )}
-                <span className="text-gray-700 text-lg">
-                  {projectData.author}
-                </span>
+                <span className="text-gray-700 text-lg">{authorName}</span>
               </div>
             )}
 
@@ -162,8 +165,7 @@ export default function ClickedProject() {
 
           {/* Reviews Section */}
           <div className="px-6 py-8">
-            {/* <Reviews /> */}
-            <h1>Reviews feature comming soon...</h1>
+            <h1>Reviews feature coming soon...</h1>
           </div>
         </div>
       </div>

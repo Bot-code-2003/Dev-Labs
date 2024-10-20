@@ -1,45 +1,57 @@
-import React, { useState, useEffect } from "react";
-import Nebula from "../assets/nebula.jpeg";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import { Drawer, IconButton } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Drawer, IconButton, Avatar, MenuItem, Button } from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Close as CloseIcon,
+  Search as SearchIcon,
+  Science as ScienceIcon,
+  Logout as LogoutIcon,
+  AccountCircle as AccountCircleIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+} from "@mui/icons-material";
 import Filter from "./Filter";
-import SearchIcon from "@mui/icons-material/Search";
-import { useLocation } from "react-router-dom";
-import ScienceIcon from "@mui/icons-material/Science";
-import LogoutIcon from "@mui/icons-material/Logout";
+import Nebula from "../assets/nebula.jpeg";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user?.email) {
-      setLoggedIn(true);
-    }
+    if (user?.email) setLoggedIn(true);
   }, [location]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
   const handleLogout = () => {
     localStorage.removeItem("user");
     setLoggedIn(false);
     navigate("/login");
   };
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
-
   const menuItems = [{ text: "Explore", link: "/" }];
+  const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
+  const {
+    email: loggedInUserEmail,
+    name: loggedInUserName,
+    authorImage: loggedInUserProfile,
+  } = loggedInUser;
 
   return (
     <div>
@@ -64,14 +76,10 @@ const Navbar = () => {
           <div className="hidden sm:flex space-x-6">
             {menuItems.map((item) => (
               <Link
-                to={item.link} // Changed from <a> to <Link>
+                to={item.link}
                 key={item.text}
                 className={`text-gray-700 py-2 px-4 rounded-full border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
-                } ${
-                  location.pathname === "/" && item.text === "Explore"
-                    ? "bg-gray-200 border-gray-400"
-                    : ""
                 }`}
               >
                 {item.text}
@@ -81,30 +89,51 @@ const Navbar = () => {
         </div>
 
         <div className="flex sm:hidden">
-          {/* Hamburger Menu */}
-          <button className="md:hidden p-4" onClick={toggleDrawer(true)}>
+          <IconButton onClick={toggleDrawer(true)}>
             <MenuIcon />
-          </button>
+          </IconButton>
         </div>
 
-        {/* Login/Signup Buttons */}
         <div className="hidden sm:flex space-x-4">
           {loggedIn ? (
             <div className="flex space-x-4">
-              <button
+              <Button
                 onClick={() => navigate("/shareproject")}
                 className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
               >
                 <ScienceIcon fontSize="small" />
                 Share Project
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full"
-              >
-                <LogoutIcon fontSize="small" />
-                Logout
-              </button>
+              </Button>
+              <div className="relative" ref={dropdownRef}>
+                <Button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 rounded-full"
+                >
+                  {loggedInUserProfile ? (
+                    <img
+                      src={loggedInUserProfile}
+                      alt={loggedInUserName}
+                      className="mr-2 w-8 h-8 rounded-full"
+                    />
+                  ) : (
+                    <AccountCircleIcon className="mr-2" />
+                  )}
+                  {loggedInUserName}
+                  <ArrowDropDownIcon />
+                </Button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <MenuItem
+                      onClick={() => (
+                        navigate("/personalspace"), setDropdownOpen(false)
+                      )}
+                    >
+                      Personal Space
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <>
@@ -150,65 +179,65 @@ const Navbar = () => {
             </IconButton>
           </div>
           <div className="flex flex-col space-y-4">
-            {/* <div className="flex items-center px-4 border border-gray-300 bg-gray-100 rounded-full overflow-hidden">
-              <SearchIcon className="text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="px-2 bg-gray-100 py-2 outline-none"
-              />
-            </div>
-            <Filter /> */}
-            <div className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
-                <Link
-                  onClick={toggleDrawer(false)}
-                  to={item.link}
-                  key={item.text}
-                  className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full ${
-                    location.pathname === item.link ? "underline" : ""
-                  } ${
-                    location.pathname === "/" && item.text === "Explore"
-                      ? "underline"
-                      : ""
-                  }`}
-                >
-                  {item.text}
-                </Link>
-              ))}
-            </div>
+            {menuItems.map((item) => (
+              <Link
+                to={item.link}
+                key={item.text}
+                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full ${
+                  location.pathname === item.link ? "underline" : ""
+                }`}
+                onClick={toggleDrawer(false)}
+              >
+                {item.text}
+              </Link>
+            ))}
             {loggedIn ? (
               <div className="flex flex-col space-y-4">
-                <button
-                  onClick={() => (
-                    navigate("/shareproject"), toggleDrawer(false)
-                  )}
+                <div className="flex items-center space-x-2 px-4 py-2">
+                  <Avatar src={loggedInUserProfile} alt={loggedInUserName} />
+                  <span>{loggedInUserName}</span>
+                </div>
+                <Link
+                  to="/personalspace"
+                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full"
+                  onClick={toggleDrawer(false)}
+                >
+                  Personal Space
+                </Link>
+                <Button
+                  onClick={() => {
+                    navigate("/shareproject");
+                    setDrawerOpen(false);
+                  }}
                   className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 rounded-full w-full"
                 >
                   <ScienceIcon fontSize="small" />
                   Share Project
-                </button>
-                <button
-                  onClick={() => (handleLogout(), toggleDrawer(false))}
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleLogout();
+                    setDrawerOpen(false);
+                  }}
                   className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full w-full"
                 >
                   <LogoutIcon fontSize="small" />
                   Logout
-                </button>
+                </Button>
               </div>
             ) : (
               <>
                 <Link
-                  onClick={toggleDrawer(false)}
                   to="/login"
                   className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full"
+                  onClick={toggleDrawer(false)}
                 >
                   Log In
                 </Link>
                 <Link
-                  onClick={toggleDrawer(false)}
                   to="/signup"
                   className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full w-full"
+                  onClick={toggleDrawer(false)}
                 >
                   Sign Up
                 </Link>

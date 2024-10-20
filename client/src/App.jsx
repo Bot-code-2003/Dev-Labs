@@ -7,6 +7,7 @@ import Login from "./Pages/auth/Login";
 import SignUp from "./Pages/auth/Signup";
 import ShareProject from "./Pages/ShareProject";
 import ClickedProject from "./Pages/ClickedProject";
+import PersonalSpace from "./Pages/PersonalSpace";
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/shareproject" element={<ShareProject />} />
         <Route path="/project/:projectId" element={<ClickedProject />} />
+        <Route path="/personalspace" element={<PersonalSpace />} />
       </Routes>
     </div>
   );

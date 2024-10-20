@@ -108,30 +108,6 @@ const Homepage = () => {
             className="relative"
           >
             <div className="relative group cursor-pointer">
-              {/* Display MoreHorizIcon if the logged-in user is the author */}
-              {loggedInUserEmail === project.authorEmail && (
-                <div className="absolute top-2 right-2">
-                  <MoreHorizIcon
-                    className="text-white bg-black bg-opacity-20 hover:bg-opacity-25 rounded cursor-pointer"
-                    onClick={() => handleMenuClick(project.id)}
-                  />
-                  {/* Display the dropdown menu when MoreHorizIcon is clicked */}
-                  {menuOpen === project.id && (
-                    <div
-                      ref={menuRef}
-                      className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-10"
-                    >
-                      <button
-                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
-                        onClick={() => handleDelete(project.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
               {/* Display Project Thumbnail */}
               <img
                 src={project.projectThumbnail}
@@ -149,16 +125,16 @@ const Homepage = () => {
             <div className="flex justify-between p-2">
               {/* Display Author */}
               <a className="text-gray-600 font-bold text-sm flex items-center gap-1">
-                {project.authorImage ? (
+                {project.author.authorImage ? (
                   <img
-                    src={project.authorImage}
+                    src={project.author.authorImage}
                     className="w-6 h-6 rounded-full"
-                    alt={project.author}
+                    alt={`${project.author.firstname} ${project.author.lastname}`}
                   />
                 ) : (
                   <Face4Icon className="text-gray-500" fontSize="small" />
                 )}
-                {project.author}
+                {`${project.author.firstname} ${project.author.lastname}`}
               </a>
 
               {/* Display Likes and Views (Optional) */}

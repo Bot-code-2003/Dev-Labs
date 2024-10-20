@@ -12,19 +12,18 @@ import { CircularProgress } from "@mui/material";
 
 const ShareProject = () => {
   const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!JSON.parse(localStorage.getItem("user"))) {
       window.location.href = "/login";
     }
   }, []);
 
-  const user =
-    JSON.parse(localStorage.getItem("user"))?.name.charAt(0).toUpperCase() +
-    JSON.parse(localStorage.getItem("user"))?.name.slice(1);
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUserId = loggedInUser?.userId;
+  console.log("userId", loggedInUserId);
+  console.log(typeof loggedInUserId);
 
   const [projectData, setProjectData] = useState({
     projectName: "",
@@ -34,9 +33,7 @@ const ShareProject = () => {
     projectThumbnail: "",
     projectImages: [],
     techStack: "",
-    author: user,
-    authorImage: JSON.parse(localStorage.getItem("user"))?.authorImage,
-    authorEmail: JSON.parse(localStorage.getItem("user"))?.email,
+    author: loggedInUserId, // Just store the user ID in the author field
   });
 
   const handleInputChange = (e) => {
@@ -49,11 +46,12 @@ const ShareProject = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(projectData);
+
     if (!projectData.projectThumbnail) {
       alert("Please upload a project thumbnail.");
       return;
     }
-    // console.log(projectData);
     dispatch(submitProject(projectData, navigate));
   };
 

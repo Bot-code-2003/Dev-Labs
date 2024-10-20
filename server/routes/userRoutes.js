@@ -74,17 +74,30 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res
-      .status(200)
-      .send({
-        token,
-        name: user.firstname,
-        userId: user._id,
-        authorImage: user.authorImage,
-      });
+    res.status(200).send({
+      token,
+      name: user.firstname,
+      userId: user._id,
+      authorImage: user.authorImage,
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).send("Server error during login");
+  }
+});
+
+router.patch("/editImage", async (req, res) => {
+  try {
+    const { userId, changedImage } = req.body;
+    // console.log("Edit image route called", userId, changedImage);
+
+    const user = await User.findById(userId);
+    user.authorImage = changedImage;
+    await user.save();
+    res.status(200).send("Image edited");
+  } catch (error) {
+    console.error("Edit image error:", error);
+    res.status(500).send("Server error during edit image");
   }
 });
 

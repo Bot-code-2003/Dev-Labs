@@ -2,12 +2,16 @@ const initialState = {
   projects: [],
   clickedProject: null,
   projectLikes: [],
+  userProjects: [], // New state for user-specific projects
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case "GET_PROJECTS":
       return { ...state, projects: action.payload };
+
+    case "GET_USER_PROJECTS":
+      return { ...state, userProjects: action.payload }; // New case for user projects
 
     case "CLICKED_PROJECT":
       return {
@@ -29,6 +33,17 @@ export default (state = initialState, action) => {
           }
           return project;
         }),
+        clickedProject:
+          state.clickedProject &&
+          state.clickedProject._id === action.payload.projectId
+            ? {
+                ...state.clickedProject,
+                projectLikes: [
+                  ...state.clickedProject.projectLikes,
+                  action.payload.userId,
+                ],
+              }
+            : state.clickedProject,
       };
 
     case "UNLIKE_PROJECT":
@@ -46,6 +61,16 @@ export default (state = initialState, action) => {
           }
           return project;
         }),
+        clickedProject:
+          state.clickedProject &&
+          state.clickedProject._id === action.payload.projectId
+            ? {
+                ...state.clickedProject,
+                projectLikes: state.clickedProject.projectLikes.filter(
+                  (userId) => userId !== action.payload.userId
+                ),
+              }
+            : state.clickedProject,
       };
 
     case "INC_PROJECT_VIEW":
@@ -60,6 +85,13 @@ export default (state = initialState, action) => {
           }
           return project;
         }),
+        clickedProject:
+          state.clickedProject && state.clickedProject._id === action.payload
+            ? {
+                ...state.clickedProject,
+                projectViews: (state.clickedProject.projectViews || 0) + 1,
+              }
+            : state.clickedProject,
       };
 
     default:

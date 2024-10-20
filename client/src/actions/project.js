@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 export const submitProject = (projectData, navigate) => async (dispatch) => {
   try {
@@ -80,4 +80,16 @@ export const authorClick = (userId) => async (dispatch) => {
     console.log(data);
     dispatch({ type: "AUTHOR_CLICK", payload: data });
   } catch (error) {}
+};
+
+// Action to get projects related to the logged-in user
+export const getUserProjects = (userId) => async (dispatch) => {
+  try {
+    console.log("getUserProjects action called");
+    const { data } = await API.post("/project/getUserProjects", { userId });
+    console.log("Received user projects from server: ", data);
+    dispatch({ type: "GET_USER_PROJECTS", payload: data });
+  } catch (error) {
+    console.error("Error fetching user projects:", error);
+  }
 };
