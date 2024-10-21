@@ -19,38 +19,29 @@ const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Get the projects directly from the Redux store
   const { projects } = useSelector((state) => state.projects);
   console.log("Store projects: ", projects);
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user")); // Parse the stored string into an object
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const loggedInUserEmail = loggedInUser?.email;
 
-  // State to manage which project has the menu open
   const [menuOpen, setMenuOpen] = useState(null);
-
-  // Ref to track the dropdown element
   const menuRef = useRef(null);
 
-  // Fetch projects from backend
   useEffect(() => {
-    // Check if projects are already in the Redux store
     if (projects.length === 0) {
-      // Fetch the projects from the backend if not already loaded
       dispatch(getProjects());
     }
   }, [dispatch, projects]);
 
-  // Scroll to top on location change
   useEffect(() => {
     scrollTo(0, 0);
   }, [location]);
 
-  // Handle clicks outside of the menu to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(null); // Close the menu if clicked outside
+        setMenuOpen(null);
       }
     };
 
@@ -62,19 +53,17 @@ const Homepage = () => {
   }, [menuRef]);
 
   const handleMenuClick = (projectId) => {
-    setMenuOpen(menuOpen === projectId ? null : projectId); // Toggle menu visibility
+    setMenuOpen(menuOpen === projectId ? null : projectId);
   };
 
   const handleDelete = (projectId) => {
     console.log(`Delete project with ID: ${projectId}`);
-    // Add your delete functionality here
   };
 
   const handleProjectClick = (event, projectId) => {
-    event.preventDefault(); // Prevent the default navigation
+    event.preventDefault();
     console.log(`Project with ID: ${projectId} clicked`);
 
-    // set the entire project with the id to local storage
     const clickedProject = projects.find(
       (project) => project._id === projectId
     );
@@ -82,76 +71,78 @@ const Homepage = () => {
     dispatch(incProjectView(projectId));
     dispatch(clickedProjectAction(clickedProject));
 
-    // Navigate programmatically to the project page after setting localStorage
     navigate(`/project/${projectId}`);
   };
 
   if (projects.length === 0) {
     return (
-      <div className="w-full flex justify-center">
-        <Lottie
-          animationData={Loading}
-          className="mt-[100px] sm:mt-0 w-[200px] sm:w-[400px]"
-        />
+      <div className="flex justify-center items-center h-screen bg-white">
+        <Lottie animationData={Loading} className="w-[200px] sm:w-[400px]" />
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center items-center h-auto flex-col p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {projects.map((project) => (
-          <Link
-            to={`/project/${project._id}`}
-            onClick={(event) => handleProjectClick(event, project._id)}
-            key={project._id}
-            className="relative"
-          >
-            <div className="relative group cursor-pointer">
-              {/* Display Project Thumbnail */}
-              <img
-                src={project.projectThumbnail}
-                className="rounded-md w-full h-[300px] sm:h-[315px] md:h-[270px] object-cover mb-2 shadow-sm"
-                alt={project.projectName}
-              />
-
-              {/* Display Project Name */}
-              <h1 className="absolute rounded-md bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent bg-opacity-20 flex items-center justify-center text-xl text-white font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/4">
-                {project.projectName}
-              </h1>
-            </div>
-
-            {/* Author and Optional Info */}
-            <div className="flex justify-between p-2">
-              {/* Display Author */}
-              <a className="text-gray-600 font-bold text-sm flex items-center gap-1">
-                {project.author.authorImage ? (
-                  <img
-                    src={project.author.authorImage}
-                    className="w-6 h-6 rounded-full"
-                    alt={`${project.author.firstname} ${project.author.lastname}`}
-                  />
-                ) : (
-                  <Face4Icon className="text-gray-500" fontSize="small" />
-                )}
-                {`${project.author.firstname} ${project.author.lastname}`}
-              </a>
-
-              {/* Display Likes and Views (Optional) */}
-              <div className="flex gap-3">
-                <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <ThumbUpAltIcon className="text-gray-500" fontSize="small" />
-                  {project.projectLikes?.length || 0}
-                </p>
-
-                <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <VisibilityIcon className="text-gray-500" fontSize="small" />
-                  {project.projectViews || 0}
-                </p>
+    <div className="bg-white min-h-screen">
+      <div className=" w-full px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {projects.map((project) => (
+            <div key={project._id} className="group">
+              <Link
+                to={`/project/${project._id}`}
+                onClick={(event) => handleProjectClick(event, project._id)}
+                className="block relative w-full h-[200px] mb-4 overflow-hidden rounded-lg"
+              >
+                <img
+                  src={project.projectThumbnail}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  alt={project.projectName}
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-all duration-300">
+                  <h2 className="text-white text-2xl font-bold text-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {project.projectName}
+                  </h2>
+                </div>
+              </Link>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  {project.author.authorImage ? (
+                    <img
+                      src={project.author.authorImage}
+                      className="w-7 h-7 rounded-full"
+                      alt={`${project.author.firstname} ${project.author.lastname}`}
+                    />
+                  ) : (
+                    <Face4Icon className="text-gray-500 w-10 h-10" />
+                  )}
+                  <span className="text-sm font-medium text-gray-700">
+                    {`${project.author.firstname}`}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-1">
+                    <ThumbUpAltIcon
+                      className="text-gray-500"
+                      fontSize="small"
+                    />
+                    <span className="text-sm text-gray-600">
+                      {project.projectLikes?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <VisibilityIcon
+                      className="text-gray-500"
+                      fontSize="small"
+                    />
+                    <span className="text-sm text-gray-600">
+                      {project.projectViews || 0}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </Link>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

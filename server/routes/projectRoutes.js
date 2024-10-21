@@ -124,4 +124,16 @@ router.post("/getUserProjects", async (req, res) => {
   }
 });
 
+router.delete("/deleteProject/:projectId", async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    await Project.findByIdAndDelete(projectId);
+    res.status(200).send("Project deleted");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error deleting project");
+  }
+});
+
 export default router;

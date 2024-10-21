@@ -1,175 +1,255 @@
-import React, { useEffect, useState } from "react";
-import LinkIcon from "@mui/icons-material/Link";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import TerminalSharpIcon from "@mui/icons-material/TerminalSharp";
-import FolderSharedSharpIcon from "@mui/icons-material/FolderSharedSharp";
-import ThumbnailInput from "../components/ThumbnailInput";
-import ImageInput from "../components/ImageInput";
-import { useNavigate } from "react-router-dom";
-import { submitProject } from "../actions/project";
-import { useDispatch } from "react-redux";
-import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import PublishIcon from "@mui/icons-material/Publish";
 
-const ShareProject = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!JSON.parse(localStorage.getItem("user"))) {
-      window.location.href = "/login";
-    }
-  }, []);
-
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const loggedInUserId = loggedInUser?.userId;
-  console.log("userId", loggedInUserId);
-  console.log(typeof loggedInUserId);
-
+export default function ShareProject() {
   const [projectData, setProjectData] = useState({
     projectName: "",
-    projectDescription: "",
-    projectURL: "",
-    githubURL: "",
-    projectThumbnail: "",
-    projectImages: [],
-    techStack: "",
-    author: loggedInUserId, // Just store the user ID in the author field
+    tagline: "",
+    description: "",
+    link: "",
+    thumbnail: "",
+    images: [],
   });
+
+  const [currentStep, setCurrentStep] = useState("details");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProjectData({
-      ...projectData,
+    setProjectData((prevData) => ({
+      ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleThumbnailUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setProjectData((prevData) => ({
+          ...prevData,
+          thumbnail: event.target.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files).slice(0, 3); // Limit to 3 images
+    const imagePromises = files.map((file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          resolve(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(imagePromises).then((images) => {
+      setProjectData((prevData) => ({
+        ...prevData,
+        images: images,
+      }));
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(projectData);
-
-    if (!projectData.projectThumbnail) {
-      alert("Please upload a project thumbnail.");
-      return;
-    }
-    dispatch(submitProject(projectData, navigate));
+  const handlePublish = () => {
+    setIsSubmitting(true);
+    // Simulating an API call
+    setTimeout(() => {
+      console.log("Project Data:", projectData);
+      setIsSubmitting(false);
+      // Here you would typically handle the response, show a success message, etc.
+    }, 2000);
   };
 
   return (
-    <div className="p-10 m-5 shadow-md bg-white text-gray-500">
-      <h1 className="text-3xl text-center ">
-        Get your project ready for sharing!
-      </h1>
-      <div className="flex justify-center mt-10">
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="flex flex-col w-full sm:flex-row gap-5">
-            <div>
-              <span className="text-red-400 text-sm">*required</span>
-              <div className="border-2 border-gray-300 flex items-center px-2">
-                <FolderSharedSharpIcon />
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto bg-white shadow-md overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-500 via-blue-300 to-blue-500 p-6">
+          <h1 className="text-2xl font-bold text-white">Share Your Project</h1>
+          <p className="mt-2 text-blue-100">Showcase your work to the world</p>
+        </div>
+
+        <div className="p-6">
+          {currentStep === "details" && (
+            <form className="space-y-6">
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="projectName"
+                >
+                  Project Name
+                </label>
                 <input
-                  required
+                  id="projectName"
                   name="projectName"
-                  type="text"
-                  placeholder="Project Name"
-                  className="w-full p-2 outline-none min-w-[250px]"
                   value={projectData.projectName}
                   onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div>
-              <span className="text-red-400 text-sm">*required</span>
-              <div className="border-2 border-gray-300 flex items-center px-2">
-                <LinkIcon />
-                <input
+                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your project name"
                   required
-                  name="projectURL"
-                  type="text"
-                  placeholder="Project URL"
-                  className="w-full p-2 outline-none min-w-[250px]"
-                  value={projectData.projectURL}
-                  onChange={handleInputChange}
                 />
               </div>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-5 mt-5">
-            <div className="border-2 border-gray-300 flex items-center px-2">
-              <GitHubIcon />
-              <input
-                name="githubURL"
-                type="text"
-                placeholder="GitHub URL"
-                className="w-full p-2 outline-none min-w-[250px]"
-                value={projectData.githubURL}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="border-2 border-gray-300 flex items-center px-2">
-              <TerminalSharpIcon />
-              <input
-                name="techStack"
-                type="text"
-                placeholder="Tech Stack (comma separated)"
-                className="w-full p-2 outline-none min-w-[250px]"
-                value={projectData.techStack}
-                onChange={(e) =>
-                  setProjectData({
-                    ...projectData,
-                    techStack: e.target.value.replace(/\s+/g, ""),
-                  })
-                }
-              />
-            </div>
-          </div>
 
-          {/* Taking image as thumbnail */}
-          <div className="mt-5">
-            <span className="text-red-400 text-sm">*required</span>
-            <ThumbnailInput
-              setProjectThumbnail={(thumbnail) =>
-                setProjectData({ ...projectData, projectThumbnail: thumbnail })
-              }
-            />
-          </div>
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="tagline"
+                >
+                  Tagline
+                </label>
+                <input
+                  id="tagline"
+                  name="tagline"
+                  value={projectData.tagline}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter a short tagline"
+                  required
+                />
+              </div>
 
-          {/* Taking multiple images */}
-          <div className="mt-5">
-            <ImageInput
-              setProjectImages={(images) =>
-                setProjectData({ ...projectData, projectImages: images })
-              }
-            />
-          </div>
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="description"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={projectData.description}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter a detailed description"
+                  rows={4}
+                  required
+                />
+              </div>
 
-          {/* Project Description */}
-          <div className="mt-5">
-            <span className="text-red-400 text-sm">*required</span>
-            <div className="border-2 border-gray-300 flex items-center px-2">
-              {/* <FolderSharedSharpIcon /> */}
-              <textarea
-                rows={5}
-                required
-                name="projectDescription"
-                type="text"
-                placeholder="Project Description"
-                className="w-full p-2 outline-none min-w-[250px]"
-                value={projectData.projectDescription}
-                onChange={handleInputChange}
-              />
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="link"
+                >
+                  Project Link
+                </label>
+                <input
+                  id="link"
+                  name="link"
+                  value={projectData.link}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter project link (e.g., GitHub, live demo)"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep("images")}
+                  className="px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Next
+                </button>
+              </div>
+            </form>
+          )}
+
+          {currentStep === "images" && (
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Thumbnail (250x250px recommended)
+                </label>
+                <div className="mt-1 flex items-center space-x-4">
+                  <label
+                    htmlFor="thumbnail-upload"
+                    className="cursor-pointer bg-white py-2 px-3 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Choose Thumbnail
+                    <input
+                      id="thumbnail-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleThumbnailUpload}
+                      className="sr-only"
+                    />
+                  </label>
+                  {projectData.thumbnail && (
+                    <img
+                      src={projectData.thumbnail}
+                      alt="Thumbnail"
+                      className="h-16 w-16 object-cover"
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Images (3 max)
+                </label>
+                <div className="mt-1 flex items-center space-x-4">
+                  <label
+                    htmlFor="images-upload"
+                    className="cursor-pointer bg-white py-2 px-3 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Choose Images
+                    <input
+                      id="images-upload"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="sr-only"
+                    />
+                  </label>
+                </div>
+                {projectData.images.length > 0 && (
+                  <div className="mt-4 grid grid-cols-3 gap-4">
+                    {projectData.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`Project Image ${index + 1}`}
+                        className="h-24 w-full object-cover"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep("details")}
+                  className="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePublish}
+                  disabled={isSubmitting}
+                  className={`flex items-center gap-1 px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {isSubmitting ? "Publishing..." : "Publish"}
+                  <PublishIcon fontSize="small" />
+                </button>
+              </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 transition-colors duration-200 text-white font-bold py-2 px-4 mt-5"
-          >
-            Share
-          </button>
-        </form>
+          )}
+        </div>
       </div>
     </div>
   );
-};
-
-export default ShareProject;
+}

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 export const submitProject = (projectData, navigate) => async (dispatch) => {
   try {
@@ -22,15 +22,6 @@ export const getProjects = () => async (dispatch) => {
     const { data } = await API.get("/project/getProjects");
     // console.log("Recieved data from server: ", data);
     dispatch({ type: "GET_PROJECTS", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const deleteProject = (projectId) => async (dispatch) => {
-  try {
-    await API.delete("/project/deleteProject", projectId);
-    dispatch({ type: "DELETE_PROJECT", payload: projectId });
   } catch (error) {
     console.log(error);
   }
@@ -91,5 +82,15 @@ export const getUserProjects = (userId) => async (dispatch) => {
     dispatch({ type: "GET_USER_PROJECTS", payload: data });
   } catch (error) {
     console.error("Error fetching user projects:", error);
+  }
+};
+
+export const deleteProject = (projectId) => async (dispatch) => {
+  try {
+    console.log("deleteProject action called: ", projectId);
+    await API.delete(`/project/deleteProject/${projectId}`);
+    dispatch({ type: "DELETE_PROJECT", payload: projectId });
+  } catch (error) {
+    console.log(error);
   }
 };

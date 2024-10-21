@@ -94,6 +94,17 @@ export default (state = initialState, action) => {
             : state.clickedProject,
       };
 
+    case "DELETE_PROJECT":
+      return {
+        ...state,
+        projects: state.projects.filter(
+          (project) => project._id !== action.payload
+        ),
+        userProjects: state.userProjects.filter(
+          (project) => project._id !== action.payload
+        ),
+      };
+
     default:
       return state;
   }

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../../actions/user";
 import Nebula from "../../assets/nebula.jpeg";
-import AuthorProfileImage from "../../components/AuthorProfileImage";
+// import AuthorProfileImage from "../../components/AuthorProfileImage";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -115,14 +115,14 @@ export default function SignUp() {
                 }
               />
             </div>
-            <div className="mt-5">
+            {/* <div className="mt-5">
               <span className="text-red-400 text-sm">*required</span>
               <AuthorProfileImage
                 setAuthorImage={(authorImage) =>
                   setFormData({ ...formData, authorImage: authorImage })
                 }
               />
-            </div>
+            </div> */}
           </div>
 
           <div>
