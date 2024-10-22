@@ -46,11 +46,10 @@ const Navbar = () => {
 
   const menuItems = [{ text: "Explore", link: "/" }];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
-  const {
-    email: loggedInUserEmail,
-    name: loggedInUserName,
-    authorImage: loggedInUserProfile,
-  } = loggedInUser;
+  const loggedInUserId = loggedInUser?.userId;
+  const loggedInUserEmail = loggedInUser?.email;
+  const loggedInUserName = loggedInUser?.username || "User"; // Default to 'User' if username is not set
+  const loggedInProfileImage = loggedInUser?.profileImage; // Use profileImage as profileImage
 
   return (
     <div>
@@ -59,13 +58,15 @@ const Navbar = () => {
         <div className="flex items-center">
           <div
             onClick={() => navigate("/")}
-            className="cursor-pointer relative w-40 h-11 mr-4 rounded-lg overflow-hidden"
+            className="cursor-pointer relative w-40 h-12 mr-4 rounded-lg overflow-hidden group"
           >
-            <img
-              src={Nebula}
-              className="absolute inset-0 w-full h-full object-cover rounded-lg"
-              alt="Nebula Labs"
-            />
+            <div className="absolute inset-0 w-full h-full overflow-hidden rounded-lg">
+              <img
+                src={Nebula}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                alt="Nebula Labs"
+              />
+            </div>
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
             <p className="absolute inset-0 flex items-center justify-center text-white text-xl font-semibold z-10">
               Dev Labs
@@ -77,7 +78,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-3 px-4 rounded-full border text-center hover:border-black ${
+                className={`text-gray-700 py-3 px-4 rounded-lg border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
                 }`}
               >
@@ -88,7 +89,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex-1 mx-4 hidden sm:block">
-          <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-full overflow-hidden">
+          <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-lg overflow-hidden">
             <SearchIcon className="text-gray-500" />
             <input
               type="text"
@@ -100,7 +101,7 @@ const Navbar = () => {
 
         <div className="flex sm:hidden">
           <IconButton onClick={toggleDrawer(true)}>
-            <MenuIcon />
+            <MenuIcon className="text-gray-800" fontSize="large" />
           </IconButton>
         </div>
 
@@ -109,7 +110,7 @@ const Navbar = () => {
             <div className="flex space-x-4">
               <button
                 onClick={() => navigate("/shareproject")}
-                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
+                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-lg"
               >
                 <ScienceIcon fontSize="small" />
                 Share Project
@@ -117,11 +118,11 @@ const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 rounded-full"
+                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 rounded-lg"
                 >
-                  {loggedInUserProfile ? (
+                  {loggedInProfileImage ? (
                     <img
-                      src={loggedInUserProfile}
+                      src={loggedInProfileImage}
                       alt={loggedInUserName}
                       className="mr-2 w-8 h-8 rounded-full"
                     />
@@ -149,13 +150,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-full"
+                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-lg"
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full"
+                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
               >
                 Sign Up
               </Link>
@@ -174,7 +175,7 @@ const Navbar = () => {
             </IconButton>
           </div>
           <div className="flex flex-col space-y-4">
-            <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-full overflow-hidden">
+            <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-lg overflow-hidden">
               <SearchIcon className="text-gray-500" />
               <input
                 type="text"
@@ -186,7 +187,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full ${
+                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-lg ${
                   location.pathname === item.link ? "underline" : ""
                 }`}
                 onClick={toggleDrawer(false)}
@@ -197,12 +198,12 @@ const Navbar = () => {
             {loggedIn ? (
               <div className="flex flex-col space-y-4">
                 <div className="flex items-center space-x-2 px-4 py-2">
-                  <Avatar src={loggedInUserProfile} alt={loggedInUserName} />
+                  <Avatar src={loggedInProfileImage} alt={loggedInUserName} />
                   <span>{loggedInUserName}</span>
                 </div>
                 <Link
                   to="/personalspace"
-                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-full"
+                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-lg"
                   onClick={toggleDrawer(false)}
                 >
                   Personal Space
@@ -212,7 +213,7 @@ const Navbar = () => {
                     navigate("/shareproject");
                     setDrawerOpen(false);
                   }}
-                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 rounded-full w-full"
+                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 rounded-lg w-full"
                 >
                   <ScienceIcon fontSize="small" />
                   Share Project
@@ -222,7 +223,7 @@ const Navbar = () => {
                     handleLogout();
                     setDrawerOpen(false);
                   }}
-                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-full w-full"
+                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-lg w-full"
                 >
                   <LogoutIcon fontSize="small" />
                   Logout
@@ -232,14 +233,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-gray-50 text-blue-500 px-4 py-2 rounded-full w-full"
+                  className="bg-gray-50 text-blue-500 px-4 py-2 rounded-lg w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full w-full"
+                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Sign Up

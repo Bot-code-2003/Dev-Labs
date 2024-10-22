@@ -7,7 +7,10 @@ const router = express.Router();
 router.post("/submitProject", async (req, res) => {
   try {
     const projectData = req.body;
-    const newProject = new Project(projectData);
+    const newProject = new Project({
+      ...projectData,
+      authorId: req.body.authorId,
+    }); // Ensure authorId is included
     await newProject.save();
     res.status(201).send(newProject);
   } catch (error) {
@@ -21,8 +24,8 @@ router.get("/getProjects", async (req, res) => {
   try {
     // Use populate to get author details from User model
     const projects = await Project.find().populate(
-      "author",
-      "firstname lastname authorImage email"
+      "authorId", // Change 'author' to 'authorId'
+      "username email profileImage headline bio "
     );
 
     res.status(200).send(projects);
@@ -100,7 +103,10 @@ router.post("/authorClick", async (req, res) => {
     const { userId } = req.body;
 
     // Find the projects that the user has created
-    const projects = await Project.find({ authorId: userId });
+    const projects = await Project.find({ authorId: userId }).populate(
+      "authorId", // Ensure you're populating authorId
+      "firstname lastname authorImage email"
+    );
     res.status(200).send(projects);
   } catch (error) {
     console.error("Error fetching author's projects:", error);
@@ -112,9 +118,9 @@ router.post("/authorClick", async (req, res) => {
 router.post("/getUserProjects", async (req, res) => {
   try {
     const { userId } = req.body;
-    // Find the projects that the user has created (filter by the author field)
-    const userProjects = await Project.find({ author: userId }).populate(
-      "author",
+    // Find the projects that the user has created (filter by the authorId field)
+    const userProjects = await Project.find({ authorId: userId }).populate(
+      "authorId", // Populate authorId to get user details
       "firstname lastname authorImage email"
     );
     res.status(200).send(userProjects);
@@ -124,6 +130,7 @@ router.post("/getUserProjects", async (req, res) => {
   }
 });
 
+// Route to delete a project by ID (also included as a separate route)
 router.delete("/deleteProject/:projectId", async (req, res) => {
   try {
     const { projectId } = req.params;

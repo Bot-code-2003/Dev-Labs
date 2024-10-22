@@ -6,10 +6,23 @@ export default (state = { authData: null }, action) => {
       const decodedData = jwtDecode(action.payload.token);
       const name = action.payload.name;
       const userId = action.payload.userId;
-      const authorImage = action.payload.authorImage;
+      const profileImage = action.payload.profileImage;
+      const headline = action.payload.headline;
+      const bio = action.payload.bio;
+      const email = action.payload.email;
+      const createdAt = action.payload.createdAt;
       localStorage.setItem(
         "user",
-        JSON.stringify({ ...decodedData, name, userId, authorImage })
+        JSON.stringify({
+          ...decodedData,
+          name,
+          userId,
+          profileImage,
+          headline,
+          bio,
+          email,
+          createdAt,
+        })
       );
       return { ...state, authData: action.payload };
     default:

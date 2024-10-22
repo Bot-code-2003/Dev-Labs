@@ -9,8 +9,6 @@ import {
   clickedProjectAction,
   incProjectView,
 } from "../actions/project";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-
 import Lottie from "lottie-react";
 import Loading from "../assets/lotties/Animation - 1729259117182.json";
 
@@ -20,17 +18,16 @@ const Homepage = () => {
   const dispatch = useDispatch();
 
   const { projects } = useSelector((state) => state.projects);
-  console.log("Store projects: ", projects);
+  console.log("Projects: ", projects);
 
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const loggedInUserEmail = loggedInUser?.email;
 
   const [menuOpen, setMenuOpen] = useState(null);
   const menuRef = useRef(null);
 
   useEffect(() => {
     if (projects.length === 0) {
-      dispatch(getProjects());
+      dispatch(getProjects()); // Uncomment to fetch projects if not already present
     }
   }, [dispatch, projects]);
 
@@ -67,10 +64,8 @@ const Homepage = () => {
     const clickedProject = projects.find(
       (project) => project._id === projectId
     );
-
     dispatch(incProjectView(projectId));
     dispatch(clickedProjectAction(clickedProject));
-
     navigate(`/project/${projectId}`);
   };
 
@@ -84,7 +79,7 @@ const Homepage = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className=" w-full px-6 py-12">
+      <div className="w-full px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {projects.map((project) => (
             <div key={project._id} className="group">
@@ -94,7 +89,7 @@ const Homepage = () => {
                 className="block relative w-full h-[200px] mb-4 overflow-hidden rounded-lg"
               >
                 <img
-                  src={project.projectThumbnail}
+                  src={project.thumbnail}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                   alt={project.projectName}
                 />
@@ -106,17 +101,17 @@ const Homepage = () => {
               </Link>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  {project.author.authorImage ? (
+                  {project.authorId?.profileImage ? (
                     <img
-                      src={project.author.authorImage}
+                      src={project.authorId.profileImage}
                       className="w-7 h-7 rounded-full"
-                      alt={`${project.author.firstname} ${project.author.lastname}`}
+                      alt={`${project.authorId.username}`}
                     />
                   ) : (
                     <Face4Icon className="text-gray-500 w-10 h-10" />
                   )}
                   <span className="text-sm font-medium text-gray-700">
-                    {`${project.author.firstname}`}
+                    {`${project.authorId.username}`}
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -126,7 +121,7 @@ const Homepage = () => {
                       fontSize="small"
                     />
                     <span className="text-sm text-gray-600">
-                      {project.projectLikes?.length || 0}
+                      {project.projectLikes.length || 0}
                     </span>
                   </div>
                   <div className="flex items-center space-x-1">

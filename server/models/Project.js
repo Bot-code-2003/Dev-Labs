@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
   projectName: String,
-  projectDescription: String,
-  projectURL: String,
-  githubURL: String,
-  projectThumbnail: String,
-  projectImages: [String],
-  techStack: String,
-  author: {
+  description: String,
+  link: String,
+  thumbnail: String,
+  logo: String,
+  images: [String],
+  authorId: {
     type: mongoose.Schema.Types.ObjectId, // Reference to the User schema
     ref: "User",
     required: true,
