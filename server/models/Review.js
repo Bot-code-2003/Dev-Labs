@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
+// Define the schema for replies
 const replySchema = new mongoose.Schema(
   {
-    author: {
-      type: String,
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     text: {
@@ -14,19 +16,18 @@ const replySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Define the schema for reviews
 const reviewSchema = new mongoose.Schema(
   {
-    author: {
-      type: String,
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
-    profilePic: {
-      type: String,
-      default: "/placeholder.svg?height=40&width=40", // Default profile picture
-    },
-    time: {
-      type: Date,
-      default: Date.now,
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+      required: true,
     },
     review: {
       type: String,
@@ -36,11 +37,12 @@ const reviewSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    replies: [replySchema], // Embedding replies schema
+    replies: [replySchema],
   },
   { timestamps: true }
 );
 
+// Create the Review model
 const Review = mongoose.model("Review", reviewSchema);
 
 export default Review;

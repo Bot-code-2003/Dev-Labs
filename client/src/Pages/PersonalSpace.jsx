@@ -24,11 +24,13 @@ const PersonalSpace = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
-    if (loggedInUserId) {
-      setLoading(true);
-      dispatch(getUserProjects(loggedInUserId)).finally(() =>
-        setLoading(false)
-      );
+    if (userProjects.length === 0) {
+      if (loggedInUserId) {
+        setLoading(true);
+        dispatch(getUserProjects(loggedInUserId)).finally(() =>
+          setLoading(false)
+        );
+      }
     }
   }, [dispatch, loggedInUserId]);
 
@@ -66,15 +68,15 @@ const PersonalSpace = () => {
 
   return (
     <div className=" min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* User Profile Section */}
         <div className="bg-white shadow-xl overflow-hidden mb-12">
           <div className="md:flex">
             <div className="md:flex-shrink-0 p-6 bg-gradient-to-br from-blue-400 to-indigo-400">
-              <div className="relative w-48 h-48 mx-auto md:w-40 md:h-40">
+              <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
                 <img
                   src={newImage || loggedInUserImage}
-                  className="w-full h-full rounded-full object-cover border-4 border-white shadow-inner"
+                  className="w-full h-full object-cover border-4 border-white shadow-inner rounded-full"
                   alt="Profile"
                 />
                 <button
@@ -93,7 +95,7 @@ const PersonalSpace = () => {
               />
               {newImage && (
                 <button
-                  className={`mt-4 w-full bg-white text-blue-600 px-4 py-2 rounded-full transition hover:bg-blue-50 ${
+                  className={`mt-4 w-full bg-white text-blue-600 px-4 py-2 transition hover:bg-blue-50 ${
                     loading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   onClick={handleSaveImage}
@@ -132,28 +134,22 @@ const PersonalSpace = () => {
           {loading ? (
             <p className="text-gray-600">Loading projects...</p>
           ) : userProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {userProjects.map((project) => (
                 <div
                   key={project._id}
-                  className="bg-gray-50 rounded-xl shadow-md transition transform hover:shadow-lg hover:-translate-y-1"
+                  className="bg-gray-50 shadow-md hover:shadow-lg "
                 >
                   <img
-                    src={project.projectThumbnail}
+                    src={project.thumbnail}
                     alt={project.projectName}
-                    className="w-full h-48 object-cover rounded-t-xl"
+                    className="w-full h-48 object-cover"
                   />
                   <div className="p-6">
                     <h3 className="font-semibold text-xl text-gray-900 mb-2">
                       {project.projectName}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {project.description}
-                    </p>
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-500">
-                        {new Date(project.createdAt).toLocaleDateString()}
-                      </span>
                       <button
                         onClick={() => handleDeleteProject(project._id)}
                         className={`text-red-500 hover:text-red-700 transition ${

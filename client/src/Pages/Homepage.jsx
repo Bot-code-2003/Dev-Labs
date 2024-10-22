@@ -86,7 +86,7 @@ const Homepage = () => {
               <Link
                 to={`/project/${project._id}`}
                 onClick={(event) => handleProjectClick(event, project._id)}
-                className="block relative w-full h-[200px] mb-4 overflow-hidden rounded-lg"
+                className="block relative w-full h-[200px] mb-4 overflow-hidden"
               >
                 <img
                   src={project.thumbnail}

@@ -55,6 +55,8 @@ export default function ShareProject() {
 
   const [currentStep, setCurrentStep] = useState("details");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // State for managing popup visibility
+  const [popupMessage, setPopupMessage] = useState(""); // To show custom messages for validation errors
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,12 +108,38 @@ export default function ShareProject() {
     }
   };
 
+  const validateInputs = () => {
+    const { projectName, tagline, description, link, images, thumbnail } =
+      projectData;
+
+    if (!projectName || !tagline || !description || !link || !thumbnail) {
+      setPopupMessage("All fields must be filled out, including logo.");
+      return false;
+    }
+
+    if (images.length === 0) {
+      setPopupMessage("Please upload at least one project image.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handlePublish = () => {
+    if (!validateInputs()) {
+      setShowPopup(true);
+      return;
+    }
+
     setIsSubmitting(true);
     setTimeout(() => {
       dispatch(submitProject(projectData, navigate));
       setIsSubmitting(false);
     }, 2000);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -125,7 +153,6 @@ export default function ShareProject() {
         <div className="p-6">
           {currentStep === "details" && (
             <form className="space-y-6">
-              {/* Other input fields remain unchanged */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -330,6 +357,22 @@ export default function ShareProject() {
           )}
         </div>
       </div>
+
+      {/* Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-lg font-bold mb-4">Missing Information</h2>
+            <p>{popupMessage}</p>
+            <button
+              onClick={closePopup}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

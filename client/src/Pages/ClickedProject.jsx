@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { likeProject, unlikeProject } from "../actions/project";
-import Reviews from "../components/Reviews";
-import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import { IconButton } from "@mui/material";
 import {
   Visibility,
   GitHub,
-  Person,
   Favorite,
   FavoriteBorder,
+  Close,
+  Reviews,
 } from "@mui/icons-material";
+import Discussions from "../components/Discussions";
 
 export default function ClickedProject() {
   const dispatch = useDispatch();
@@ -48,129 +48,96 @@ export default function ClickedProject() {
     );
   }
 
-  // Extract author details (populated fields)
-  const authorName = `${projectData.author.firstname} ${projectData.author.lastname}`;
-  const authorImage = projectData.author.authorImage;
-
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-          {/* Hero Section */}
+    <div className="bg-gray-100 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="bg-white shadow-lg overflow-hidden">
           <div className="relative">
             <img
-              src={projectData.projectThumbnail}
+              src={projectData.thumbnail}
               alt={projectData.projectName}
-              className="w-full h-80 sm:h-auto object-cover"
+              className="w-full h-64 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
+              <h1 className="text-4xl font-bold text-white">
+                {projectData.projectName}
+              </h1>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-2">
+                <img
+                  src={projectData.logo}
+                  alt="Project Logo"
+                  className="w-10 h-10 rounded-md"
+                />
+                <span className="text-xl font-semibold">
                   {projectData.projectName}
-                </h1>
-                <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-6">
-                  <a
-                    href={projectData.projectURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-blue-500 text-white py-3 px-8 rounded-full text-lg font-bold shadow-lg transform hover:scale-105 transition-all duration-300 ease-out flex justify-center items-center space-x-3"
-                  >
-                    <span>View Project</span>
-                    <Visibility />
-                  </a>
-
-                  {projectData.githubURL && (
-                    <a
-                      href={projectData.githubURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-gray-700 text-white py-3 px-8 rounded-full text-lg font-bold shadow-sm transform hover:scale-105 transition-all duration-300 ease-out flex justify-center items-center space-x-3"
-                    >
-                      <span>View Github</span>
-                      <GitHub />
-                    </a>
-                  )}
-                </div>
+                </span>
+              </div>
+              <button
+                onClick={handleLikeClick}
+                className={`flex items-center space-x-1 ${
+                  liked ? "text-red-500" : "text-gray-500"
+                } hover:text-red-500 transition-colors`}
+              >
+                {liked ? <Favorite /> : <FavoriteBorder />}
+                <span>{projectData.projectLikes.length}</span>
+              </button>
+            </div>
+            <p className="text-gray-600 mb-4">{projectData.description}</p>
+            <div className="flex space-x-4 mb-6">
+              <a
+                href={projectData.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-500 text-white px-4 py-2 flex items-center space-x-2 hover:bg-blue-600 transition-colors"
+              >
+                <Visibility />
+                <span>View Project</span>
+              </a>
+            </div>
+            <div className="border-t pt-4">
+              <h2 className="text-xl font-semibold mb-2">Project Images</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {projectData.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Project Image ${index + 1}`}
+                    className="cursor-pointer hover:opacity-75 transition-opacity"
+                    onClick={() => setSelectedImage(image)}
+                  />
+                ))}
               </div>
             </div>
           </div>
-
-          {/* Project Details */}
-          <div className="px-6 py-8">
-            <p className="text-gray-700 text-lg mb-6">
-              {projectData.projectDescription}
-            </p>
-
-            {projectData.techStack && (
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Tech Stack</h2>
-                <div className="flex flex-wrap gap-2">
-                  {projectData.techStack.split(",").map((tech, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full"
-                    >
-                      {tech.trim()}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {projectData.author && (
-              <div className="flex items-center space-x-2 mb-6">
-                {authorImage && (
-                  <img
-                    src={authorImage}
-                    alt={authorName}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                )}
-                <span className="text-gray-700 text-lg">{authorName}</span>
-              </div>
-            )}
-
-            {/* Like Button */}
-            <button
-              onClick={handleLikeClick}
-              className={`flex items-center space-x-2 ${
-                liked
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-blue-600 hover:bg-blue-700"
-              } text-white font-bold py-2 px-4 rounded-full transition duration-300`}
-            >
-              {liked ? <Favorite /> : <FavoriteBorder />}
-              <span>{liked ? "Unlike" : "Like"}</span>
-            </button>
+        </div>
+        <div className="mt-8 bg-white shadow-lg  p-6">
+          <h2 className="text-2xl font-semibold mb-4">About the Creator</h2>
+          <div className="flex items-center space-x-4">
+            <img
+              src={projectData.authorId.profileImage}
+              alt={projectData.authorId.username}
+              className="w-16 h-16 rounded-full"
+            />
+            <div>
+              <h3 className="text-xl font-semibold">
+                {projectData.authorId.username}
+              </h3>
+              <p className="text-gray-600">{projectData.authorId.headline}</p>
+            </div>
           </div>
-
-          {/* Project Images */}
-          {projectData.projectImages &&
-            projectData.projectImages.length > 0 && (
-              <div className="px-6 py-8 bg-gray-50">
-                <h2 className="text-2xl font-semibold mb-4">Project Images</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {projectData.projectImages.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={`Project Image ${index + 1}`}
-                      className="rounded-lg shadow-md hover:shadow-xl transition duration-300 cursor-pointer"
-                      onClick={() => setSelectedImage(image)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-          {/* Reviews Section */}
-          <div className="px-6 py-8">
-            <h1>Reviews feature coming soon...</h1>
-          </div>
+          <p className="mt-4 text-gray-700">{projectData.authorId.bio}</p>
+        </div>
+        <div className="mt-8 bg-white shadow-lg p-6">
+          <Discussions
+            projectId={projectData._id}
+            authorId={projectData.authorId}
+          />
         </div>
       </div>
-
-      {/* Image Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
@@ -180,16 +147,14 @@ export default function ClickedProject() {
             <img
               src={selectedImage}
               alt="Selected"
-              className="max-w-full max-h-full object-contain rounded-lg"
+              className="p-2 max-w-full max-h-full object-contain rounded"
             />
-            <div className="absolute top-0 right-0">
-              <IconButton
-                onClick={() => setSelectedImage(null)}
-                className="absolute text-white"
-              >
-                <CloseFullscreenIcon className="text-white" />
-              </IconButton>
-            </div>
+            <IconButton
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-2 right-2 text-white"
+            >
+              <Close />
+            </IconButton>
           </div>
         </div>
       )}

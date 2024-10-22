@@ -58,16 +58,16 @@ const Navbar = () => {
         <div className="flex items-center">
           <div
             onClick={() => navigate("/")}
-            className="cursor-pointer relative w-40 h-12 mr-4 rounded-lg overflow-hidden group"
+            className="cursor-pointer relative w-40 h-12 mr-4  overflow-hidden group"
           >
-            <div className="absolute inset-0 w-full h-full overflow-hidden rounded-lg">
+            <div className="absolute inset-0 w-full h-full overflow-hidden ">
               <img
                 src={Nebula}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 alt="Nebula Labs"
               />
             </div>
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-40 "></div>
             <p className="absolute inset-0 flex items-center justify-center text-white text-xl font-semibold z-10">
               Dev Labs
             </p>
@@ -78,7 +78,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-3 px-4 rounded-lg border text-center hover:border-black ${
+                className={`text-gray-700 py-3 px-4  border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
                 }`}
               >
@@ -89,7 +89,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex-1 mx-4 hidden sm:block">
-          <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-lg overflow-hidden">
+          <div className="px-4 bg-gray-50 flex items-center border border-gray-400  overflow-hidden">
             <SearchIcon className="text-gray-500" />
             <input
               type="text"
@@ -110,7 +110,7 @@ const Navbar = () => {
             <div className="flex space-x-4">
               <button
                 onClick={() => navigate("/shareproject")}
-                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-lg"
+                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 "
               >
                 <ScienceIcon fontSize="small" />
                 Share Project
@@ -118,7 +118,7 @@ const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 rounded-lg"
+                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 "
                 >
                   {loggedInProfileImage ? (
                     <img
@@ -133,7 +133,7 @@ const Navbar = () => {
                   <ArrowDropDownIcon />
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
                     <MenuItem
                       onClick={() => (
                         navigate("/personalspace"), setDropdownOpen(false)
@@ -150,13 +150,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 rounded-lg"
+                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 "
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 "
               >
                 Sign Up
               </Link>
@@ -175,7 +175,7 @@ const Navbar = () => {
             </IconButton>
           </div>
           <div className="flex flex-col space-y-4">
-            <div className="px-4 bg-gray-50 flex items-center border border-gray-400 rounded-lg overflow-hidden">
+            <div className="px-4 bg-gray-50 flex items-center border border-gray-400  overflow-hidden">
               <SearchIcon className="text-gray-500" />
               <input
                 type="text"
@@ -187,7 +187,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-lg ${
+                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500  ${
                   location.pathname === item.link ? "underline" : ""
                 }`}
                 onClick={toggleDrawer(false)}
@@ -203,7 +203,7 @@ const Navbar = () => {
                 </div>
                 <Link
                   to="/personalspace"
-                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 rounded-lg"
+                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 "
                   onClick={toggleDrawer(false)}
                 >
                   Personal Space
@@ -213,7 +213,7 @@ const Navbar = () => {
                     navigate("/shareproject");
                     setDrawerOpen(false);
                   }}
-                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 rounded-lg w-full"
+                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2  w-full"
                 >
                   <ScienceIcon fontSize="small" />
                   Share Project
@@ -223,7 +223,7 @@ const Navbar = () => {
                     handleLogout();
                     setDrawerOpen(false);
                   }}
-                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 rounded-lg w-full"
+                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2  w-full"
                 >
                   <LogoutIcon fontSize="small" />
                   Logout
@@ -233,14 +233,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-gray-50 text-blue-500 px-4 py-2 rounded-lg w-full"
+                  className="bg-gray-50 text-blue-500 px-4 py-2  w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full"
+                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2  w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Sign Up
