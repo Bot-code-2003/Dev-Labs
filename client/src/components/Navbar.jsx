@@ -44,7 +44,10 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const menuItems = [{ text: "Explore", link: "/" }];
+  const menuItems = [
+    { text: "Explore", link: "/" },
+    // { text: "Connect", link: "/connect" },
+  ];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
   const loggedInUserId = loggedInUser?.userId;
   const loggedInUserEmail = loggedInUser?.email;
@@ -89,12 +92,13 @@ const Navbar = () => {
         </div>
 
         <div className="flex-1 mx-4 hidden sm:block">
-          <div className="px-4 bg-gray-50 flex items-center border border-gray-400  overflow-hidden">
+          <div className="px-4 bg-gray-50 flex items-center border border-gray-400 overflow-hidden hover:cursor-not-allowed pointer-events-none">
             <SearchIcon className="text-gray-500" />
             <input
               type="text"
-              placeholder="Search..."
-              className="px-4 bg-gray-50 py-2 sm:py-3 w-full outline-none"
+              placeholder="Search feature comming soon..."
+              className="px-4 bg-gray-50 py-2 sm:py-3 w-full outline-none cursor-not-allowed"
+              disabled
             />
           </div>
         </div>

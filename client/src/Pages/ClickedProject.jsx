@@ -3,19 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { likeProject, unlikeProject } from "../actions/project";
 import { IconButton } from "@mui/material";
-import {
-  Visibility,
-  GitHub,
-  Favorite,
-  FavoriteBorder,
-  Close,
-  Reviews,
-} from "@mui/icons-material";
+import { Visibility, Favorite, FavoriteBorder } from "@mui/icons-material";
 import Discussions from "../components/Discussions";
+import ImageCarousel from "../components/ImageCarousel"; // Import the new ImageCarousel component
 
 export default function ClickedProject() {
   const dispatch = useDispatch();
-  const [selectedImage, setSelectedImage] = useState(null);
   const projectData = useSelector((state) => state.projects.clickedProject);
   const localData = JSON.parse(localStorage.getItem("user"));
   const userId = localData?._id || localData?.userId;
@@ -56,7 +49,7 @@ export default function ClickedProject() {
             <img
               src={projectData.thumbnail}
               alt={projectData.projectName}
-              className="w-full h-64 object-cover"
+              className="w-full h-44 sm:h-64 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <h1 className="text-4xl font-bold text-white">
@@ -88,29 +81,26 @@ export default function ClickedProject() {
             </div>
             <p className="text-gray-600 mb-4">{projectData.description}</p>
             <div className="flex space-x-4 mb-6">
-              <a
-                href={projectData.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-500 text-white px-4 py-2 flex items-center space-x-2 hover:bg-blue-600 transition-colors"
-              >
-                <Visibility />
-                <span>View Project</span>
-              </a>
+              {projectData.link ? (
+                <a
+                  href={projectData.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-500 text-white px-4 py-2 flex items-center space-x-2 hover:bg-blue-600 transition-colors"
+                >
+                  <Visibility />
+                  <span>View Project</span>
+                </a>
+              ) : (
+                <p className="text-gray-600">
+                  No link available contact the creator.
+                </p>
+              )}
             </div>
             <div className="border-t pt-4">
               <h2 className="text-xl font-semibold mb-2">Project Images</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {projectData.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Project Image ${index + 1}`}
-                    className="cursor-pointer hover:opacity-75 transition-opacity"
-                    onClick={() => setSelectedImage(image)}
-                  />
-                ))}
-              </div>
+              <ImageCarousel images={projectData.images} />{" "}
+              {/* Use the ImageCarousel */}
             </div>
           </div>
         </div>
@@ -138,26 +128,6 @@ export default function ClickedProject() {
           />
         </div>
       </div>
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-full">
-            <img
-              src={selectedImage}
-              alt="Selected"
-              className="p-2 max-w-full max-h-full object-contain rounded"
-            />
-            <IconButton
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 text-white"
-            >
-              <Close />
-            </IconButton>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

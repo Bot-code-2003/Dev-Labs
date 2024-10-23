@@ -109,10 +109,10 @@ export default function ShareProject() {
   };
 
   const validateInputs = () => {
-    const { projectName, tagline, description, link, images, thumbnail } =
+    const { projectName, tagline, description, images, thumbnail } =
       projectData;
 
-    if (!projectName || !tagline || !description || !link || !thumbnail) {
+    if (!projectName || !tagline || !description || !thumbnail) {
       setPopupMessage("All fields must be filled out, including logo.");
       return false;
     }
@@ -132,14 +132,30 @@ export default function ShareProject() {
     }
 
     setIsSubmitting(true);
+
     setTimeout(() => {
-      dispatch(submitProject(projectData, navigate));
-      setIsSubmitting(false);
+      dispatch(submitProject(projectData))
+        .then(() => {
+          setIsSubmitting(false);
+          navigate("/"); // Call navigate after successful submission
+        })
+        .catch(() => {
+          setIsSubmitting(false);
+        });
     }, 2000);
   };
 
   const closePopup = () => {
     setShowPopup(false);
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...projectData.images];
+    updatedImages.splice(index, 1);
+    setProjectData((prevData) => ({
+      ...prevData,
+      images: updatedImages,
+    }));
   };
 
   return (
@@ -323,12 +339,15 @@ export default function ShareProject() {
                 {projectData.images.length > 0 && (
                   <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {projectData.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`Project Image ${index + 1}`}
-                        className="h-[150px] sm:h-[250px] w-full object-cover"
-                      />
+                      <div>
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Project Image ${index + 1}`}
+                          className="h-[150px] sm:h-[250px] w-full object-cover"
+                        />
+                        <p onClick={() => handleDeleteImage(index)}>Delete</p>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -350,7 +369,13 @@ export default function ShareProject() {
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
-                  Publish {isSubmitting ? <PublishIcon /> : <PublishIcon />}
+                  {isSubmitting ? (
+                    "Publishing..."
+                  ) : (
+                    <>
+                      <PublishIcon /> Publish
+                    </>
+                  )}
                 </button>
               </div>
             </div>

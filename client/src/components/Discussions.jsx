@@ -34,9 +34,13 @@ export default function Discussions({ projectId, authorId }) {
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
-    if (newReview.trim() === "") return;
-    dispatch(addReview(newReview, projectId, authorId));
-    setNewReview("");
+    if (loggedInUser) {
+      if (newReview.trim() === "") return;
+      dispatch(addReview(newReview, projectId, loggedInUserId));
+      setNewReview("");
+    } else {
+      alert("Please login to add a review");
+    }
   };
 
   const handleUpvote = (id) => {
@@ -49,10 +53,14 @@ export default function Discussions({ projectId, authorId }) {
   };
 
   const submitReply = (id) => {
-    if (replyText.trim() === "") return;
-    dispatch(replyToReview(id, { authorId, text: replyText }));
-    setReplyingTo(null);
-    setReplyText("");
+    if (loggedInUser) {
+      if (replyText.trim() === "") return;
+      dispatch(replyToReview(id, { loggedInUserId, text: replyText }));
+      setReplyingTo(null);
+      setReplyText("");
+    } else {
+      alert("Please login to add a reply");
+    }
   };
 
   const handleLoadMore = () => {
