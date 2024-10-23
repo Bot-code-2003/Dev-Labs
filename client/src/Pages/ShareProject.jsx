@@ -175,7 +175,7 @@ export default function ShareProject() {
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="projectName"
                 >
-                  Project Name
+                  Project Name (Required)
                 </label>
                 <input
                   id="projectName"
@@ -193,7 +193,7 @@ export default function ShareProject() {
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="tagline"
                 >
-                  Tagline
+                  Tagline (Required)
                 </label>
                 <input
                   id="tagline"
@@ -211,7 +211,7 @@ export default function ShareProject() {
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="description"
                 >
-                  Description
+                  Description (Required)
                 </label>
                 <textarea
                   id="description"
@@ -230,7 +230,7 @@ export default function ShareProject() {
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="link"
                 >
-                  Project Link
+                  Project Link (e.g., GitHub, live demo) (Optional)
                 </label>
                 <input
                   id="link"
@@ -239,7 +239,6 @@ export default function ShareProject() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter project link (e.g., GitHub, live demo)"
-                  required
                 />
               </div>
 
