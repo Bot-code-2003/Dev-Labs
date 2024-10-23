@@ -23,10 +23,12 @@ router.post("/submitProject", async (req, res) => {
 router.get("/getProjects", async (req, res) => {
   try {
     // Use populate to get author details from User model
-    const projects = await Project.find().populate(
-      "authorId", // Change 'author' to 'authorId'
-      "username email profileImage headline bio "
-    );
+    const projects = await Project.find()
+      .populate(
+        "authorId", // Change 'author' to 'authorId'
+        "username email profileImage headline bio "
+      )
+      .sort({ createdAt: -1 }); // Sort by createdAt in descending order (newest first)
 
     res.status(200).send(projects);
   } catch (error) {
