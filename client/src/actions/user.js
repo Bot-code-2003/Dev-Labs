@@ -20,7 +20,7 @@ export const login = (formData, navigate) => async (dispatch) => {
       payload: data,
     };
     dispatch(action);
-    navigate("/");
+    navigate("/explore");
   } catch (error) {
     console.log(error);
     alert("Invalid Credentials");
