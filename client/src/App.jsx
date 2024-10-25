@@ -11,20 +11,24 @@ import PersonalSpace from "./Pages/PersonalSpace";
 import Connect from "./Pages/Connect";
 import AuthorProfile from "./Pages/AuthorProfile";
 import ThankYou from "./Pages/AfterLogout";
+import LandingPage from "./Pages/LandingPage";
 
 const App = () => {
   const location = useLocation();
 
   // Conditionally render Navbar based on current path
   const showNavbar =
-    location.pathname !== "/login" && location.pathname !== "/signup";
+    location.pathname !== "/login" &&
+    location.pathname !== "/signup" &&
+    location.pathname !== "/";
 
   return (
     <div className="font-helvetica bg-gray-50">
       {/* Render Navbar only if the path is not /login or /signup */}
       {showNavbar && <Navbar />}
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/explore" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/shareproject" element={<ShareProject />} />

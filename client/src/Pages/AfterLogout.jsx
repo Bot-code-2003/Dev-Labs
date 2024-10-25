@@ -5,7 +5,7 @@ import bg from "../assets/background/bg.svg";
 const AfterLogout = () => {
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-black"
+      className="min-h-screen flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 bg-black"
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
