@@ -48,12 +48,12 @@ export default function Component({ images = [] }) {
         {images.map((image, index) => (
           <div
             key={index}
-            className="flex-shrink-0 w-3/5 sm:w-2/5 px-1 snap-center"
+            className="flex-shrink-0 w-4/5 sm:w-2/5 px-1 snap-center"
           >
             <img
               src={image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-40 sm:h-60 object-cover cursor-pointer shadow-md"
+              className="w-full h-32 sm:h-60 object-cover cursor-pointer shadow-md"
               onClick={() => openModal(index)} // Call the new function with the index
             />
           </div>

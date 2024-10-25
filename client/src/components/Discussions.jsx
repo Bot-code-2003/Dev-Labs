@@ -88,7 +88,7 @@ export default function Discussions({ projectId, authorId }) {
 
       <form
         onSubmit={handleSubmitReview}
-        className="mb-8 bg-white p-6 shadow-md"
+        className="mb-4 bg-white border-b pb-4"
       >
         <label
           htmlFor="newReview"
