@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Face4Icon from "@mui/icons-material/Face4";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getProjects,
   clickedProjectAction,
@@ -11,62 +11,59 @@ import {
 } from "../actions/project";
 import Lottie from "lottie-react";
 import Loading from "../assets/lotties/Animation - 1729259117182.json";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const ITEMS_PER_PAGE = 9; // Number of projects to display per page
 
 const Homepage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { projects } = useSelector((state) => state.projects);
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const projects = useSelector((state) => state.projects.projects);
   console.log("Projects: ", projects);
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-
-  const [menuOpen, setMenuOpen] = useState(null);
-  const menuRef = useRef(null);
+  const totalPages = useSelector((state) => state.projects.totalPages);
+  const currentPage = useSelector((state) => state.projects.currentPage);
 
   useEffect(() => {
-    if (projects.length === 0) {
-      dispatch(getProjects()); // Uncomment to fetch projects if not already present
-    }
-  }, [dispatch, projects]);
+    // Load initial projects
+    dispatch(getProjects(1, ITEMS_PER_PAGE));
+  }, [dispatch]);
 
   useEffect(() => {
     scrollTo(0, 0);
   }, [location]);
 
+  const handleScroll = useCallback(() => {
+    const bottom =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500; // Trigger when near the bottom
+    if (bottom && !loading && currentPage < totalPages) {
+      setLoading(true);
+      setTimeout(() => {
+        const nextPage = currentPage + 1;
+        dispatch(getProjects(nextPage, ITEMS_PER_PAGE));
+        setLoading(false); // Set loading to false after loading more projects
+      }, 2000); // 2-second delay
+    }
+  }, [currentPage, loading, dispatch]);
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [menuRef]);
-
-  const handleMenuClick = (projectId) => {
-    setMenuOpen(menuOpen === projectId ? null : projectId);
-  };
-
-  const handleDelete = (projectId) => {
-    console.log(`Delete project with ID: ${projectId}`);
-  };
+  }, [handleScroll]);
 
   const handleProjectClick = (event, projectId) => {
     event.preventDefault();
-    console.log(`Project with ID: ${projectId} clicked`);
-
     const clickedProject = projects.find(
       (project) => project._id === projectId
     );
-
-    dispatch(incProjectView(projectId));
-    dispatch(clickedProjectAction(clickedProject));
+    dispatch(incProjectView(projectId)); // Increment project views
+    dispatch(clickedProjectAction(clickedProject)); // Dispatch the clicked project data
     navigate(`/project/${projectId}`);
   };
 
@@ -139,6 +136,11 @@ const Homepage = () => {
             </div>
           ))}
         </div>
+        {loading && (
+          <div className="flex justify-center items-center mt-4">
+            <CircularProgress />
+          </div>
+        )}
       </div>
     </div>
   );

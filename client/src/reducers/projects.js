@@ -8,7 +8,15 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case "GET_PROJECTS":
-      return { ...state, projects: action.payload };
+      return {
+        ...state,
+        projects:
+          action.payload.currentPage === 1
+            ? action.payload.projects
+            : [...state.projects, ...action.payload.projects],
+        totalPages: action.payload.totalPages,
+        currentPage: action.payload.currentPage,
+      };
 
     case "GET_USER_PROJECTS":
       return { ...state, userProjects: action.payload }; // New case for user projects

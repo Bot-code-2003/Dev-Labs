@@ -21,19 +21,30 @@ router.post("/submitProject", async (req, res) => {
 
 // Route to get all projects with author details
 router.get("/getProjects", async (req, res) => {
+  const { page = 1, limit = 9 } = req.query; // Default to page 1 and limit 9
+  const skip = (page - 1) * limit;
+
   try {
-    // Use populate to get author details from User model
     const projects = await Project.find()
       .populate(
-        "authorId", // Change 'author' to 'authorId'
-        "username email profileImage headline bio "
+        "authorId",
+        "username email profileImage headline bio createdAt"
       )
-      .sort({ createdAt: -1 }); // Sort by createdAt in descending order (newest first)
+      .sort({ createdAt: -1 })
+      .skip(skip) // Skip the first 'skip' projects
+      .limit(Number(limit)); // Limit the number of projects returned
 
-    res.status(200).send(projects);
+    const totalProjects = await Project.countDocuments(); // Get total number of projects
+
+    // Use res.json() instead of res.send()
+    res.status(200).json({
+      projects,
+      totalPages: Math.ceil(totalProjects / limit),
+      currentPage: Number(page),
+    });
   } catch (error) {
     console.error("Error fetching projects:", error);
-    res.status(500).send("Server error while fetching projects");
+    res.status(500).json({ message: "Server error while fetching projects" });
   }
 });
 

@@ -14,17 +14,24 @@ export const submitProject = (projectData) => async (dispatch) => {
   }
 };
 
-export const getProjects = () => async (dispatch) => {
-  try {
-    console.log("getProjects action called");
+export const getProjects =
+  (page = 1, limit = 9) =>
+  async (dispatch) => {
+    try {
+      console.log("getProjects action called");
 
-    const { data } = await API.get("/project/getProjects");
-    // console.log("Recieved data from server: ", data);
-    dispatch({ type: "GET_PROJECTS", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+      const { data } = await API.get(
+        `/project/getProjects?page=${page}&limit=${limit}`
+      );
+      console.log();
+
+      console.log("Received projects from server: ", data);
+
+      dispatch({ type: "GET_PROJECTS", payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const getProject = (projectId) => async (dispatch) => {
   try {
