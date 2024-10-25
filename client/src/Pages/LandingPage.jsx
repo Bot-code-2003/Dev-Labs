@@ -27,7 +27,7 @@ const LandingPage = () => {
     <div
       className="min-h-screen flex flex-col bg-black text-white"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `url(/bg.svg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
