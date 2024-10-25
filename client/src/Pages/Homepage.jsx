@@ -64,6 +64,7 @@ const Homepage = () => {
     const clickedProject = projects.find(
       (project) => project._id === projectId
     );
+
     dispatch(incProjectView(projectId));
     dispatch(clickedProjectAction(clickedProject));
     navigate(`/project/${projectId}`);

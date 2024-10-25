@@ -4,13 +4,13 @@ import { Drawer, IconButton, Avatar, MenuItem, Button } from "@mui/material";
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  Search as SearchIcon,
   Science as ScienceIcon,
   Logout as LogoutIcon,
   AccountCircle as AccountCircleIcon,
   ArrowDropDown as ArrowDropDownIcon,
 } from "@mui/icons-material";
 import Nebula from "../assets/nebula.jpeg";
+import Search from "./Search";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -91,17 +91,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex-1 mx-4 hidden sm:block">
-          <div className="px-4 bg-gray-50 flex items-center border border-gray-400 overflow-hidden hover:cursor-not-allowed pointer-events-none">
-            <SearchIcon className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search feature comming soon..."
-              className="px-4 bg-gray-50 py-2 sm:py-3 w-full outline-none cursor-not-allowed"
-              disabled
-            />
-          </div>
-        </div>
+        <Search isMobile={false} />
 
         <div className="flex sm:hidden">
           <IconButton onClick={toggleDrawer(true)}>
@@ -179,14 +169,7 @@ const Navbar = () => {
             </IconButton>
           </div>
           <div className="flex flex-col space-y-4">
-            <div className="px-4 bg-gray-50 flex items-center border border-gray-400  overflow-hidden">
-              <SearchIcon className="text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="px-4 bg-gray-50 py-2 w-full outline-none"
-              />
-            </div>
+            <Search isMobile={true} />
             {menuItems.map((item) => (
               <Link
                 to={item.link}

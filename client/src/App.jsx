@@ -9,6 +9,7 @@ import ShareProject from "./Pages/ShareProject";
 import ClickedProject from "./Pages/ClickedProject";
 import PersonalSpace from "./Pages/PersonalSpace";
 import Connect from "./Pages/Connect";
+import AuthorProfile from "./Pages/AuthorProfile";
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/project/:projectId" element={<ClickedProject />} />
         <Route path="/personalspace" element={<PersonalSpace />} />
         <Route path="/connect" element={<Connect />} />
+        <Route path="/profile/:authorId" element={<AuthorProfile />} />
       </Routes>
     </div>
   );

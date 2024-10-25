@@ -1,6 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 
-export default (state = { authData: null }, action) => {
+const initialState = {
+  authData: null,
+  authorInfo: null,
+};
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
       const decodedData = jwtDecode(action.payload.token);
@@ -11,6 +16,7 @@ export default (state = { authData: null }, action) => {
       const bio = action.payload.bio;
       const email = action.payload.email;
       const createdAt = action.payload.createdAt;
+
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -24,7 +30,15 @@ export default (state = { authData: null }, action) => {
           createdAt,
         })
       );
+
       return { ...state, authData: action.payload };
+
+    case "GET_USER_INFO":
+      return {
+        ...state,
+        authorInfo: action.payload, // Store the fetched author info
+      };
+
     default:
       return state;
   }

@@ -37,6 +37,26 @@ router.get("/getProjects", async (req, res) => {
   }
 });
 
+// Route to get a project by ID
+router.get("/getProject/:projectId", async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const project = await Project.findById(projectId).populate(
+      "authorId", // Populating author details
+      "username email profileImage headline bio"
+    );
+
+    if (!project) {
+      return res.status(404).send("Project not found");
+    }
+
+    res.status(200).send(project);
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    res.status(500).send("Server error while fetching project");
+  }
+});
+
 // Route to delete a project by ID
 router.delete("/deleteProject", async (req, res) => {
   try {
@@ -99,23 +119,6 @@ router.patch("/incProjectView", async (req, res) => {
   }
 });
 
-// Route to handle author click (e.g., finding projects created by a specific user)
-router.post("/authorClick", async (req, res) => {
-  try {
-    const { userId } = req.body;
-
-    // Find the projects that the user has created
-    const projects = await Project.find({ authorId: userId }).populate(
-      "authorId", // Ensure you're populating authorId
-      "firstname lastname authorImage email"
-    );
-    res.status(200).send(projects);
-  } catch (error) {
-    console.error("Error fetching author's projects:", error);
-    res.status(500).send("Server error while fetching author's projects");
-  }
-});
-
 // Route to get projects related to the logged-in user
 router.post("/getUserProjects", async (req, res) => {
   try {
@@ -123,7 +126,7 @@ router.post("/getUserProjects", async (req, res) => {
     // Find the projects that the user has created (filter by the authorId field)
     const userProjects = await Project.find({ authorId: userId }).populate(
       "authorId", // Populate authorId to get user details
-      "firstname lastname authorImage email"
+      "username email profileImage headline bio"
     );
     res.status(200).send(userProjects);
   } catch (error) {

@@ -119,4 +119,18 @@ router.patch("/editImage", async (req, res) => {
   }
 });
 
+router.get("/getUserInfo/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    const { username, email, profileImage, headline, bio, createdAt } = user;
+    res
+      .status(200)
+      .send({ username, email, profileImage, headline, bio, createdAt });
+  } catch (error) {
+    console.error("Get user info error:", error);
+    res.status(500).send("Server error during get user info");
+  }
+});
+
 export default router;

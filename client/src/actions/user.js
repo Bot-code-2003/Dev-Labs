@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 /**
  *
@@ -56,6 +56,18 @@ export const editImage = (changedImage, userId) => async (dispatch) => {
     console.log(userId);
     await API.patch("/user/editImage", { changedImage, userId });
     console.log("Image updated successfully");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserInfo = (userId) => async (dispatch) => {
+  try {
+    console.log("getUserInfo action called", userId);
+
+    const { data } = await API.get(`/user/getUserInfo/${userId}`);
+    console.log("Received user info from server: ", data);
+    dispatch({ type: "GET_USER_INFO", payload: data });
   } catch (error) {
     console.log(error);
   }

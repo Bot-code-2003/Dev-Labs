@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 export const submitProject = (projectData) => async (dispatch) => {
   try {
@@ -23,6 +23,15 @@ export const getProjects = () => async (dispatch) => {
     dispatch({ type: "GET_PROJECTS", payload: data });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getProject = (projectId) => async (dispatch) => {
+  try {
+    const { data } = await API.get(`/project/getProject/${projectId}`);
+    dispatch({ type: "CLICKED_PROJECT", payload: data }); // Dispatch the clicked project data
+  } catch (error) {
+    console.log("Error fetching project by ID: ", error);
   }
 };
 
@@ -62,14 +71,6 @@ export const clickedProjectAction = (clickedProject) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-export const authorClick = (userId) => async (dispatch) => {
-  try {
-    const { data } = await API.post("/project/authorClick", { userId });
-    console.log(data);
-    dispatch({ type: "AUTHOR_CLICK", payload: data });
-  } catch (error) {}
 };
 
 // Action to get projects related to the logged-in user
