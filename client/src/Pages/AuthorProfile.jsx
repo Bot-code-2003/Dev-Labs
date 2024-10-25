@@ -40,7 +40,7 @@ const AuthorProfile = () => {
   }
 
   // Check if the theme should be dark and scary
-  const isDarkTheme = author.email === "dharmadeepmadisetty@gmail.com";
+  const isDarkTheme = author.email === "vattakaya";
 
   const darkThemeStyles = {
     backgroundColor: "#0c0c0c",
