@@ -29,6 +29,5 @@ This project is not to be used, reproduced, or distributed without explicit perm
 
 For any inquiries or suggestions, please reach out:
 
-- **Your Name**: [Dharmadeep Madisetty]
 - **Email**: [madisettydharmadeep@gmail.com]
 - **GitHub**: [bot-code-2003](https://github.com/Bot-code-2003)
