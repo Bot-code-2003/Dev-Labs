@@ -4,6 +4,7 @@ import bg from "../assets/background/bg.svg";
 
 const LandingPage = () => {
   const [activeFeature, setActiveFeature] = useState(0);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const features = [
     {
@@ -37,20 +38,31 @@ const LandingPage = () => {
           <Link to="/" className="text-3xl font-bold tracking-tight">
             Dev<span className="text-blue-500">Labs</span>
           </Link>
-          <div>
-            <Link
-              to="/login"
-              className="text-lg hover:text-blue-500 transition-colors duration-300 mr-4"
-            >
-              Log In
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-lg transition-colors duration-300 "
-            >
-              Sign Up
-            </Link>
-          </div>
+          {user ? (
+            <div>
+              <Link
+                to="/explore"
+                className="text-lg hover:text-blue-500 transition-colors duration-300 mr-4"
+              >
+                Explore
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link
+                to="/login"
+                className="text-lg hover:text-blue-500 transition-colors duration-300 mr-4"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/signup"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-lg transition-colors duration-300 "
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </nav>
       </header>
 
