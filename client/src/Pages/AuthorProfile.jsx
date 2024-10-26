@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../actions/user";
 import {
-  getUserProjects,
+  getAuthorProjects,
   clickedProjectAction,
   incProjectView,
 } from "../actions/project";
@@ -16,12 +16,12 @@ const AuthorProfile = () => {
 
   // Get the author information and projects from Redux store
   const author = useSelector((state) => state.users.authorInfo);
-  const authorProjects = useSelector((state) => state.projects.userProjects);
+  const authorProjects = useSelector((state) => state.projects.authorProjects);
 
   useEffect(() => {
     if (authorId) {
       dispatch(getUserInfo(authorId));
-      dispatch(getUserProjects(authorId)).finally(() => setLoading(false));
+      dispatch(getAuthorProjects(authorId)).finally(() => setLoading(false));
     }
   }, [authorId, dispatch]);
 

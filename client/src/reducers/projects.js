@@ -3,6 +3,7 @@ const initialState = {
   clickedProject: null,
   projectLikes: [],
   userProjects: [], // New state for user-specific projects
+  authorProjects: [], // New state for author-specific projects
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +21,8 @@ export default (state = initialState, action) => {
 
     case "GET_USER_PROJECTS":
       return { ...state, userProjects: action.payload }; // New case for user projects
-
+    case "GET_AUTHOR_PROJECTS":
+      return { ...state, authorProjects: action.payload }; // New case for author projects
     case "CLICKED_PROJECT":
       return {
         ...state,
