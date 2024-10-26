@@ -18,6 +18,8 @@ export default function SignUp() {
     profileImage: null,
   });
 
+  const [loading, setLoading] = useState(false); // Loading state
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -55,10 +57,18 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Start loading
     console.log("Form submitted:", formData);
-    dispatch(signup(formData, navigate));
+
+    try {
+      await dispatch(signup(formData, navigate)); // Assuming signup returns a promise
+    } catch (error) {
+      console.error("Signup error:", error);
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -94,7 +104,7 @@ export default function SignUp() {
                 name="username"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="Choose a unique username"
                 value={formData.username}
                 onChange={(e) =>
@@ -115,7 +125,7 @@ export default function SignUp() {
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={(e) =>
@@ -135,7 +145,7 @@ export default function SignUp() {
                 name="headline"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="e.g., Full Stack Developer"
                 value={formData.headline}
                 onChange={(e) =>
@@ -154,7 +164,7 @@ export default function SignUp() {
                 id="bio"
                 name="bio"
                 rows="3"
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="Tell us about yourself"
                 value={formData.bio}
                 onChange={(e) =>
@@ -175,7 +185,7 @@ export default function SignUp() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="Create a strong password"
                 value={formData.password}
                 onChange={(e) =>
@@ -195,8 +205,9 @@ export default function SignUp() {
                 name="image"
                 type="file"
                 accept="image/*"
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 onChange={handleImageChange}
+                required
               />
             </div>
 
@@ -214,9 +225,36 @@ export default function SignUp() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent  shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                className="w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                disabled={loading} // Disable button while loading
               >
-                Sign Up
+                {loading ? (
+                  <div className="flex items-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2s-.9 2-2 2H6c-1.1 0-2-.9-2-2zm16 0c0-1.1-.9-2-2-2h-3c-1.1 0-2 .9-2 2s.9 2 2 2h3c1.1 0 2-.9 2-2z"
+                      ></path>
+                    </svg>
+                    Signing Up...
+                  </div>
+                ) : (
+                  "Sign Up"
+                )}
               </button>
             </div>
           </form>

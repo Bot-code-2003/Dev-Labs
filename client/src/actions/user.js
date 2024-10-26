@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 /**
  *
@@ -41,7 +41,7 @@ export const signup = (formData, navigate) => async (dispatch) => {
       payload: data,
     };
     dispatch(action);
-    navigate("/");
+    navigate("/explore");
   } catch (error) {
     console.log(error);
     alert("Email already exists");

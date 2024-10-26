@@ -40,7 +40,8 @@ router.get("/:projectId", async (req, res) => {
       .populate({
         path: "replies.authorId", // Populate the reply author
         select: "username profileImage", // Select the fields to return
-      });
+      })
+      .sort({ createdAt: -1 });
 
     res.status(200).json(reviews);
   } catch (error) {

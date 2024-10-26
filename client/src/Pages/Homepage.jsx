@@ -13,7 +13,7 @@ import Lottie from "lottie-react";
 import Loading from "../assets/lotties/Animation - 1729259117182.json";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const ITEMS_PER_PAGE = 9; // Number of projects to display per page
+const ITEMS_PER_PAGE = 24; // Number of projects to display per page
 
 const Homepage = () => {
   const location = useLocation();

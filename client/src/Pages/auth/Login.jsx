@@ -13,10 +13,20 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = (event) => {
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Start loading
     console.log("Form submitted:", formData);
-    dispatch(login(formData, navigate));
+
+    try {
+      await dispatch(login(formData, navigate)); // Assuming login returns a promise
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -52,7 +62,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={(e) =>
@@ -72,7 +82,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 required
-                className="w-full px-3 py-2 border border-gray-300  shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={(e) =>
@@ -93,9 +103,36 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent  shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                className="w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                disabled={loading} // Disable button while loading
               >
-                Sign in
+                {loading ? (
+                  <div className="flex items-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2s-.9 2-2 2H6c-1.1 0-2-.9-2-2zm16 0c0-1.1-.9-2-2-2h-3c-1.1 0-2 .9-2 2s.9 2 2 2h3c1.1 0 2-.9 2-2z"
+                      ></path>
+                    </svg>
+                    Logging In...
+                  </div>
+                ) : (
+                  "Sign in"
+                )}
               </button>
             </div>
           </form>
