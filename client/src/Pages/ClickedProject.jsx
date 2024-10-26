@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useNavigate, Link } from "react-router-dom"; // useParams to get projectId from URL
-import { getProject, likeProject, unlikeProject } from "../actions/project"; // Import the getProject action
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { getProject, likeProject, unlikeProject } from "../actions/project";
 import { Visibility, Favorite, FavoriteBorder } from "@mui/icons-material";
 import Discussions from "../components/Discussions";
 import ImageCarousel from "../components/ImageCarousel";
@@ -9,25 +9,23 @@ import ImageCarousel from "../components/ImageCarousel";
 export default function ClickedProject() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { projectId } = useParams(); // Get projectId from URL
+  const { projectId } = useParams();
 
   const projectData = useSelector((state) => state.projects.clickedProject);
-  console.log("projectData: ", projectData);
-
   const localData = JSON.parse(localStorage.getItem("user"));
   const userId = localData?._id || localData?.userId;
   const userHasLiked = projectData?.projectLikes.includes(userId);
+
   const [liked, setLiked] = useState(userHasLiked);
 
   const handleLikeClick = () => {
     if (userId) {
       if (liked) {
         dispatch(unlikeProject(projectData._id, userId));
-        setLiked(false);
       } else {
         dispatch(likeProject(projectData._id, userId));
-        setLiked(true);
       }
+      setLiked(!liked); // Toggle liked state
     } else {
       alert("Please login to like or unlike a project");
     }
@@ -35,11 +33,19 @@ export default function ClickedProject() {
 
   useEffect(() => {
     if (!projectData || projectData._id !== projectId) {
-      // If projectData is not available or doesn't match the URL projectId, fetch it
       dispatch(getProject(projectId));
     }
     window.scrollTo(0, 0);
   }, [dispatch, projectId, projectData]);
+
+  const formatDescription = (description) => {
+    return description.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
 
   if (!projectData) {
     return (
@@ -68,11 +74,19 @@ export default function ClickedProject() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <img
-                  src={projectData.logo}
-                  alt="Project Logo"
-                  className="w-10 h-10 rounded-md"
-                />
+                {projectData.logo ? (
+                  <img
+                    src={projectData.logo}
+                    alt="Project Logo"
+                    className="w-10 h-10 rounded-md"
+                  />
+                ) : (
+                  <img
+                    src="/image.png"
+                    alt="Project Logo"
+                    className="w-10 h-10 rounded-md"
+                  />
+                )}
                 <span className="text-xl font-semibold">
                   {projectData.projectName}
                 </span>
@@ -87,7 +101,9 @@ export default function ClickedProject() {
                 <span>{projectData.projectLikes.length}</span>
               </button>
             </div>
-            <p className="text-gray-600 mb-4">{projectData.description}</p>
+            <div className="text-gray-600 mb-4">
+              {formatDescription(projectData.description)}
+            </div>
             <div className="flex space-x-4 mb-6">
               {projectData.link ? (
                 <a
@@ -101,7 +117,7 @@ export default function ClickedProject() {
                 </a>
               ) : (
                 <p className="text-gray-600">
-                  No link available contact the creator.
+                  No link available, contact the creator.
                 </p>
               )}
             </div>
@@ -113,7 +129,7 @@ export default function ClickedProject() {
         </div>
 
         {/* About the creator section */}
-        <div className="mt-8 bg-white shadow-lg  p-6">
+        <div className="mt-8 bg-white shadow-lg p-6">
           <h2 className="text-2xl font-semibold mb-4">About the Creator</h2>
           <div className="flex items-center space-x-4">
             <img
@@ -128,7 +144,9 @@ export default function ClickedProject() {
               <p className="text-gray-600">{projectData.authorId.headline}</p>
             </div>
           </div>
-          <p className="mt-4 text-gray-700">{projectData.authorId.bio}</p>
+          <p className="mt-4 text-gray-700">
+            {formatDescription(projectData.authorId.bio)}
+          </p>
           <Link
             to={`/profile/${projectData.authorId._id}`}
             className="mt-2 text-blue-600 cursor-pointer"

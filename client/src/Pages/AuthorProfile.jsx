@@ -55,6 +55,15 @@ const AuthorProfile = () => {
     boxShadow: "0 0 10px #ff0000, 0 0 20px #ff0000",
   };
 
+  const formatDescription = (description) => {
+    return description.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   return (
     <div
       className={`min-h-screen py-12 px-4 sm:px-6 lg:px-8 ${
@@ -125,7 +134,7 @@ const AuthorProfile = () => {
                   isDarkTheme ? "text-red-200" : "text-gray-600"
                 }`}
               >
-                {author.bio || "No bio available"}
+                {formatDescription(author.bio) || "No bio available"}
               </p>
               <p
                 className={`text-sm ${
