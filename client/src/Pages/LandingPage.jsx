@@ -57,7 +57,8 @@ const LandingPage = () => {
       <main className="flex-grow flex flex-col md:flex-row items-center justify-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-8 md:py-12">
         <div className="md:w-1/2 mb-8 md:mb-0 text-center md:text-left">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Where Code Meets <span className="text-blue-500">Creativity</span>
+            Showcase Your <span className="text-blue-500">Genius</span>, Inspire
+            the <span className="text-blue-500">Future</span>
           </h1>
           <p className="text-lg sm:text-xl mb-6">
             Join a community of innovative developers. Showcase your projects,

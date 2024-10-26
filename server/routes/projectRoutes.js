@@ -30,7 +30,7 @@ router.get("/getProjects", async (req, res) => {
         "authorId",
         "username email profileImage headline bio createdAt"
       )
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 }) // Sort by creation date in descending order
       .skip(skip) // Skip the first 'skip' projects
       .limit(Number(limit)); // Limit the number of projects returned
 

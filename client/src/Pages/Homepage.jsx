@@ -22,7 +22,7 @@ const Homepage = () => {
 
   const [loading, setLoading] = useState(false); // Loading state
 
-  const projects = useSelector((state) => state.projects.projects);
+  const projects = useSelector((state) => state.projects.projects); // Get projects in descending order
   console.log("Projects: ", projects);
 
   const totalPages = useSelector((state) => state.projects.totalPages);
