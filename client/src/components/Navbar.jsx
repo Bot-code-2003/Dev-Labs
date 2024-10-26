@@ -45,7 +45,7 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { text: "Explore", link: "/" },
+    { text: "Explore", link: "/explore" },
     // { text: "Connect", link: "/connect" },
   ];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
