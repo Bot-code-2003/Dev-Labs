@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 export const submitProject = (projectData) => async (dispatch) => {
   try {
@@ -15,17 +15,15 @@ export const submitProject = (projectData) => async (dispatch) => {
 };
 
 export const getProjects =
-  (page = 1, limit = 9) =>
+  (page = 1, limit = 24, filter = "most recent") =>
   async (dispatch) => {
     try {
-      console.log("getProjects action called");
-
+      console.log("Get projects action called", filter);
       const { data } = await API.get(
-        `/project/getProjects?page=${page}&limit=${limit}`
+        `/project/getProjects?page=${page}&limit=${limit}&filter=${filter}`
       );
-      console.log();
 
-      console.log("Received projects from server: ", data);
+      // console.log("Received projects from server: ", data);
 
       dispatch({ type: "GET_PROJECTS", payload: data });
     } catch (error) {

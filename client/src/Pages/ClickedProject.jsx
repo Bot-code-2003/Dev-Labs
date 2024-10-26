@@ -17,6 +17,8 @@ export default function ClickedProject() {
   const userHasLiked = projectData?.projectLikes.includes(userId);
 
   const [liked, setLiked] = useState(userHasLiked);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showFullBio, setShowFullBio] = useState(false);
 
   const handleLikeClick = () => {
     if (userId) {
@@ -47,6 +49,14 @@ export default function ClickedProject() {
     ));
   };
 
+  const handleToggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const handleToggleBio = () => {
+    setShowFullBio(!showFullBio);
+  };
+
   if (!projectData) {
     return (
       <div className="flex items-center justify-center h-screen text-xl text-gray-700">
@@ -54,6 +64,16 @@ export default function ClickedProject() {
       </div>
     );
   }
+
+  const truncatedDescription =
+    projectData.description.length > 300
+      ? `${projectData.description.substring(0, 300)}...`
+      : projectData.description;
+
+  const truncatedBio =
+    projectData.authorId.bio.length > 300
+      ? `${projectData.authorId.bio.substring(0, 300)}...`
+      : projectData.authorId.bio;
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -66,7 +86,7 @@ export default function ClickedProject() {
               className="w-full h-44 sm:h-64 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <h1 className="text-4xl font-bold text-white">
+              <h1 className="text-2xl text-center sm:text-4xl font-bold text-white">
                 {projectData.projectName}
               </h1>
             </div>
@@ -87,7 +107,7 @@ export default function ClickedProject() {
                     className="w-10 h-10 rounded-md"
                   />
                 )}
-                <span className="text-xl font-semibold">
+                <span className="text-lg sm:text-xl font-semibold">
                   {projectData.projectName}
                 </span>
               </div>
@@ -102,7 +122,27 @@ export default function ClickedProject() {
               </button>
             </div>
             <div className="text-gray-600 mb-4">
-              {formatDescription(projectData.description)}
+              {showFullDescription ? (
+                <span>
+                  {formatDescription(projectData.description)}
+                  <button
+                    onClick={handleToggleDescription}
+                    className="text-blue-600 ml-2"
+                  >
+                    Show Less
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  {formatDescription(truncatedDescription)}
+                  <button
+                    onClick={handleToggleDescription}
+                    className="text-blue-600"
+                  >
+                    Show More
+                  </button>
+                </span>
+              )}
             </div>
             <div className="flex space-x-4 mb-6">
               {projectData.link ? (
@@ -145,7 +185,21 @@ export default function ClickedProject() {
             </div>
           </div>
           <p className="mt-4 text-gray-700">
-            {formatDescription(projectData.authorId.bio)}
+            {showFullBio ? (
+              <span>
+                {formatDescription(projectData.authorId.bio)}
+                <button onClick={handleToggleBio} className="text-blue-600">
+                  Show Less
+                </button>
+              </span>
+            ) : (
+              <span>
+                {formatDescription(truncatedBio)}
+                <button onClick={handleToggleBio} className="text-blue-600">
+                  Show More
+                </button>
+              </span>
+            )}
           </p>
           <Link
             to={`/profile/${projectData.authorId._id}`}

@@ -21,22 +21,38 @@ router.post("/submitProject", async (req, res) => {
 
 // Route to get all projects with author details
 router.get("/getProjects", async (req, res) => {
-  const { page = 1, limit = 9 } = req.query; // Default to page 1 and limit 9
+  const { page = 1, limit = 24, filter = "most recent" } = req.query;
   const skip = (page - 1) * limit;
 
   try {
+    // Set sorting criteria based on filter
+    let sortCriteria;
+    switch (filter) {
+      case "most liked":
+        sortCriteria = { likes: -1 }; // Assuming there is a 'likes' field in the schema
+        break;
+      case "most recent":
+        sortCriteria = { createdAt: -1 };
+        break;
+      case "most viewed":
+        sortCriteria = { views: -1 }; // Assuming there is a 'views' field in the schema
+        break;
+      default:
+        sortCriteria = { createdAt: -1 }; // Default sorting
+    }
+
+    // Fetch projects with applied sorting and pagination
     const projects = await Project.find()
       .populate(
         "authorId",
         "username email profileImage headline bio createdAt"
       )
-      .sort({ createdAt: -1 }) // Sort by creation date in descending order
-      .skip(skip) // Skip the first 'skip' projects
-      .limit(Number(limit)); // Limit the number of projects returned
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(Number(limit));
 
-    const totalProjects = await Project.countDocuments(); // Get total number of projects
+    const totalProjects = await Project.countDocuments();
 
-    // Use res.json() instead of res.send()
     res.status(200).json({
       projects,
       totalPages: Math.ceil(totalProjects / limit),

@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Drawer, IconButton, Avatar, MenuItem, Button } from "@mui/material";
+import {
+  Drawer,
+  IconButton,
+  Avatar,
+  MenuItem,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
@@ -8,15 +15,24 @@ import {
   Logout as LogoutIcon,
   AccountCircle as AccountCircleIcon,
   ArrowDropDown as ArrowDropDownIcon,
+  FilterList as FilterListIcon,
 } from "@mui/icons-material";
 import Nebula from "../assets/nebula.jpeg";
 import Search from "./Search";
+import { getProjects } from "../actions/project";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state for filter
+  const [selectedFilter, setSelectedFilter] = useState("most recent");
   const dropdownRef = useRef(null);
+  const desktopFilterRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -27,6 +43,12 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (
+        desktopFilterRef.current &&
+        !desktopFilterRef.current.contains(event.target)
+      ) {
+        setFilterDropdownOpen(false);
+      }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
@@ -44,15 +66,32 @@ const Navbar = () => {
     window.location.href = "/thankyou";
   };
 
-  const menuItems = [
-    { text: "Explore", link: "/explore" },
-    // { text: "Connect", link: "/connect" },
-  ];
+  const ITEMS_PER_PAGE = 24;
+
+  // Handle filter selection and update state
+  const handleMenuItemClick = async (filterOption) => {
+    setSelectedFilter(filterOption);
+    setFilterDropdownOpen(false);
+    setMobileFilterOpen(false);
+    setLoading(true); // Start loading animation
+
+    // Dispatch the getProjects action based on the selected filter
+    await dispatch(getProjects(1, ITEMS_PER_PAGE, filterOption.toLowerCase()));
+
+    setLoading(false); // Stop loading animation
+  };
+
+  useEffect(() => {
+    if (selectedFilter) {
+      dispatch(getProjects(1, ITEMS_PER_PAGE, selectedFilter.toLowerCase()));
+      setDrawerOpen(false);
+    }
+  }, [selectedFilter, dispatch]);
+
+  const menuItems = [{ text: "Explore", link: "/explore" }];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
-  const loggedInUserId = loggedInUser?.userId;
-  const loggedInUserEmail = loggedInUser?.email;
-  const loggedInUserName = loggedInUser?.username || "User"; // Default to 'User' if username is not set
-  const loggedInProfileImage = loggedInUser?.profileImage; // Use profileImage as profileImage
+  const loggedInUserName = loggedInUser?.username || "User";
+  const loggedInProfileImage = loggedInUser?.profileImage;
 
   return (
     <div>
@@ -61,9 +100,9 @@ const Navbar = () => {
         <div className="flex items-center">
           <div
             onClick={() => navigate("/")}
-            className="cursor-pointer relative w-40 h-12 mr-4  overflow-hidden group"
+            className="cursor-pointer relative w-40 h-12 mr-4 overflow-hidden group"
           >
-            <div className="absolute inset-0 w-full h-full overflow-hidden ">
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
               <img
                 src={Nebula}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -81,7 +120,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-3 px-4  border text-center hover:border-black ${
+                className={`text-gray-700 py-3 px-4 border text-center hover:border-black ${
                   location.pathname === item.link ? "bg-gray-200" : ""
                 }`}
               >
@@ -100,6 +139,33 @@ const Navbar = () => {
         </div>
 
         <div className="hidden sm:flex space-x-4">
+          <div className="relative" ref={desktopFilterRef}>
+            <button
+              onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
+              className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-3"
+            >
+              {loading ? ( // Show loading spinner if loading
+                <CircularProgress size={20} className="mr-2" />
+              ) : (
+                <FilterListIcon className="mr-2" />
+              )}
+              Filter
+              <ArrowDropDownIcon />
+            </button>
+            {filterDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
+                <MenuItem onClick={() => handleMenuItemClick("Most Liked")}>
+                  Most Liked
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("Most Viewed")}>
+                  Most Viewed
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("Most Recent")}>
+                  Most Recent
+                </MenuItem>
+              </div>
+            )}
+          </div>
           {loggedIn ? (
             <div className="flex space-x-4">
               <button
@@ -174,7 +240,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500  ${
+                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 ${
                   location.pathname === item.link ? "underline" : ""
                 }`}
                 onClick={toggleDrawer(false)}
@@ -182,6 +248,33 @@ const Navbar = () => {
                 {item.text}
               </Link>
             ))}
+            <div className="relative">
+              <button
+                onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+                className="bg-gray-50 flex items-center gap-1 text-gray-700 px-4 py-2 w-full"
+              >
+                {loading ? (
+                  <CircularProgress size={20} className="mr-2" />
+                ) : (
+                  <FilterListIcon fontSize="small" />
+                )}
+                Filter
+                <ArrowDropDownIcon />
+              </button>
+              {mobileFilterOpen && (
+                <div className="mt-2 w-full bg-white py-1 z-10">
+                  <MenuItem onClick={() => handleMenuItemClick("Most Liked")}>
+                    Most Liked
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Most Viewed")}>
+                    Most Viewed
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Most Recent")}>
+                    Most Recent
+                  </MenuItem>
+                </div>
+              )}
+            </div>
             {loggedIn ? (
               <div className="flex flex-col space-y-4">
                 <div className="flex items-center space-x-2 px-4 py-2">
@@ -200,7 +293,7 @@ const Navbar = () => {
                     navigate("/shareproject");
                     setDrawerOpen(false);
                   }}
-                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2  w-full"
+                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 w-full"
                 >
                   <ScienceIcon fontSize="small" />
                   Share Project
@@ -210,7 +303,7 @@ const Navbar = () => {
                     handleLogout();
                     setDrawerOpen(false);
                   }}
-                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2  w-full"
+                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 w-full"
                 >
                   <LogoutIcon fontSize="small" />
                   Logout
@@ -220,14 +313,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-gray-50 text-blue-500 px-4 py-2  w-full"
+                  className="bg-gray-50 text-blue-500 px-4 py-2 w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2  w-full"
+                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Sign Up

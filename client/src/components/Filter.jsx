@@ -34,12 +34,9 @@ export default function Filter() {
   };
 
   return (
-    <div
-      ref={menuRef}
-      className="text-gray-500 text-sm sm:text-xl relative w-full"
-    >
+    <div ref={menuRef} className="text-gray-500 text-sm sm:text-xl relative">
       <button
-        className="px-4 py-2 sm:py-3 border border-gray-400 rounded-full w-full flex gap-2 items-center justify-center text-gray-500"
+        className="px-4 border py-2 border-gray-400 w-full flex gap-2 items-center justify-center text-gray-500"
         onClick={toggleDropdown}
       >
         <TuneIcon />
@@ -47,7 +44,7 @@ export default function Filter() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 w-full mt-1 bg-white border rounded shadow-lg z-10">
+        <div className="absolute top-full left-0 w-full mt-1 bg-white border shadow-lg z-10">
           <div
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => handleSelect("Most recent")}

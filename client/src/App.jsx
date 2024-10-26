@@ -12,6 +12,7 @@ import Connect from "./Pages/Connect";
 import AuthorProfile from "./Pages/AuthorProfile";
 import ThankYou from "./Pages/AfterLogout";
 import LandingPage from "./Pages/LandingPage";
+import ToggleExample from "./components/ToggleExample";
 
 const App = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/connect" element={<Connect />} />
         <Route path="/profile/:authorId" element={<AuthorProfile />} />
         <Route path="/thankyou" element={<ThankYou />} />
+        {/* <Route path="/exp" element={<ToggleExample />} /> */}
       </Routes>
     </div>
   );
