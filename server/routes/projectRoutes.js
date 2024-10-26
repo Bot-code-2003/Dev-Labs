@@ -146,6 +146,21 @@ router.post("/getUserProjects", async (req, res) => {
   }
 });
 
+router.post("/getAuthorProjects", async (req, res) => {
+  try {
+    const { authorId } = req.body;
+    // Find the projects that the user has created (filter by the authorId field)
+    const authorProjects = await Project.find({ authorId: authorId }).populate(
+      "authorId", // Populate authorId to get user details
+      "username email profileImage headline bio"
+    );
+    res.status(200).send(authorProjects);
+  } catch (error) {
+    console.error("Error fetching user projects:", error);
+    res.status(500).send("Server error while fetching user projects");
+  }
+});
+
 // Route to delete a project by ID (also included as a separate route)
 router.delete("/deleteProject/:projectId", async (req, res) => {
   try {

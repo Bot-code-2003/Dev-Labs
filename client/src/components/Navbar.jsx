@@ -41,7 +41,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setLoggedIn(false);
-    navigate("/thankyou");
+    window.location.href = "/thankyou";
   };
 
   const menuItems = [

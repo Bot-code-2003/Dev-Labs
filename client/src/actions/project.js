@@ -94,8 +94,8 @@ export const getUserProjects = (userId) => async (dispatch) => {
 
 export const getAuthorProjects = (authorId) => async (dispatch) => {
   try {
-    console.log("getAuthorProjects action called");
-    const { data } = await API.post("/project/getUserProjects", { authorId });
+    console.log("getAuthorProjects action called", authorId);
+    const { data } = await API.post("/project/getAuthorProjects", { authorId });
     console.log("Received author projects from server: ", data);
     dispatch({ type: "GET_AUTHOR_PROJECTS", payload: data });
   } catch (error) {
