@@ -210,13 +210,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-gray-100 border hover:bg-gray-200 text-blue-500 px-4 py-2 "
+                className="bg-gray-100 border flex items-center hover:bg-gray-200 text-blue-500 px-4 py-2 "
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 "
+                className="bg-blue-500 flex items-center hover:bg-blue-700 text-white px-4 py-2 "
               >
                 Sign Up
               </Link>

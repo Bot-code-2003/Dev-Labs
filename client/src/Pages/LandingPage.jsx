@@ -129,12 +129,6 @@ const LandingPage = () => {
             About
           </Link>
           <Link
-            to="/terms"
-            className="hover:text-blue-500 transition-colors duration-300"
-          >
-            Terms
-          </Link>
-          <Link
             to="/privacy"
             className="hover:text-blue-500 transition-colors duration-300"
           >

@@ -13,6 +13,9 @@ import AuthorProfile from "./Pages/AuthorProfile";
 import ThankYou from "./Pages/AfterLogout";
 import LandingPage from "./Pages/LandingPage";
 import ToggleExample from "./components/ToggleExample";
+import About from "./Pages/About";
+import Privacy from "./Pages/Privacy";
+import ContactUs from "./Pages/Contact";
 
 const App = () => {
   const location = useLocation();
@@ -38,6 +41,9 @@ const App = () => {
         <Route path="/connect" element={<Connect />} />
         <Route path="/profile/:authorId" element={<AuthorProfile />} />
         <Route path="/thankyou" element={<ThankYou />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/contact" element={<ContactUs />} />
         {/* <Route path="/exp" element={<ToggleExample />} /> */}
       </Routes>
     </div>
