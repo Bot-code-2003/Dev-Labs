@@ -10,7 +10,7 @@ export default function About() {
       <header
         className="relative flex flex-col items-center text-center text-white mb-12 py-32 px-8 bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${bg})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/about.svg")`,
         }}
       >
         <div className="relative z-10 max-w-4xl">
