@@ -77,7 +77,7 @@ export default function ClickedProject() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
         <div className="bg-white shadow-lg overflow-hidden">
           <div className="relative">
             <img
@@ -91,7 +91,7 @@ export default function ClickedProject() {
               </h1>
             </div>
           </div>
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 {projectData.logo ? (
@@ -169,7 +169,7 @@ export default function ClickedProject() {
         </div>
 
         {/* About the creator section */}
-        <div className="mt-8 bg-white shadow-lg p-6">
+        <div className="mt-8 bg-white shadow-lg p-3 sm:p-6">
           <h2 className="text-2xl font-semibold mb-4">About the Creator</h2>
           <div className="flex items-center space-x-4">
             <img
@@ -209,7 +209,7 @@ export default function ClickedProject() {
           </Link>
         </div>
 
-        <div className="mt-8 bg-white shadow-lg p-6">
+        <div className="mt-8 bg-white shadow-lg p-2 sm:p-6">
           <Discussions
             projectId={projectData._id}
             authorId={projectData.authorId}

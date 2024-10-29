@@ -20,38 +20,70 @@ router.post("/submitProject", async (req, res) => {
 });
 
 // Route to get all projects with author details
+// Route to get all projects with author details
 router.get("/getProjects", async (req, res) => {
   const { page = 1, limit = 24, filter = "most recent" } = req.query;
   const skip = (page - 1) * limit;
+  console.log("filter: ", filter);
 
   try {
+    // Initialize aggregation pipeline
+    let pipeline = [
+      {
+        $lookup: {
+          from: "users", // Name of the User collection
+          localField: "authorId",
+          foreignField: "_id",
+          as: "authorIcd", // Field to store the joined data
+        },
+      },
+      { $unwind: "$authorIcd" }, // Unwind to flatten the author details
+    ];
+
     // Set sorting criteria based on filter
-    let sortCriteria;
     switch (filter) {
       case "most liked":
-        sortCriteria = { likes: -1 }; // Assuming there is a 'likes' field in the schema
+        console.log("most liked");
+        pipeline.push(
+          {
+            $project: {
+              projectData: "$$ROOT", // Retain all project data
+              likeCount: { $size: "$projectLikes" }, // Count the number of likes
+              author: {
+                username: "$authorIcd.username",
+                email: "$authorIcd.email",
+                profileImage: "$authorIcd.profileImage",
+                headline: "$authorIcd.headline",
+                bio: "$authorIcd.bio",
+              }, // Include author data
+            },
+          },
+          { $sort: { likeCount: -1 } }, // Sort by likeCount descending
+          {
+            $replaceRoot: {
+              newRoot: { $mergeObjects: ["$projectData", "$author"] },
+            },
+          } // Flatten the result
+        );
         break;
       case "most recent":
-        sortCriteria = { createdAt: -1 };
+        console.log("most recent");
+        pipeline.push({ $sort: { createdAt: -1 } });
         break;
       case "most viewed":
-        sortCriteria = { views: -1 }; // Assuming there is a 'views' field in the schema
+        console.log("most viewed");
+        pipeline.push({ $sort: { projectViews: -1 } });
         break;
       default:
-        sortCriteria = { createdAt: -1 }; // Default sorting
+        pipeline.push({ $sort: { createdAt: -1 } }); // Default sorting
     }
 
-    // Fetch projects with applied sorting and pagination
-    const projects = await Project.find()
-      .populate(
-        "authorId",
-        "username email profileImage headline bio createdAt"
-      )
-      .sort(sortCriteria)
-      .skip(skip)
-      .limit(Number(limit));
+    // Add pagination to the pipeline
+    pipeline.push({ $skip: skip }, { $limit: Number(limit) });
 
-    const totalProjects = await Project.countDocuments();
+    // Fetch projects using the aggregation pipeline
+    const projects = await Project.aggregate(pipeline).exec();
+    const totalProjects = await Project.countDocuments(); // Count total documents for pagination
 
     res.status(200).json({
       projects,
