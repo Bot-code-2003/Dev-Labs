@@ -34,10 +34,10 @@ router.get("/getProjects", async (req, res) => {
           from: "users", // Name of the User collection
           localField: "authorId",
           foreignField: "_id",
-          as: "authorIcd", // Field to store the joined data
+          as: "authorId", // Field to store the joined data
         },
       },
-      { $unwind: "$authorIcd" }, // Unwind to flatten the author details
+      { $unwind: "$authorId" }, // Unwind to flatten the author details
     ];
 
     // Set sorting criteria based on filter
@@ -50,11 +50,11 @@ router.get("/getProjects", async (req, res) => {
               projectData: "$$ROOT", // Retain all project data
               likeCount: { $size: "$projectLikes" }, // Count the number of likes
               author: {
-                username: "$authorIcd.username",
-                email: "$authorIcd.email",
-                profileImage: "$authorIcd.profileImage",
-                headline: "$authorIcd.headline",
-                bio: "$authorIcd.bio",
+                username: "$authorId.username",
+                email: "$authorId.email",
+                profileImage: "$authorId.profileImage",
+                headline: "$authorId.headline",
+                bio: "$authorId.bio",
               }, // Include author data
             },
           },
