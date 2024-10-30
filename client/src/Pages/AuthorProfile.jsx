@@ -105,7 +105,7 @@ const AuthorProfile = () => {
                 />
               </div>
             </div>
-            <div className="p-8 md:flex-grow">
+            <div className="p-4 sm:p-8 md:flex-grow">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                 <h1
                   className={`text-3xl font-bold mb-2 md:mb-0 ${
@@ -149,7 +149,7 @@ const AuthorProfile = () => {
 
         {/* Author Projects Section */}
         <div
-          className={`shadow-xl p-8 transition-all duration-500 ${
+          className={`shadow-xl p-4 sm:p-8 transition-all duration-500 ${
             isDarkTheme
               ? "bg-gray-900 text-red-500 border-red-600 border-2"
               : "bg-white"
@@ -161,10 +161,10 @@ const AuthorProfile = () => {
               isDarkTheme ? "text-red-500" : "text-gray-900"
             }`}
           >
-            Author's Projects
+            {author.username}'s Projects
           </h2>
           {authorProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
               {authorProjects.map((project) => (
                 <div key={project._id} className="group">
                   <Link

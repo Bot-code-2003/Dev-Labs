@@ -53,7 +53,7 @@ export default function Component({ images = [] }) {
             <img
               src={image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-48 sm:h-96 object-cover cursor-pointer shadow-md"
+              className="w-full h-48 sm:h-[450px] object-cover cursor-pointer shadow-md"
               onClick={() => openModal(index)} // Call the new function with the index
             />
           </div>

@@ -142,7 +142,7 @@ const Navbar = () => {
           <div className="relative" ref={desktopFilterRef}>
             <button
               onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
-              className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-3"
+              className="bg-gray-100 text-gray-600 border flex items-center gap-1 hover:bg-gray-200 px-4 py-3"
             >
               {loading ? ( // Show loading spinner if loading
                 <CircularProgress size={20} className="mr-2" />

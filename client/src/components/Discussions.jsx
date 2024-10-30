@@ -83,7 +83,7 @@ export default function Discussions({ projectId, authorId }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-1 sm:px-4 py-8">
+    <div className="mx-auto py-4">
       <h2 className="text-2xl font-semibold mb-6">User Reviews</h2>
 
       <form

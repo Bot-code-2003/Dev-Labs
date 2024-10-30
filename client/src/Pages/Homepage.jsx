@@ -77,8 +77,8 @@ const Homepage = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="w-full px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="w-full px-3 sm:px-6 py-6 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {projects.map((project) => (
             <div key={project._id} className="group">
               <Link

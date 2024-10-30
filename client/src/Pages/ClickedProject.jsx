@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getProject, likeProject, unlikeProject } from "../actions/project";
-import { Visibility, Favorite, FavoriteBorder } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 import Discussions from "../components/Discussions";
 import ImageCarousel from "../components/ImageCarousel";
+import LinkIcon from "@mui/icons-material/Link";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
 export default function ClickedProject() {
   const navigate = useNavigate();
@@ -27,7 +31,7 @@ export default function ClickedProject() {
       } else {
         dispatch(likeProject(projectData._id, userId));
       }
-      setLiked(!liked); // Toggle liked state
+      setLiked(!liked);
     } else {
       alert("Please login to like or unlike a project");
     }
@@ -49,14 +53,6 @@ export default function ClickedProject() {
     ));
   };
 
-  const handleToggleDescription = () => {
-    setShowFullDescription(!showFullDescription);
-  };
-
-  const handleToggleBio = () => {
-    setShowFullBio(!showFullBio);
-  };
-
   if (!projectData) {
     return (
       <div className="flex items-center justify-center h-screen text-xl text-gray-700">
@@ -65,19 +61,21 @@ export default function ClickedProject() {
     );
   }
 
+  const descriptionLimit = window.innerWidth >= 640 ? 500 : 300; // Adjust limit based on device size
   const truncatedDescription =
-    projectData.description.length > 300
-      ? `${projectData.description.substring(0, 300)}...`
+    projectData.description.length > descriptionLimit
+      ? `${projectData.description.substring(0, descriptionLimit)}...`
       : projectData.description;
 
+  const bioLimit = window.innerWidth >= 640 ? 400 : 200; // Adjust limit based on device size
   const truncatedBio =
-    projectData.authorId.bio.length > 300
-      ? `${projectData.authorId.bio.substring(0, 300)}...`
+    projectData.authorId.bio.length > bioLimit
+      ? `${projectData.authorId.bio.substring(0, bioLimit)}...`
       : projectData.authorId.bio;
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
         <div className="bg-white shadow-lg overflow-hidden">
           <div className="relative">
             <img
@@ -98,13 +96,13 @@ export default function ClickedProject() {
                   <img
                     src={projectData.logo}
                     alt="Project Logo"
-                    className="w-10 h-10 rounded-md"
+                    className="w-10 h-10"
                   />
                 ) : (
                   <img
                     src="/image.png"
                     alt="Project Logo"
-                    className="w-10 h-10 rounded-md"
+                    className="w-10 h-10"
                   />
                 )}
                 <span className="text-lg sm:text-xl font-semibold">
@@ -113,11 +111,11 @@ export default function ClickedProject() {
               </div>
               <button
                 onClick={handleLikeClick}
-                className={`flex items-center space-x-1 ${
-                  liked ? "text-red-500" : "text-gray-500"
-                } hover:text-red-500 transition-colors`}
+                className={`flex items-center space-x-1 transition-transform ${
+                  liked ? "text-blue-500 scale-110" : "text-gray-500"
+                } hover:text-blue-500`}
               >
-                {liked ? <Favorite /> : <FavoriteBorder />}
+                <ThumbUpAltIcon />
                 <span>{projectData.projectLikes.length}</span>
               </button>
             </div>
@@ -126,21 +124,23 @@ export default function ClickedProject() {
                 <span>
                   {formatDescription(projectData.description)}
                   <button
-                    onClick={handleToggleDescription}
-                    className="text-blue-600 ml-2"
+                    onClick={() => setShowFullDescription(false)}
+                    className="text-gray-500"
                   >
-                    Show Less
+                    Show Less <ExpandLessIcon />
                   </button>
                 </span>
               ) : (
                 <span>
                   {formatDescription(truncatedDescription)}
-                  <button
-                    onClick={handleToggleDescription}
-                    className="text-blue-600"
-                  >
-                    Show More
-                  </button>
+                  {projectData.description.length > descriptionLimit && (
+                    <button
+                      onClick={() => setShowFullDescription(true)}
+                      className="text-gray-500"
+                    >
+                      Show More <ExpandMoreIcon />
+                    </button>
+                  )}
                 </span>
               )}
             </div>
@@ -175,7 +175,7 @@ export default function ClickedProject() {
             <img
               src={projectData.authorId.profileImage}
               alt={projectData.authorId.username}
-              className="w-16 h-16 rounded-full"
+              className="w-16 h-16"
             />
             <div>
               <h3 className="text-xl font-semibold">
@@ -188,16 +188,24 @@ export default function ClickedProject() {
             {showFullBio ? (
               <span>
                 {formatDescription(projectData.authorId.bio)}
-                <button onClick={handleToggleBio} className="text-blue-600">
-                  Show Less
+                <button
+                  onClick={() => setShowFullBio(false)}
+                  className="text-gray-500"
+                >
+                  Show Less <ExpandLessIcon />
                 </button>
               </span>
             ) : (
               <span>
                 {formatDescription(truncatedBio)}
-                <button onClick={handleToggleBio} className="text-blue-600">
-                  Show More
-                </button>
+                {projectData.authorId.bio.length > bioLimit && (
+                  <button
+                    onClick={() => setShowFullBio(true)}
+                    className="text-gray-500"
+                  >
+                    Show More <ExpandMoreIcon />
+                  </button>
+                )}
               </span>
             )}
           </p>
@@ -205,7 +213,7 @@ export default function ClickedProject() {
             to={`/profile/${projectData.authorId._id}`}
             className="mt-2 text-blue-600 cursor-pointer"
           >
-            View {projectData.authorId.username}'s profile
+            View {projectData.authorId.username}'s profile <LinkIcon />
           </Link>
         </div>
 
