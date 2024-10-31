@@ -82,6 +82,15 @@ export default function Discussions({ projectId, authorId }) {
     dispatch(deleteReply(reviewId, replyId));
   };
 
+  const formatReview = (review) => {
+    return review.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   return (
     <div className="mx-auto py-4">
       <h2 className="text-2xl font-semibold mb-6">User Reviews</h2>
@@ -139,7 +148,9 @@ export default function Discussions({ projectId, authorId }) {
                   </p>
                 </div>
               </div>
-              <p className="mb-4 text-gray-700">{review.review}</p>
+              <p className="mb-4 text-gray-700">
+                {formatReview(review.review)}
+              </p>
               <div className="flex items-center space-x-4 mb-4">
                 {/* <button
                   onClick={() => handleUpvote(review._id)}
@@ -156,14 +167,16 @@ export default function Discussions({ projectId, authorId }) {
                   <span>Reply</span>
                 </button>
                 {/* Show delete option if the logged-in user is the author of the review */}
-                {review.authorId._id === loggedInUserId && ( // Check against the actual ID
-                  <button
-                    onClick={() => handleDeleteReview(review._id)}
-                    className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
-                  >
-                    Delete Review
-                  </button>
-                )}
+                {review.authorId._id === loggedInUserId ||
+                  (review.authorId.email ===
+                    "dharmadeepmadisetty@gmail.com" && ( // Check against the actual ID
+                    <button
+                      onClick={() => handleDeleteReview(review._id)}
+                      className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
+                    >
+                      Delete Review
+                    </button>
+                  ))}
               </div>
               {review.replies && review.replies.length > 0 && (
                 <div className="ml-4 sm:ml-8 space-y-4 mt-4 border-l-2 border-gray-200 pl-4">
@@ -194,17 +207,21 @@ export default function Discussions({ projectId, authorId }) {
                             </p>
                           </div>
                         </div>
-                        <p className="text-gray-600">{reply.text}</p>
-                        {review.authorId._id === loggedInUserId && ( // Check against the actual ID
-                          <button
-                            onClick={() =>
-                              handleDeleteReply(review._id, reply._id)
-                            }
-                            className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
-                          >
-                            Delete Reply
-                          </button>
-                        )}
+                        <p className="text-gray-600">
+                          {formatReview(reply.text)}
+                        </p>
+                        {review.authorId._id === loggedInUserId ||
+                          (reply.authorId.email ===
+                            "dharmadeepmadisetty@gmail.com" && ( // Check against the actual ID
+                            <button
+                              onClick={() =>
+                                handleDeleteReply(review._id, reply._id)
+                              }
+                              className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
+                            >
+                              Delete Reply
+                            </button>
+                          ))}
                       </div>
                     ))}
                   {review.replies.length >

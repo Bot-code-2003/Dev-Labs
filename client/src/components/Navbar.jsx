@@ -100,7 +100,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <div
             onClick={() => navigate("/")}
-            className="cursor-pointer relative w-40 h-12 mr-4 overflow-hidden group"
+            className="cursor-pointer relative w-40 h-12 mr-4 overflow-hidden group "
           >
             <div className="absolute inset-0 w-full h-full overflow-hidden">
               <img
@@ -120,7 +120,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-3 px-4 border text-center hover:border-black ${
+                className={`text-gray-700 py-3 px-4 border text-center hover:border-black  ${
                   location.pathname === item.link ? "bg-gray-200" : ""
                 }`}
               >
@@ -142,7 +142,7 @@ const Navbar = () => {
           <div className="relative" ref={desktopFilterRef}>
             <button
               onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
-              className="bg-gray-100 text-gray-600 border flex items-center gap-1 hover:bg-gray-200 px-4 py-3"
+              className="bg-gray-100  text-gray-600 border flex items-center gap-1 hover:bg-gray-200 px-4 py-3"
             >
               {loading ? ( // Show loading spinner if loading
                 <CircularProgress size={20} className="mr-2" />
@@ -153,7 +153,7 @@ const Navbar = () => {
               <ArrowDropDownIcon />
             </button>
             {filterDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
+              <div className="absolute  right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
                 <MenuItem onClick={() => handleMenuItemClick("Most Liked")}>
                   Most Liked
                 </MenuItem>
@@ -170,7 +170,7 @@ const Navbar = () => {
             <div className="flex space-x-4">
               <button
                 onClick={() => navigate("/shareproject")}
-                className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 "
+                className="bg-gray-100  border flex items-center gap-1 hover:bg-gray-200 text-blue-500 px-4 py-2 "
               >
                 <ScienceIcon fontSize="small" />
                 Share Project
@@ -178,7 +178,7 @@ const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="bg-gray-100 border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 "
+                  className="bg-gray-100  border flex items-center gap-1 hover:bg-gray-200 px-4 py-2 "
                 >
                   {loggedInProfileImage ? (
                     <img
@@ -193,7 +193,7 @@ const Navbar = () => {
                   <ArrowDropDownIcon />
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
+                  <div className="absolute  right-0 mt-2 w-48 bg-white shadow-lg py-1 z-10">
                     <MenuItem
                       onClick={() => (
                         navigate("/personalspace"), setDropdownOpen(false)
@@ -210,13 +210,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-gray-100 border flex items-center hover:bg-gray-200 text-blue-500 px-4 py-2 "
+                className="bg-gray-100  border flex items-center hover:bg-gray-200 text-blue-500 px-4 py-2 "
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="bg-blue-500 flex items-center hover:bg-blue-700 text-white px-4 py-2 "
+                className="bg-blue-500  flex items-center hover:bg-blue-700 text-white px-4 py-2 "
               >
                 Sign Up
               </Link>
@@ -240,7 +240,7 @@ const Navbar = () => {
               <Link
                 to={item.link}
                 key={item.text}
-                className={`text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 ${
+                className={`text-gray-700  py-2 px-4 bg-gray-100 hover:text-gray-500 ${
                   location.pathname === item.link ? "underline" : ""
                 }`}
                 onClick={toggleDrawer(false)}
@@ -251,7 +251,7 @@ const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-                className="bg-gray-50 flex items-center gap-1 text-gray-700 px-4 py-2 w-full"
+                className="bg-gray-100  flex items-center gap-1 text-gray-700 px-4 py-2 w-full"
               >
                 {loading ? (
                   <CircularProgress size={20} className="mr-2" />
@@ -262,7 +262,7 @@ const Navbar = () => {
                 <ArrowDropDownIcon />
               </button>
               {mobileFilterOpen && (
-                <div className="mt-2 w-full bg-white py-1 z-10">
+                <div className="mt-2 w-full  bg-white py-1 z-10">
                   <MenuItem onClick={() => handleMenuItemClick("Most Liked")}>
                     Most Liked
                   </MenuItem>
@@ -283,7 +283,7 @@ const Navbar = () => {
                 </div>
                 <Link
                   to="/personalspace"
-                  className="text-gray-700 py-2 px-4 bg-gray-50 hover:text-gray-500 "
+                  className="text-gray-700 py-2 px-4 bg-gray-100  hover:text-gray-500 "
                   onClick={toggleDrawer(false)}
                 >
                   Personal Space
@@ -293,7 +293,7 @@ const Navbar = () => {
                     navigate("/shareproject");
                     setDrawerOpen(false);
                   }}
-                  className="bg-gray-50 flex items-center gap-1 text-blue-500 px-4 py-2 w-full"
+                  className="bg-gray-100  flex items-center gap-1 text-blue-500 px-4 py-2 w-full"
                 >
                   <ScienceIcon fontSize="small" />
                   Share Project
@@ -303,7 +303,7 @@ const Navbar = () => {
                     handleLogout();
                     setDrawerOpen(false);
                   }}
-                  className="bg-blue-500 flex items-center gap-1 text-white px-4 py-2 w-full"
+                  className="bg-blue-500  flex items-center gap-1 text-white px-4 py-2 w-full"
                 >
                   <LogoutIcon fontSize="small" />
                   Logout
@@ -313,14 +313,14 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-gray-50 text-blue-500 px-4 py-2 w-full"
+                  className="bg-gray-100  text-blue-500 px-4 py-2 w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 w-full"
+                  className="bg-blue-500  hover:bg-blue-700 text-white px-4 py-2 w-full"
                   onClick={toggleDrawer(false)}
                 >
                   Sign Up

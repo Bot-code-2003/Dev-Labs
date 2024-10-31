@@ -91,7 +91,7 @@ const Homepage = () => {
               >
                 <img
                   src={project.thumbnail}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  className=" w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                   alt={project.projectName}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-all duration-300">
