@@ -33,7 +33,7 @@ const getCompressionQuality = (size) => {
 };
 
 const resizeLogo = async (file) => {
-  const quality = 0.8; // Adjust as needed for logo compression
+  const quality = 0.1; // Adjust as needed for logo compression
   const compressed = await compressImage(file, quality);
   return compressed;
 };

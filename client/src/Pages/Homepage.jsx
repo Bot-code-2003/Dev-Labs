@@ -81,6 +81,9 @@ const Homepage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {projects.map((project) => (
             <div key={project._id} className="group">
+              <p className="text-xs font-semibold text-gray-500 mb-1 uppercase">
+                {project.projectType}
+              </p>
               <Link
                 to={`/project/${project._id}`}
                 onClick={(event) => handleProjectClick(event, project._id)}
@@ -97,6 +100,7 @@ const Homepage = () => {
                   </h2>
                 </div>
               </Link>
+
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
                   {project.authorId?.profileImage ? (

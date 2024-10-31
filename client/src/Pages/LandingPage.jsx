@@ -199,6 +199,24 @@ export default function LandingPage() {
             to get inspired!
           </p>
         </div>
+
+        {/* <div className="mt-16 w-full max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
+          <form
+            className="flex flex-col sm:flex-row items-center"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full sm:w-auto flex-grow border border-gray-300 p-2 rounded mb-2 sm:mb-0 sm:mr-2 text-gray-900"
+              aria-label="Email for newsletter"
+            />
+            <button className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+              Subscribe
+            </button>
+          </form>
+        </div> */}
       </main>
 
       <footer className="py-8 px-4 sm:px-6 md:px-12 lg:px-16 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg">
