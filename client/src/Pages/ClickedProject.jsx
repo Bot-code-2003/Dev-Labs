@@ -100,13 +100,16 @@ export default function ClickedProject() {
                   />
                 ) : (
                   <img
-                    src="/image.png"
+                    src={`/${projectData.projectType}.png`}
                     alt="Project Logo"
                     className="w-10 h-10"
                   />
                 )}
                 <span className="text-lg sm:text-xl font-semibold">
                   {projectData.projectName}
+                  <h1 className="text-sm text-gray-500">
+                    {projectData.projectType}
+                  </h1>
                 </span>
               </div>
               <button
@@ -119,13 +122,16 @@ export default function ClickedProject() {
                 <span>{projectData.projectLikes.length}</span>
               </button>
             </div>
+            <div className="text-gray-100 mb-4 italic bg-gradient-to-r from-pink-500 to-violet-500 rounded-sm inline-block px-2">
+              "{projectData.tagline}"
+            </div>
             <div className="text-gray-600 mb-4">
               {showFullDescription ? (
                 <span>
                   {formatDescription(projectData.description)}
                   <button
                     onClick={() => setShowFullDescription(false)}
-                    className="text-gray-500"
+                    className="text-gray-500 mt-2"
                   >
                     Show Less <ExpandLessIcon />
                   </button>
@@ -136,7 +142,7 @@ export default function ClickedProject() {
                   {projectData.description.length > descriptionLimit && (
                     <button
                       onClick={() => setShowFullDescription(true)}
-                      className="text-gray-500"
+                      className="text-gray-500 mt-2"
                     >
                       Show More <ExpandMoreIcon />
                     </button>
@@ -190,7 +196,7 @@ export default function ClickedProject() {
                 {formatDescription(projectData.authorId.bio)}
                 <button
                   onClick={() => setShowFullBio(false)}
-                  className="text-gray-500"
+                  className="text-gray-500 mt-2"
                 >
                   Show Less <ExpandLessIcon />
                 </button>
@@ -201,7 +207,7 @@ export default function ClickedProject() {
                 {projectData.authorId.bio.length > bioLimit && (
                   <button
                     onClick={() => setShowFullBio(true)}
-                    className="text-gray-500"
+                    className="text-gray-500 mt-2"
                   >
                     Show More <ExpandMoreIcon />
                   </button>

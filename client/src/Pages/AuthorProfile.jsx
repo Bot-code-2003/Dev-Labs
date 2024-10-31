@@ -14,7 +14,6 @@ const AuthorProfile = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  // Get the author information and projects from Redux store
   const author = useSelector((state) => state.users.authorInfo);
   const authorProjects = useSelector((state) => state.projects.authorProjects);
 
@@ -39,7 +38,6 @@ const AuthorProfile = () => {
     return <p className="text-center p-10">Loading author profile...</p>;
   }
 
-  // Check if the theme should be dark and scary
   const isDarkTheme = author.email === "vattakaya";
 
   const darkThemeStyles = {
@@ -56,7 +54,7 @@ const AuthorProfile = () => {
   };
 
   const formatDescription = (description) => {
-    return description.split("\n").map((line, index) => (
+    return description?.split("\n").map((line, index) => (
       <span key={index}>
         {line}
         <br />
@@ -71,11 +69,11 @@ const AuthorProfile = () => {
       }`}
       style={isDarkTheme ? darkThemeStyles : {}}
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Author Profile Section */}
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Profile Header */}
         <div
-          className={`shadow-xl overflow-hidden mb-12 transition-all duration-500 ${
-            isDarkTheme ? "bg-gray-900 border-red-500 border-4" : "bg-white"
+          className={`shadow-xl overflow-hidden transition-all duration-500 ${
+            isDarkTheme ? "bg-gray-900 border-red-500 border-2" : "bg-white"
           }`}
           style={isDarkTheme ? darkThemeCardStyles : {}}
         >
@@ -89,10 +87,13 @@ const AuthorProfile = () => {
             >
               <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
                 <img
-                  src={author.profileImage || "/default-profile.png"}
+                  src={
+                    author.profileImage ||
+                    "/placeholder.svg?height=250&width=250"
+                  }
                   className={`w-full h-full object-cover border-4 ${
                     isDarkTheme ? "border-red-600" : "border-white"
-                  } shadow-inner rounded-full transition-transform duration-300 hover:scale-105`}
+                  } shadow-inner transition-transform duration-300 hover:scale-105`}
                   alt="Author Profile"
                   style={
                     isDarkTheme
@@ -119,7 +120,7 @@ const AuthorProfile = () => {
                     isDarkTheme ? "text-red-300" : "text-gray-600"
                   }`}
                 >
-                  {author.email || "Email not provided"}
+                  {author.email}
                 </p>
               </div>
               <p
@@ -127,7 +128,7 @@ const AuthorProfile = () => {
                   isDarkTheme ? "text-red-400" : "text-gray-700"
                 }`}
               >
-                "{author.headline || "No headline available"}"
+                {author.headline || "No headline available"}
               </p>
               <p
                 className={`mb-4 ${
@@ -136,23 +137,100 @@ const AuthorProfile = () => {
               >
                 {formatDescription(author.bio) || "No bio available"}
               </p>
-              <p
-                className={`text-sm ${
-                  isDarkTheme ? "text-red-300" : "text-gray-500"
-                }`}
-              >
-                Member since: {new Date(author.createdAt).toLocaleDateString()}
-              </p>
             </div>
           </div>
         </div>
 
-        {/* Author Projects Section */}
+        {/* Professional Info */}
         <div
           className={`shadow-xl p-4 sm:p-8 transition-all duration-500 ${
-            isDarkTheme
-              ? "bg-gray-900 text-red-500 border-red-600 border-2"
-              : "bg-white"
+            isDarkTheme ? "bg-gray-900 border-red-500 border-2" : "bg-white"
+          }`}
+          style={isDarkTheme ? darkThemeCardStyles : {}}
+        >
+          <h2
+            className={`text-2xl font-bold mb-6 ${
+              isDarkTheme ? "text-red-500" : "text-gray-900"
+            }`}
+          >
+            Professional Information
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3
+                className={`text-lg font-semibold mb-2 ${
+                  isDarkTheme ? "text-red-400" : "text-gray-700"
+                }`}
+              >
+                Current Role
+              </h3>
+              <div className="space-y-2">
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">Identity:</span>{" "}
+                  {author.identity}
+                </p>
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">Current Position:</span>{" "}
+                  {author.currentPosition}
+                </p>
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">Skills:</span>{" "}
+                  {author.skills || "Not specified"}
+                </p>
+              </div>
+            </div>
+            <div>
+              <h3
+                className={`text-lg font-semibold mb-2 ${
+                  isDarkTheme ? "text-red-400" : "text-gray-700"
+                }`}
+              >
+                Education & Location
+              </h3>
+              <div className="space-y-2">
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">College:</span> {author.college}
+                </p>
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">Nation:</span> {author.nation}
+                </p>
+                <p
+                  className={`${
+                    isDarkTheme ? "text-red-300" : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-medium">Member since:</span>{" "}
+                  {new Date(author.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Projects Section */}
+        <div
+          className={`shadow-xl p-4 sm:p-8 transition-all duration-500 ${
+            isDarkTheme ? "bg-gray-900 border-red-500 border-2" : "bg-white"
           }`}
           style={isDarkTheme ? darkThemeCardStyles : {}}
         >
@@ -164,13 +242,13 @@ const AuthorProfile = () => {
             {author.username}'s Projects
           </h2>
           {authorProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {authorProjects.map((project) => (
                 <div key={project._id} className="group">
                   <Link
                     to={`/project/${project._id}`}
                     onClick={(event) => handleProjectClick(event, project._id)}
-                    className="block relative w-full h-[200px] mb-4 overflow-hidden shadow-md transition-transform duration-300 hover:scale-105"
+                    className="block relative w-full h-[200px] overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
                   >
                     <img
                       src={project.thumbnail}

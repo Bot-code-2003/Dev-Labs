@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bg from "../assets/svgs/about.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function About() {
   const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <section className="font-sans text-gray-800">
       {/* Header Section */}

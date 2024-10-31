@@ -16,6 +16,10 @@ const PersonalSpace = () => {
     bio: loggedInUserBio,
     headline: loggedInUserHeadline,
     createdAt: loggedInUserCreatedAt,
+    skills: loggedInUserSkills,
+    currentPosition: loggedInUserCurrentPosition,
+    college: loggedInUserCollege,
+    nation: loggedInUserNation,
   } = loggedInUser;
 
   const [newImage, setNewImage] = useState(null);
@@ -67,10 +71,10 @@ const PersonalSpace = () => {
   };
 
   return (
-    <div className=" min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* User Profile Section */}
-        <div className="bg-white shadow-xl overflow-hidden mb-12">
+        <div className="shadow-xl overflow-hidden bg-white">
           <div className="md:flex">
             <div className="md:flex-shrink-0 p-6 bg-gradient-to-br from-blue-400 to-indigo-400">
               <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
@@ -107,16 +111,30 @@ const PersonalSpace = () => {
             </div>
             <div className="p-8 md:flex-grow">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2 md:mb-0">
+                <h1 className="text-3xl font-bold mb-2 md:mb-0 text-gray-900">
                   {loggedInUserName}
                 </h1>
-                <p className="text-gray-600 text-sm">{loggedInUserEmail}</p>
+                <p className="text-sm text-gray-600">{loggedInUserEmail}</p>
               </div>
-              <p className="text-xl text-gray-700 italic mb-4">
+              <p className="text-xl italic mb-4 text-gray-700">
                 "{loggedInUserHeadline || "No headline available"}"
               </p>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-600">
                 {loggedInUserBio || "No bio available"}
+              </p>
+              <p className="mb-4 text-gray-600">
+                <strong>Skills:</strong> {loggedInUserSkills || "Not specified"}
+              </p>
+              <p className="mb-4 text-gray-600">
+                <strong>College:</strong>{" "}
+                {loggedInUserCollege || "Not specified"}
+              </p>
+              <p className="mb-4 text-gray-600">
+                <strong>Current Position:</strong>{" "}
+                {loggedInUserCurrentPosition || "Not specified"}
+              </p>
+              <p className="mb-4 text-gray-600">
+                <strong>Nation:</strong> {loggedInUserNation || "Not specified"}
               </p>
               <p className="text-gray-500 text-sm">
                 Member since:{" "}
@@ -127,38 +145,37 @@ const PersonalSpace = () => {
         </div>
 
         {/* User Projects Section */}
-        <div className="bg-white shadow-xl p-8">
+        <div className="shadow-xl p-4 sm:p-8 bg-white">
           <h2 className="text-2xl font-bold mb-6 text-gray-900">
             Your Projects
           </h2>
           {loading ? (
             <p className="text-gray-600">Loading projects...</p>
           ) : userProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {userProjects.map((project) => (
-                <div
-                  key={project._id}
-                  className="bg-gray-50 shadow-md hover:shadow-lg "
-                >
-                  <img
-                    src={project.thumbnail}
-                    alt={project.projectName}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="font-semibold text-xl text-gray-900 mb-2">
-                      {project.projectName}
-                    </h3>
-                    <div className="flex justify-between items-center">
-                      <button
-                        onClick={() => handleDeleteProject(project._id)}
-                        className={`text-red-500 hover:text-red-700 transition ${
-                          deleteLoading ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                        disabled={deleteLoading}
-                      >
-                        {deleteLoading ? "Deleting..." : <DeleteIcon />}
-                      </button>
+                <div key={project._id} className="group">
+                  <div className="bg-gray-50 shadow-md hover:shadow-lg">
+                    <img
+                      src={project.thumbnail}
+                      alt={project.projectName}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-6">
+                      <h3 className="font-semibold text-xl text-gray-900 mb-2">
+                        {project.projectName}
+                      </h3>
+                      <div className="flex justify-between items-center">
+                        <button
+                          onClick={() => handleDeleteProject(project._id)}
+                          className={`text-red-500 hover:text-red-700 transition ${
+                            deleteLoading ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                          disabled={deleteLoading}
+                        >
+                          {deleteLoading ? "Deleting..." : <DeleteIcon />}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

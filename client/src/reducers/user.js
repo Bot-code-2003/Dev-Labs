@@ -16,7 +16,10 @@ export default (state = initialState, action) => {
       const bio = action.payload.bio;
       const email = action.payload.email;
       const createdAt = action.payload.createdAt;
-
+      const skills = action.payload.skills;
+      const currentPosition = action.payload.currentPosition;
+      const college = action.payload.college;
+      const nation = action.payload.nation;
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -28,6 +31,10 @@ export default (state = initialState, action) => {
           bio,
           email,
           createdAt,
+          skills,
+          currentPosition,
+          college,
+          nation,
         })
       );
 

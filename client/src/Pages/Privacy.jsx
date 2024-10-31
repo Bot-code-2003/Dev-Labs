@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Privacy() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <section className="font-sans text-gray-800 py-16 px-6 md:px-12">
       <h1 className="text-5xl font-extrabold mb-8 text-blue-600 text-center">

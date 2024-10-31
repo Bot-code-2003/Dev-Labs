@@ -6,6 +6,10 @@ export default {
       fontFamily: {
         helvetica: ["helvetica", "sans-serif"],
       },
+      colors: {
+        primary: "#3b82f6", // Customize your primary color
+        "muted-foreground": "#9ca3af", // Customize muted foreground color
+      },
     },
   },
   plugins: [],
