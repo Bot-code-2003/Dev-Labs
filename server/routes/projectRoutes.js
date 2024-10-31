@@ -20,69 +20,38 @@ router.post("/submitProject", async (req, res) => {
 });
 
 // Route to get all projects with author details
-// Route to get all projects with author details
 router.get("/getProjects", async (req, res) => {
   const { page = 1, limit = 24, filter = "most recent" } = req.query;
   const skip = (page - 1) * limit;
   console.log("filter: ", filter);
 
   try {
-    // Initialize aggregation pipeline
-    let pipeline = [
-      {
-        $lookup: {
-          from: "users", // Name of the User collection
-          localField: "authorId",
-          foreignField: "_id",
-          as: "authorId", // Field to store the joined data
-        },
-      },
-      { $unwind: "$authorId" }, // Unwind to flatten the author details
-    ];
-
     // Set sorting criteria based on filter
+    let sortCriteria;
     switch (filter) {
       case "most liked":
         console.log("most liked");
-        pipeline.push(
-          {
-            $project: {
-              projectData: "$$ROOT", // Retain all project data
-              likeCount: { $size: "$projectLikes" }, // Count the number of likes
-              author: {
-                username: "$authorId.username",
-                email: "$authorId.email",
-                profileImage: "$authorId.profileImage",
-                headline: "$authorId.headline",
-                bio: "$authorId.bio",
-              }, // Include author data
-            },
-          },
-          { $sort: { likeCount: -1 } }, // Sort by likeCount descending
-          {
-            $replaceRoot: {
-              newRoot: { $mergeObjects: ["$projectData", "$author"] },
-            },
-          } // Flatten the result
-        );
+        sortCriteria = { likeCount: -1 }; // Sort by likeCount descending
         break;
       case "most recent":
         console.log("most recent");
-        pipeline.push({ $sort: { createdAt: -1 } });
+        sortCriteria = { createdAt: -1 };
         break;
       case "most viewed":
         console.log("most viewed");
-        pipeline.push({ $sort: { projectViews: -1 } });
+        sortCriteria = { projectViews: -1 };
         break;
       default:
-        pipeline.push({ $sort: { createdAt: -1 } }); // Default sorting
+        sortCriteria = { createdAt: -1 }; // Default sorting
     }
 
-    // Add pagination to the pipeline
-    pipeline.push({ $skip: skip }, { $limit: Number(limit) });
+    // Fetch projects with sorting, pagination, and populate author details
+    const projects = await Project.find()
+      .populate("authorId", "username email profileImage headline bio") // Populate author details
+      .sort(sortCriteria) // Sort by the selected criteria
+      .skip(skip) // Apply pagination
+      .limit(Number(limit)); // Limit the number of results
 
-    // Fetch projects using the aggregation pipeline
-    const projects = await Project.aggregate(pipeline).exec();
     const totalProjects = await Project.countDocuments(); // Count total documents for pagination
 
     res.status(200).json({
@@ -136,6 +105,7 @@ router.patch("/likeProject", async (req, res) => {
 
     if (!project.projectLikes.includes(userId)) {
       project.projectLikes.push(userId); // Only add if not already liked
+      project.likeCount++; // Increment likeCount
     }
 
     await project.save();
@@ -153,6 +123,7 @@ router.post("/unlikeProject", async (req, res) => {
     const project = await Project.findById(projectId);
 
     project.projectLikes = project.projectLikes.filter((id) => id !== userId);
+    project.likeCount--;
     await project.save();
 
     res.status(200).send("Project unliked");

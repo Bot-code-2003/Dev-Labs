@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
   projectName: String,
+  projectType: String,
   description: String,
   link: String,
   thumbnail: String,
@@ -16,6 +17,11 @@ const projectSchema = new mongoose.Schema({
   projectLikes: {
     type: [String],
     default: [],
+  },
+  likeCount: {
+    // New field to store count of likes
+    type: Number,
+    default: 0,
   },
   projectViews: {
     type: Number,

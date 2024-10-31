@@ -1,36 +1,57 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true, // Ensures usernames are unique
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    headline: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
+    profileImage: {
+      type: String,
+      default: "/placeholder.svg?height=250&width=250",
+    },
+    identity: {
+      type: String,
+      default: "Frontend Developer",
+    },
+    skills: {
+      type: String, // Array of strings for skills
+      default: [],
+    },
+    currentPosition: {
+      type: String,
+      default: "Student",
+    },
+    college: {
+      type: String,
+      default: "G. Pulla Reddy Engineering College",
+    },
+    nation: {
+      type: String,
+      default: "India",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true, // Ensures email is unique
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  headline: {
-    type: String,
-    required: false,
-  },
-  bio: {
-    type: String,
-    required: false,
-  },
-  profileImage: {
-    type: String,
-    default: "/placeholder.svg?height=250&width=250", // Default image for users who don't upload one
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { timestamps: true }
+); // Adds createdAt and updatedAt automatically
 
 export default mongoose.model("User", userSchema);

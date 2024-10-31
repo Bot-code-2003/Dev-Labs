@@ -11,7 +11,19 @@ const saltRounds = 10;
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, headline, bio, profileImage } = req.body;
+    const {
+      username,
+      email,
+      password,
+      headline,
+      bio,
+      profileImage,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
+    } = req.body;
 
     // Check if user already exists by email or username
     if ((await User.findOne({ email })) || (await User.findOne({ username }))) {
@@ -29,6 +41,11 @@ router.post("/signup", async (req, res) => {
       headline,
       bio,
       profileImage,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
     });
 
     await newUser.save();
@@ -50,6 +67,11 @@ router.post("/signup", async (req, res) => {
       email: newUser.email,
       headline: newUser.headline,
       bio: newUser.bio,
+      identity: newUser.identity,
+      skills: newUser.skills,
+      currentPosition: newUser.currentPosition,
+      college: newUser.college,
+      nation: newUser.nation,
       createdAt: newUser.createdAt,
     });
   } catch (error) {
@@ -92,6 +114,11 @@ router.post("/login", async (req, res) => {
       email: user.email,
       headline: user.headline,
       bio: user.bio,
+      identity: user.identity,
+      skills: user.skills,
+      currentPosition: user.currentPosition,
+      college: user.college,
+      nation: user.nation,
       createdAt: user.createdAt,
     });
   } catch (error) {
@@ -119,14 +146,42 @@ router.patch("/editImage", async (req, res) => {
   }
 });
 
+// Get User Info Route
 router.get("/getUserInfo/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId);
-    const { username, email, profileImage, headline, bio, createdAt } = user;
-    res
-      .status(200)
-      .send({ username, email, profileImage, headline, bio, createdAt });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const {
+      username,
+      email,
+      profileImage,
+      headline,
+      bio,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
+      createdAt,
+    } = user;
+    res.status(200).send({
+      username,
+      email,
+      profileImage,
+      headline,
+      bio,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
+      createdAt,
+    });
   } catch (error) {
     console.error("Get user info error:", error);
     res.status(500).send("Server error during get user info");

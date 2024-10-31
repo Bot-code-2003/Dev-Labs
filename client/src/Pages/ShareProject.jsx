@@ -3,6 +3,7 @@ import PublishIcon from "@mui/icons-material/Publish";
 import { useDispatch } from "react-redux";
 import { submitProject } from "../actions/project";
 import { useNavigate } from "react-router-dom";
+import FileInput from "../components/FileInput"; // Import FileInput
 
 const compressImage = (file, quality) => {
   return new Promise((resolve) => {
@@ -44,6 +45,7 @@ export default function ShareProject() {
 
   const [projectData, setProjectData] = useState({
     projectName: "",
+    projectType: "Website",
     tagline: "",
     description: "",
     link: "",
@@ -53,10 +55,9 @@ export default function ShareProject() {
     authorId: authorId,
   });
 
-  const [currentStep, setCurrentStep] = useState("details");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showPopup, setShowPopup] = useState(false); // State for managing popup visibility
-  const [popupMessage, setPopupMessage] = useState(""); // To show custom messages for validation errors
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -81,7 +82,7 @@ export default function ShareProject() {
   };
 
   const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files); // No limit on images
+    const files = Array.from(e.target.files); // Allow multiple images
     const imagePromises = files.map(async (file) => {
       const compressedImage = await compressImage(
         file,
@@ -93,7 +94,7 @@ export default function ShareProject() {
     const images = await Promise.all(imagePromises);
     setProjectData((prevData) => ({
       ...prevData,
-      images: images,
+      images: [...prevData.images, ...images], // Append new images
     }));
   };
 
@@ -132,7 +133,9 @@ export default function ShareProject() {
     }
 
     setIsSubmitting(true);
+    console.log(projectData);
 
+    // Uncomment to dispatch the submitProject action
     setTimeout(() => {
       dispatch(submitProject(projectData))
         .then(() => {
@@ -168,218 +171,177 @@ export default function ShareProject() {
         </div>
 
         <div className="p-6">
-          {currentStep === "details" && (
-            <form className="space-y-6">
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="projectName"
-                >
-                  Project Name (Required)
-                </label>
-                <input
-                  id="projectName"
-                  name="projectName"
-                  value={projectData.projectName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your project name"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="tagline"
-                >
-                  Tagline (Required)
-                </label>
-                <input
-                  id="tagline"
-                  name="tagline"
-                  value={projectData.tagline}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter a short tagline"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="description"
-                >
-                  Description (Required)
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={projectData.description}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter a detailed description"
-                  rows={4}
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="link"
-                >
-                  Project Link (e.g., GitHub, live demo) (Optional)
-                </label>
-                <input
-                  id="link"
-                  name="link"
-                  value={projectData.link}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter project link (e.g., GitHub, live demo)"
-                />
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setCurrentStep("images")}
-                  className="px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Next
-                </button>
-              </div>
-            </form>
-          )}
-
-          {currentStep === "images" && (
-            <div className="space-y-6">
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="logo"
-                >
-                  Logo (250x250px recommended)
-                </label>
-                <div className="mt-1 flex items-center space-x-4">
-                  <label
-                    htmlFor="logo-upload"
-                    className="cursor-pointer bg-white py-2 px-3 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Choose Logo
-                    <input
-                      id="logo-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoUpload}
-                      className="sr-only"
-                    />
-                  </label>
-                  {projectData.logo && (
-                    <img
-                      src={projectData.logo}
-                      alt="Logo"
-                      className="h-16 w-16 object-cover"
-                    />
-                  )}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Thumbnail
-                </label>
-                <div className="mt-1 flex items-center space-x-4">
-                  <label
-                    htmlFor="thumbnail-upload"
-                    className="cursor-pointer bg-white py-2 px-3 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Choose Thumbnail
-                    <input
-                      id="thumbnail-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleThumbnailUpload}
-                      className="sr-only"
-                    />
-                  </label>
-                </div>
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {projectData.thumbnail && (
-                    <img
-                      src={projectData.thumbnail}
-                      alt="Thumbnail"
-                      className="h-[150px] sm:h-[250px] w-full object-cover"
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Images
-                </label>
-                <div className="mt-1 flex items-center space-x-4">
-                  <label
-                    htmlFor="images-upload"
-                    className="cursor-pointer bg-white py-2 px-3 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Choose Images
-                    <input
-                      id="images-upload"
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handleImageUpload}
-                      className="sr-only"
-                    />
-                  </label>
-                </div>
-                {projectData.images.length > 0 && (
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {projectData.images.map((image, index) => (
-                      <div>
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Project Image ${index + 1}`}
-                          className="h-[150px] sm:h-[250px] w-full object-cover"
-                        />
-                        <p onClick={() => handleDeleteImage(index)}>Delete</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setCurrentStep("details")}
-                  className="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={handlePublish}
-                  disabled={isSubmitting}
-                  className={`flex items-center gap-1 px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isSubmitting ? (
-                    "Publishing..."
-                  ) : (
-                    <>
-                      <PublishIcon /> Publish
-                    </>
-                  )}
-                </button>
-              </div>
+          <form className="space-y-6">
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700 mb-1"
+                htmlFor="projectName"
+              >
+                Project Name (Required)
+              </label>
+              <input
+                id="projectName"
+                name="projectName"
+                value={projectData.projectName}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your project name"
+                required
+              />
             </div>
-          )}
+
+            {/** Project Type select */}
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700 mb-1"
+                htmlFor="projectType"
+              >
+                Project Type (Required)
+              </label>
+              <select
+                id="projectType"
+                name="projectType"
+                value={projectData.projectType}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              >
+                <option value="">Select a project type</option>
+                <option value="Website">Website</option>
+                <option value="Android App">Android App</option>
+                <option value="IOS App">IOS App</option>
+                <option value="Mobile App">Mobile App</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700 mb-1"
+                htmlFor="tagline"
+              >
+                Tagline (Required)
+              </label>
+              <input
+                id="tagline"
+                name="tagline"
+                value={projectData.tagline}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter a short tagline"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700 mb-1"
+                htmlFor="description"
+              >
+                Description (Required)
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={projectData.description}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter a detailed description"
+                rows={4}
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700 mb-1"
+                htmlFor="link"
+              >
+                Project Link (e.g., GitHub, live demo) (Optional)
+              </label>
+              <input
+                id="link"
+                name="link"
+                value={projectData.link}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter project link (e.g., GitHub, live demo)"
+              />
+            </div>
+
+            <div>
+              <FileInput
+                label="Logo (250x250px recommended)"
+                id="logo-upload"
+                accept="image/*"
+                onChange={handleLogoUpload}
+              />
+              {projectData.logo && (
+                <img
+                  src={projectData.logo}
+                  alt="Logo"
+                  className="h-16 w-16 object-cover mt-2"
+                />
+              )}
+            </div>
+            <div>
+              <FileInput
+                label="Thumbnail"
+                id="thumbnail-upload"
+                accept="image/*"
+                onChange={handleThumbnailUpload}
+              />
+              {projectData.thumbnail && (
+                <img
+                  src={projectData.thumbnail}
+                  alt="Thumbnail"
+                  className="h-[150px] sm:h-[250px] w-full object-cover mt-4"
+                />
+              )}
+            </div>
+
+            <div>
+              <FileInput
+                label="Project Images"
+                id="images-upload"
+                accept="image/*"
+                onChange={handleImageUpload}
+                multiple // Allow multiple images to be uploaded
+              />
+              {projectData.images.length > 0 && (
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {projectData.images.map((image, index) => (
+                    <div key={index}>
+                      <img
+                        src={image}
+                        alt={`Project Image ${index + 1}`}
+                        className="h-[150px] sm:h-[250px] w-full object-cover"
+                      />
+                      <p onClick={() => handleDeleteImage(index)}>Delete</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handlePublish}
+                disabled={isSubmitting}
+                className={`flex items-center gap-1 px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {isSubmitting ? (
+                  "Publishing..."
+                ) : (
+                  <>
+                    <PublishIcon /> Publish
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 

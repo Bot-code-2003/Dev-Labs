@@ -3,10 +3,52 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../../actions/user";
 import Nebula from "../../assets/nebula.jpeg";
+import SkillsInput from "../../components/SkillsInput";
+import TextInput from "../../components/TextInput";
+import SelectInput from "../../components/SelectInput";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = 250;
+          canvas.height = 250;
+          ctx.drawImage(img, 0, 0, 250, 250);
+
+          // Determine the initial quality based on file size
+          let quality = 1.0;
+          let dataURL = canvas.toDataURL("image/jpeg", quality);
+
+          // Apply compression based on thresholds
+          if (file.size > 1024 * 1024) {
+            quality = 0.3; // 95% compression for files larger than 1 MB
+          } else if (file.size > 500 * 1024) {
+            quality = 0.3; // 90% compression for files larger than 500 KB
+          } else if (file.size > 20 * 1024) {
+            quality = 0.3; // 70% compression for files larger than 20 KB
+          } else {
+            quality = 0.7; // 30% compression for smaller files
+          }
+
+          // Compress image to the selected quality
+          dataURL = canvas.toDataURL("image/jpeg", quality);
+
+          setFormData({ ...formData, profileImage: dataURL });
+        };
+      };
+    }
+  };
 
   const [formData, setFormData] = useState({
     username: "",
@@ -14,60 +56,26 @@ export default function SignUp() {
     headline: "",
     bio: "",
     password: "",
-    image: null,
     profileImage: null,
+    identity: "Frontend Developer",
+    skills: "",
+    currentPosition: "Student", // Default value as "Student"
+    college: "G. Pulla Reddy Engineering College", // Default college
+    nation: "India", // Default nation
   });
 
-  const [loading, setLoading] = useState(false); // Loading state
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = (e) => {
-        const img = new Image();
-        img.src = e.target.result;
-
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-
-          // Set canvas dimensions to 250x250
-          canvas.width = 250;
-          canvas.height = 250;
-
-          // Resize the image and draw it on the canvas
-          ctx.drawImage(img, 0, 0, 250, 250);
-
-          // Compress image if it exceeds 20KB
-          let quality = 1.0; // 100% quality
-          let dataURL = canvas.toDataURL("image/jpeg", quality);
-
-          while (dataURL.length / 1024 > 20 && quality > 0.5) {
-            quality -= 0.1;
-            dataURL = canvas.toDataURL("image/jpeg", quality);
-          }
-
-          setFormData({ ...formData, image: file, profileImage: dataURL });
-        };
-      };
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Start loading
     console.log("Form submitted:", formData);
-
     try {
-      await dispatch(signup(formData, navigate)); // Assuming signup returns a promise
+      setLoading(true);
+      await dispatch(signup(formData, navigate));
     } catch (error) {
       console.error("Signup error:", error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -92,107 +100,6 @@ export default function SignUp() {
             Create your account
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                placeholder="Choose a unique username"
-                value={formData.username}
-                onChange={(e) =>
-                  setFormData({ ...formData, username: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email-address"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="headline"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Headline
-              </label>
-              <input
-                id="headline"
-                name="headline"
-                type="text"
-                required
-                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                placeholder="e.g., Full Stack Developer"
-                value={formData.headline}
-                onChange={(e) =>
-                  setFormData({ ...formData, headline: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="bio"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Bio
-              </label>
-              <textarea
-                id="bio"
-                name="bio"
-                rows="3"
-                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                placeholder="Tell us about yourself"
-                value={formData.bio}
-                onChange={(e) =>
-                  setFormData({ ...formData, bio: e.target.value })
-                }
-              ></textarea>
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                placeholder="Create a strong password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-              />
-            </div>
             <div>
               <label
                 htmlFor="image"
@@ -222,47 +129,147 @@ export default function SignUp() {
               </div>
             )}
 
+            <TextInput
+              label="Username"
+              id="username"
+              name="username"
+              placeholder="Choose a unique username"
+              required
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+            />
+            <TextInput
+              label="Email address"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
+            <TextInput
+              label="Headline"
+              id="headline"
+              name="headline"
+              placeholder="e.g., Full Stack Developer"
+              required
+              value={formData.headline}
+              onChange={(e) =>
+                setFormData({ ...formData, headline: e.target.value })
+              }
+            />
             <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                disabled={loading} // Disable button while loading
+              <label
+                htmlFor="bio"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                {loading ? (
-                  <div className="flex items-center">
-                    <svg
-                      className="animate-spin h-5 w-5 mr-3"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2s-.9 2-2 2H6c-1.1 0-2-.9-2-2zm16 0c0-1.1-.9-2-2-2h-3c-1.1 0-2 .9-2 2s.9 2 2 2h3c1.1 0 2-.9 2-2z"
-                      ></path>
-                    </svg>
-                    Signing Up...
-                  </div>
-                ) : (
-                  "Sign Up"
-                )}
-              </button>
+                Bio
+              </label>
+              <textarea
+                id="bio"
+                rows="4"
+                name="bio"
+                className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                placeholder="Write a short bio about yourself"
+                value={formData.bio}
+                onChange={(e) =>
+                  setFormData({ ...formData, bio: e.target.value })
+                }
+                required
+              ></textarea>
             </div>
+            <TextInput
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Create a strong password"
+              required
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+            <SelectInput
+              label="Your Identity"
+              id="identity"
+              name="identity"
+              options={[
+                "Frontend Developer",
+                "Backend Developer",
+                "Full-stack Developer",
+                "Mern-stack Developer",
+              ]}
+              required
+              value={formData.identity}
+              onChange={(e) =>
+                setFormData({ ...formData, identity: e.target.value })
+              }
+            />
+            <TextInput
+              label="Skills"
+              id="skills"
+              name="skills"
+              type="text"
+              placeholder="Enter the skills you're interested in"
+              value={formData.skills}
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, skills: e.target.value })
+              }
+            />
+            <SelectInput
+              label="Current Position"
+              id="currentPosition"
+              name="currentPosition"
+              options={["Student", "Developer", "Freelancer"]}
+              required
+              value={formData.currentPosition}
+              onChange={(e) =>
+                setFormData({ ...formData, currentPosition: e.target.value })
+              }
+            />
+            <SelectInput
+              label="College Name"
+              id="college"
+              name="college"
+              options={["G. Pulla Reddy Engineering College"]}
+              required
+              value={formData.college}
+              onChange={(e) =>
+                setFormData({ ...formData, college: e.target.value })
+              }
+            />
+            <SelectInput
+              label="Nation"
+              id="nation"
+              name="nation"
+              options={["India"]}
+              required
+              value={formData.nation}
+              onChange={(e) =>
+                setFormData({ ...formData, nation: e.target.value })
+              }
+            />
+
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+              disabled={loading}
+            >
+              {loading ? "Signing Up..." : "Sign Up"}
+            </button>
           </form>
           <p className="mt-4 text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out"
+              className="font-medium text-blue-600 hover:text-blue-500"
             >
               Log in
             </Link>
@@ -278,16 +285,6 @@ export default function SignUp() {
               Connect with developers, showcase your projects, and grow your
               skills.
             </p>
-            <ul className="list-disc list-inside text-left">
-              <li className="mb-2">
-                Share your work and ideas with fellow developers
-              </li>
-              <li className="mb-2">Collaborate on cutting-edge projects</li>
-              <li className="mb-2">
-                Receive feedback through reviews and comments
-              </li>
-              <li>Track upvotes and enhance your projects</li>
-            </ul>
           </div>
         </div>
       </div>
