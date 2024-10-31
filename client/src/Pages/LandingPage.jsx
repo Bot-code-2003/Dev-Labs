@@ -181,21 +181,23 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-16 w-full max-w-md text-center">
-          <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
-          <form
-            className="flex flex-col sm:flex-row items-center"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full sm:w-auto flex-grow border border-gray-300 p-2 rounded mb-2 sm:mb-0 sm:mr-2 text-gray-900"
-              aria-label="Email for newsletter"
-            />
-            <button className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
-              Subscribe
+          <h2 className="text-2xl font-bold mb-4">Discover More</h2>
+          <p className="mb-4 text-gray-300">
+            Have questions or want to learn more about our features? Don't
+            hesitate to reach out!
+          </p>
+          <Link to="/contact">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition">
+              Contact Us
             </button>
-          </form>
+          </Link>
+          <p className="mt-4 text-gray-400">
+            or{" "}
+            <Link to="/explore" className="text-blue-400 hover:underline">
+              explore projects
+            </Link>{" "}
+            to get inspired!
+          </p>
         </div>
       </main>
 
