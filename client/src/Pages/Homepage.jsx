@@ -126,7 +126,7 @@ const Homepage = () => {
                       {project.projectLikes.length || 0}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-1">
+                  {/* <div className="flex items-center space-x-1">
                     <VisibilityIcon
                       className="text-gray-500"
                       fontSize="small"
@@ -134,7 +134,7 @@ const Homepage = () => {
                     <span className="text-sm text-gray-600">
                       {project.projectViews || 0}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
