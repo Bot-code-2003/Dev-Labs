@@ -12,7 +12,7 @@ import {
 export default function Discussions({ projectId }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews) || [];
-
+  
   const [newReview, setNewReview] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
@@ -36,7 +36,10 @@ export default function Discussions({ projectId }) {
       alert("Please login to add a reply");
       return;
     }
-    if (replyText.trim() === "") return;
+    if (replyText.trim() === "") {
+      alert("Reply cannot be empty");
+      return;
+    }
     dispatch(replyToReview(reviewId, { userId: loggedInUserId, text: replyText }));
     setReplyingTo(null);
     setReplyText("");
@@ -44,7 +47,7 @@ export default function Discussions({ projectId }) {
 
   const handleReply = (id) => {
     setReplyingTo(id === replyingTo ? null : id);
-    setReplyText("");
+    if (id !== replyingTo) setReplyText(""); // Clear the reply text when opening a new reply box
   };
 
   const handleDeleteReview = (id) => {
@@ -86,7 +89,7 @@ export default function Discussions({ projectId }) {
               <div className="flex items-center gap-3 mb-4">
                 <img
                   src={review.authorId.profileImage || loggedInUser?.profileImage}
-                  alt="Profile Picture"
+                  alt="Profile"
                   className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
@@ -107,14 +110,14 @@ export default function Discussions({ projectId }) {
                   <ReplyIcon />
                   <span>Reply</span>
                 </button>
-                {review.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com" ? (
+                {(review.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com") && (
                   <button
                     onClick={() => handleDeleteReview(review._id)}
                     className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
                   >
                     Delete Review
                   </button>
-                ) : null}
+                )}
               </div>
 
               {replyingTo === review._id && (
@@ -142,7 +145,7 @@ export default function Discussions({ projectId }) {
                       <div className="flex items-center gap-3 mb-4">
                         <img
                           src={reply.authorId.profileImage || loggedInUser?.profileImage}
-                          alt="Profile Picture"
+                          alt="Profile"
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <div>
