@@ -249,6 +249,7 @@ export default function SignUp() {
                 "MS Ramaiah Institute of Technology",
                 "G. Pullaiah College of Engineering and Technology",
                 "IIIT Bhubaneswar",
+                "Chaitanya Bharathi Institute of Technology",
               ]}
               required
               value={formData.college}
