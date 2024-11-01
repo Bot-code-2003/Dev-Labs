@@ -211,7 +211,7 @@ export default function Discussions({ projectId, authorId }) {
                           {formatReview(reply.text)}
                         </p>
                         {review.authorId._id === loggedInUserId ||
-                          (reply.authorId.email ===
+                          (loggedInUserId ===
                             "dharmadeepmadisetty@gmail.com" && ( // Check against the actual ID
                             <button
                               onClick={() =>
