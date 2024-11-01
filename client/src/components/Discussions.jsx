@@ -58,6 +58,15 @@ export default function Discussions({ projectId }) {
     dispatch(deleteReply(reviewId, replyId));
   };
 
+  const formatDescription = (description) => {
+    return description.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   return (
     <div className="mx-auto py-4">
       <h2 className="text-2xl font-semibold mb-6">User Reviews</h2>
@@ -101,7 +110,7 @@ export default function Discussions({ projectId }) {
                   </p>
                 </div>
               </div>
-              <p className="mb-4 text-gray-700">{review.review}</p>
+              <p className="mb-4 text-gray-700">{formatDescription(review.review)}</p>
               <div className="flex items-center space-x-4 mb-4">
                 <button
                   onClick={() => handleReply(review._id)}
@@ -157,7 +166,7 @@ export default function Discussions({ projectId }) {
                           </p>
                         </div>
                       </div>
-                      <p className="text-gray-600">{reply.text}</p>
+                      <p className="text-gray-600">{formatDescription(reply.text)}</p>
                       {(reply.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com") && (
                         <button
                           onClick={() => handleDeleteReply(review._id, reply._id)}
