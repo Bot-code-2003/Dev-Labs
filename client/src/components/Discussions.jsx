@@ -15,8 +15,7 @@ import {
 export default function Discussions({ projectId, authorId }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews) || [];
-  // console.log("Reviews: ", reviews);
-
+  
   const [newReview, setNewReview] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
@@ -24,7 +23,7 @@ export default function Discussions({ projectId, authorId }) {
   const [visibleReplies, setVisibleReplies] = useState({});
 
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const loggedInUserId = loggedInUser?.userId; // Adjust according to your user structure
+  const loggedInUserId = loggedInUser?.userId;
   const loggedInUserImage = loggedInUser?.profileImage;
   const loggedInUserName = loggedInUser?.username;
 
@@ -126,19 +125,11 @@ export default function Discussions({ projectId, authorId }) {
           {reviews.slice(0, visibleReviews).map((review) => (
             <div key={review._id} className="bg-white px-3 py-1 border-b-2">
               <div className="flex items-center gap-3 mb-4">
-                {review.authorId.profileImage ? (
-                  <img
-                    src={review.authorId.profileImage}
-                    alt="Profile Picture"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={loggedInUserImage}
-                    alt="Profile Picture"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                )}
+                <img
+                  src={review.authorId.profileImage || loggedInUserImage}
+                  alt="Profile Picture"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
                 <div>
                   <h4 className="font-semibold text-gray-800">
                     {review.authorId.username || loggedInUserName}
@@ -152,13 +143,6 @@ export default function Discussions({ projectId, authorId }) {
                 {formatReview(review.review)}
               </p>
               <div className="flex items-center space-x-4 mb-4">
-                {/* <button
-                  onClick={() => handleUpvote(review._id)}
-                  className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition duration-150 ease-in-out"
-                >
-                  <ThumbUpIcon fontSize="small" />
-                  <span>{review.upvotes}</span>
-                </button> */}
                 <button
                   onClick={() => handleReply(review._id)}
                   className="flex items-center space-x-1 text-gray-500 hover:text-green-600 transition duration-150 ease-in-out"
@@ -166,17 +150,14 @@ export default function Discussions({ projectId, authorId }) {
                   <ReplyIcon />
                   <span>Reply</span>
                 </button>
-                {/* Show delete option if the logged-in user is the author of the review */}
-                {review.authorId._id === loggedInUserId ||
-                  (review.authorId.email ===
-                    "dharmadeepmadisetty@gmail.com" && ( // Check against the actual ID
-                    <button
-                      onClick={() => handleDeleteReview(review._id)}
-                      className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
-                    >
-                      Delete Review
-                    </button>
-                  ))}
+                {review.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com" ? (
+                  <button
+                    onClick={() => handleDeleteReview(review._id)}
+                    className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
+                  >
+                    Delete Review
+                  </button>
+                ) : null}
               </div>
               {review.replies && review.replies.length > 0 && (
                 <div className="ml-4 sm:ml-8 space-y-4 mt-4 border-l-2 border-gray-200 pl-4">
@@ -185,19 +166,11 @@ export default function Discussions({ projectId, authorId }) {
                     .map((reply) => (
                       <div key={reply._id} className="bg-gray-50 p-3">
                         <div className="flex items-center gap-3 mb-4">
-                          {reply.authorId.profileImage ? (
-                            <img
-                              src={reply.authorId.profileImage}
-                              alt="Profile Picture"
-                              className="w-10 h-10 rounded-full object-cover"
-                            />
-                          ) : (
-                            <img
-                              src={loggedInUserImage}
-                              alt="Profile Picture"
-                              className="w-10 h-10 rounded-full object-cover"
-                            />
-                          )}
+                          <img
+                            src={reply.authorId.profileImage || loggedInUserImage}
+                            alt="Profile Picture"
+                            className="w-10 h-10 rounded-full object-cover"
+                          />
                           <div>
                             <h4 className="font-semibold text-gray-800">
                               {reply.authorId.username || loggedInUserName}
@@ -210,22 +183,17 @@ export default function Discussions({ projectId, authorId }) {
                         <p className="text-gray-600">
                           {formatReview(reply.text)}
                         </p>
-                        {review.authorId._id === loggedInUserId ||
-                          (loggedInUserId ===
-                            "dharmadeepmadisetty@gmail.com" && ( // Check against the actual ID
-                            <button
-                              onClick={() =>
-                                handleDeleteReply(review._id, reply._id)
-                              }
-                              className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
-                            >
-                              Delete Reply
-                            </button>
-                          ))}
+                        {(reply.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com") && (
+                          <button
+                            onClick={() => handleDeleteReply(review._id, reply._id)}
+                            className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
+                          >
+                            Delete Reply
+                          </button>
+                        )}
                       </div>
                     ))}
-                  {review.replies.length >
-                    (visibleReplies[review._id] || 5) && (
+                  {review.replies.length > (visibleReplies[review._id] || 5) && (
                     <button
                       onClick={() => handleLoadMoreReplies(review._id)}
                       className="text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out"
@@ -257,7 +225,7 @@ export default function Discussions({ projectId, authorId }) {
           {visibleReviews < reviews.length && (
             <div className="mt-8 text-center">
               <button
-                onClick={handleLoadMore}
+                                onClick={handleLoadMore}
                 className="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-150 ease-in-out"
               >
                 Load More Reviews
@@ -271,3 +239,4 @@ export default function Discussions({ projectId, authorId }) {
     </div>
   );
 }
+
