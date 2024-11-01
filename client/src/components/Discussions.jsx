@@ -40,7 +40,7 @@ export default function Discussions({ projectId }) {
       alert("Reply cannot be empty");
       return;
     }
-    dispatch(replyToReview(reviewId, { userId: loggedInUserId, text: replyText }));
+    dispatch(replyToReview(reviewId, { authorId: loggedInUserId, text: replyText }));
     setReplyingTo(null);
     setReplyText("");
   };
