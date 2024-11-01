@@ -1,31 +1,24 @@
 import React, { useState, useEffect } from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ReplyIcon from "@mui/icons-material/Reply";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addReview,
-  upvoteReview,
   replyToReview,
   getReviews,
   deleteReview,
   deleteReply,
 } from "../actions/review";
 
-export default function Discussions({ projectId, authorId }) {
+export default function Discussions({ projectId }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews) || [];
-  
+
   const [newReview, setNewReview] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
-  const [visibleReviews, setVisibleReviews] = useState(10);
-  const [visibleReplies, setVisibleReplies] = useState({});
 
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const loggedInUserId = loggedInUser?.userId;
-  const loggedInUserImage = loggedInUser?.profileImage;
-  const loggedInUserName = loggedInUser?.username;
 
   useEffect(() => {
     dispatch(getReviews(projectId));
@@ -33,44 +26,25 @@ export default function Discussions({ projectId, authorId }) {
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
-    if (loggedInUser) {
-      if (newReview.trim() === "") return;
-      dispatch(addReview(newReview, projectId, loggedInUserId));
-      setNewReview("");
-    } else {
-      alert("Please login to add a review");
-    }
+    if (newReview.trim() === "") return;
+    dispatch(addReview(newReview, projectId, loggedInUserId));
+    setNewReview("");
   };
 
-  const handleUpvote = (id) => {
-    dispatch(upvoteReview(id));
+  const submitReply = (reviewId) => {
+    if (!loggedInUser) {
+      alert("Please login to add a reply");
+      return;
+    }
+    if (replyText.trim() === "") return;
+    dispatch(replyToReview(reviewId, { userId: loggedInUserId, text: replyText }));
+    setReplyingTo(null);
+    setReplyText("");
   };
 
   const handleReply = (id) => {
     setReplyingTo(id === replyingTo ? null : id);
     setReplyText("");
-  };
-
-  const submitReply = (id) => {
-    if (loggedInUser) {
-      if (replyText.trim() === "") return;
-      dispatch(replyToReview(id, { loggedInUserId, text: replyText }));
-      setReplyingTo(null);
-      setReplyText("");
-    } else {
-      alert("Please login to add a reply");
-    }
-  };
-
-  const handleLoadMore = () => {
-    setVisibleReviews((prevVisible) => prevVisible + 10);
-  };
-
-  const handleLoadMoreReplies = (reviewId) => {
-    setVisibleReplies((prev) => ({
-      ...prev,
-      [reviewId]: (prev[reviewId] || 5) + 5,
-    }));
   };
 
   const handleDeleteReview = (id) => {
@@ -81,27 +55,12 @@ export default function Discussions({ projectId, authorId }) {
     dispatch(deleteReply(reviewId, replyId));
   };
 
-  const formatReview = (review) => {
-    return review.split("\n").map((line, index) => (
-      <span key={index}>
-        {line}
-        <br />
-      </span>
-    ));
-  };
-
   return (
     <div className="mx-auto py-4">
       <h2 className="text-2xl font-semibold mb-6">User Reviews</h2>
 
-      <form
-        onSubmit={handleSubmitReview}
-        className="mb-4 bg-white border-b pb-4"
-      >
-        <label
-          htmlFor="newReview"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
+      <form onSubmit={handleSubmitReview} className="mb-4 bg-white border-b pb-4">
+        <label htmlFor="newReview" className="block text-sm font-medium text-gray-700 mb-2">
           Your Feedback Matters
         </label>
         <textarea
@@ -122,26 +81,24 @@ export default function Discussions({ projectId, authorId }) {
 
       {reviews.length > 0 ? (
         <div className="space-y-6">
-          {reviews.slice(0, visibleReviews).map((review) => (
+          {reviews.map((review) => (
             <div key={review._id} className="bg-white px-3 py-1 border-b-2">
               <div className="flex items-center gap-3 mb-4">
                 <img
-                  src={review.authorId.profileImage || loggedInUserImage}
+                  src={review.authorId.profileImage || loggedInUser?.profileImage}
                   alt="Profile Picture"
                   className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
                   <h4 className="font-semibold text-gray-800">
-                    {review.authorId.username || loggedInUserName}
+                    {review.authorId.username || loggedInUser?.username}
                   </h4>
                   <p className="text-sm text-gray-500">
                     {new Date(review.createdAt).toLocaleString()}
                   </p>
                 </div>
               </div>
-              <p className="mb-4 text-gray-700">
-                {formatReview(review.review)}
-              </p>
+              <p className="mb-4 text-gray-700">{review.review}</p>
               <div className="flex items-center space-x-4 mb-4">
                 <button
                   onClick={() => handleReply(review._id)}
@@ -159,50 +116,7 @@ export default function Discussions({ projectId, authorId }) {
                   </button>
                 ) : null}
               </div>
-              {review.replies && review.replies.length > 0 && (
-                <div className="ml-4 sm:ml-8 space-y-4 mt-4 border-l-2 border-gray-200 pl-4">
-                  {review.replies
-                    .slice(0, visibleReplies[review._id] || 5)
-                    .map((reply) => (
-                      <div key={reply._id} className="bg-gray-50 p-3">
-                        <div className="flex items-center gap-3 mb-4">
-                          <img
-                            src={reply.authorId.profileImage || loggedInUserImage}
-                            alt="Profile Picture"
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
-                          <div>
-                            <h4 className="font-semibold text-gray-800">
-                              {reply.authorId.username || loggedInUserName}
-                            </h4>
-                            <p className="text-sm text-gray-500">
-                              {new Date(reply.createdAt).toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-gray-600">
-                          {formatReview(reply.text)}
-                        </p>
-                        {(reply.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com") && (
-                          <button
-                            onClick={() => handleDeleteReply(review._id, reply._id)}
-                            className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
-                          >
-                            Delete Reply
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  {review.replies.length > (visibleReplies[review._id] || 5) && (
-                    <button
-                      onClick={() => handleLoadMoreReplies(review._id)}
-                      className="text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out"
-                    >
-                      Load More Replies
-                    </button>
-                  )}
-                </div>
-              )}
+
               {replyingTo === review._id && (
                 <div className="mt-4">
                   <textarea
@@ -220,18 +134,41 @@ export default function Discussions({ projectId, authorId }) {
                   </button>
                 </div>
               )}
+
+              {review.replies && review.replies.length > 0 && (
+                <div className="ml-4 sm:ml-8 space-y-4 mt-4 border-l-2 border-gray-200 pl-4">
+                  {review.replies.map((reply) => (
+                    <div key={reply._id} className="bg-gray-50 p-3">
+                      <div className="flex items-center gap-3 mb-4">
+                        <img
+                          src={reply.authorId.profileImage || loggedInUser?.profileImage}
+                          alt="Profile Picture"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <div>
+                          <h4 className="font-semibold text-gray-800">
+                            {reply.authorId.username || loggedInUser?.username}
+                          </h4>
+                          <p className="text-sm text-gray-500">
+                            {new Date(reply.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-gray-600">{reply.text}</p>
+                      {(reply.authorId._id === loggedInUserId || loggedInUser?.email === "dharmadeepmadisetty@gmail.com") && (
+                        <button
+                          onClick={() => handleDeleteReply(review._id, reply._id)}
+                          className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out"
+                        >
+                          Delete Reply
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
-          {visibleReviews < reviews.length && (
-            <div className="mt-8 text-center">
-              <button
-                                onClick={handleLoadMore}
-                className="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-150 ease-in-out"
-              >
-                Load More Reviews
-              </button>
-            </div>
-          )}
         </div>
       ) : (
         <p className="text-gray-500">No reviews yet.</p>
@@ -239,4 +176,3 @@ export default function Discussions({ projectId, authorId }) {
     </div>
   );
 }
-
