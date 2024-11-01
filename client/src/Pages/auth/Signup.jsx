@@ -204,6 +204,12 @@ export default function SignUp() {
                 "Backend Developer",
                 "Full-stack Developer",
                 "Mern-stack Developer",
+                "Mobile App Developer",
+                "iOS Developer",
+                "Android Developer",
+                "React Native Developer",
+                "Flutter Developer",
+                ,
               ]}
               required
               value={formData.identity}
@@ -238,7 +244,12 @@ export default function SignUp() {
               label="College Name"
               id="college"
               name="college"
-              options={["G. Pulla Reddy Engineering College"]}
+              options={[
+                "G. Pulla Reddy Engineering College",
+                "MS Ramaiah Institute of Technology",
+                "G. Pullaiah College of Engineering and Technology",
+                "IIIT Bhubaneswar",
+              ]}
               required
               value={formData.college}
               onChange={(e) =>
