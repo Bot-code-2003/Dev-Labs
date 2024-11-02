@@ -44,7 +44,14 @@ export default function LandingPage() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-blue-900 text-white">
+    <div
+      style={{
+        backgroundImage: `url(/bg.svg)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="min-h-screen flex flex-col bg-black text-white"
+    >
       <header className="py-4 px-4 sm:px-6 md:px-12 lg:px-16 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg">
         <nav className="flex justify-between items-center">
           <Link
@@ -219,7 +226,7 @@ export default function LandingPage() {
         </div> */}
       </main>
 
-      <footer className="py-8 px-4 sm:px-6 md:px-12 lg:px-16 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg">
+      <footer className="py-8 px-4 sm:px-6 md:px-12 lg:px-16 bg-opacity-30 backdrop-filter backdrop-blur-lg">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <p className="mb-4 md:mb-0 text-sm text-gray-300">
             © {new Date().getFullYear()} DevLabs. All rights reserved.

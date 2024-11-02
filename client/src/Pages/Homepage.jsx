@@ -12,6 +12,7 @@ import {
 import Lottie from "lottie-react";
 import Loading from "../assets/lotties/Animation - 1729259117182.json";
 import CircularProgress from "@mui/material/CircularProgress";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const ITEMS_PER_PAGE = 24; // Number of projects to display per page
 
@@ -87,7 +88,7 @@ const Homepage = () => {
               <Link
                 to={`/project/${project._id}`}
                 onClick={(event) => handleProjectClick(event, project._id)}
-                className="block relative w-full h-[200px] mb-4 overflow-hidden"
+                className="block relative w-full h-[200px] mb-1 overflow-hidden"
               >
                 <img
                   src={project.thumbnail}
@@ -136,6 +137,10 @@ const Homepage = () => {
                     </span>
                   </div> */}
                 </div>
+              </div>
+              <div className="text-xs font-medium text-gray-700 mb-1 flex items-center">
+                {/* <LocationOnIcon fontSize="small" className="text-gray-500" />{" "} */}
+                {project.authorId.college}
               </div>
             </div>
           ))}

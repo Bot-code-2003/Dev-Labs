@@ -47,7 +47,7 @@ router.get("/getProjects", async (req, res) => {
 
     // Fetch projects with sorting, pagination, and populate author details
     const projects = await Project.find()
-      .populate("authorId", "username email profileImage headline bio") // Populate author details
+      .populate("authorId", "username email profileImage headline bio college") // Populate author details
       .sort(sortCriteria) // Sort by the selected criteria
       .skip(skip) // Apply pagination
       .limit(Number(limit)); // Limit the number of results
