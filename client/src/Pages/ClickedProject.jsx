@@ -55,7 +55,7 @@ export default function ClickedProject() {
 
   if (!projectData) {
     return (
-      <div className="flex items-center justify-center h-screen text-xl text-gray-700">
+      <div className="flex items-center justify-center h-screen text-xl text-gray-700 dark:text-gray-300">
         Loading project data...
       </div>
     );
@@ -74,9 +74,9 @@ export default function ClickedProject() {
       : projectData.authorId.bio;
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-200 dark:bg-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
-        <div className="bg-white shadow-lg overflow-hidden">
+        <div className="bg-gray-100 dark:bg-gray-700 shadow-lg overflow-hidden">
           <div className="relative">
             <img
               src={projectData.thumbnail}
@@ -105,9 +105,9 @@ export default function ClickedProject() {
                     className="w-10 h-10"
                   />
                 )}
-                <span className="text-lg sm:text-xl font-semibold">
+                <span className="text-lg sm:text-xl dark:text-white font-semibold">
                   {projectData.projectName}
-                  <h1 className="text-sm text-gray-500">
+                  <h1 className="text-sm text-gray-500 dark:text-gray-300">
                     {projectData.projectType}
                   </h1>
                 </span>
@@ -115,7 +115,9 @@ export default function ClickedProject() {
               <button
                 onClick={handleLikeClick}
                 className={`flex items-center space-x-1 transition-transform ${
-                  liked ? "text-blue-500 scale-110" : "text-gray-500"
+                  liked
+                    ? "text-blue-500 scale-110"
+                    : "text-gray-500 dark:text-gray-300"
                 } hover:text-blue-500`}
               >
                 <ThumbUpAltIcon />
@@ -125,7 +127,7 @@ export default function ClickedProject() {
             <div className="text-gray-100 mb-4 italic bg-gradient-to-r from-pink-500 to-violet-500 rounded-sm inline-block px-2">
               "{projectData.tagline}"
             </div>
-            <div className="text-gray-600 mb-4">
+            <div className="text-gray-600 dark:text-gray-300 mb-4">
               {showFullDescription ? (
                 <span>
                   {formatDescription(projectData.description)}
@@ -162,21 +164,25 @@ export default function ClickedProject() {
                   <span>View Project</span>
                 </a>
               ) : (
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   No link available, contact the creator.
                 </p>
               )}
             </div>
             <div className="border-t pt-4">
-              <h2 className="text-xl font-semibold mb-2">Project Images</h2>
+              <h2 className="text-xl font-semibold mb-2 dark:text-gray-300">
+                Project Images
+              </h2>
               <ImageCarousel images={projectData.images} />
             </div>
           </div>
         </div>
 
         {/* About the creator section */}
-        <div className="mt-8 bg-white shadow-lg p-3 sm:p-6">
-          <h2 className="text-2xl font-semibold mb-4">About the Creator</h2>
+        <div className="mt-8 bg-gray-200 dark:bg-gray-700 shadow-lg p-3 sm:p-6">
+          <h2 className="text-2xl font-semibold mb-4 dark:text-gray-300">
+            About the Creator
+          </h2>
           <div className="flex items-center space-x-4">
             <img
               src={projectData.authorId.profileImage}
@@ -184,13 +190,15 @@ export default function ClickedProject() {
               className="w-16 h-16"
             />
             <div>
-              <h3 className="text-xl font-semibold">
+              <h3 className="text-xl font-semibold dark:text-white">
                 {projectData.authorId.username}
               </h3>
-              <p className="text-gray-600">{projectData.authorId.headline}</p>
+              <p className="text-gray-600 dark:text-gray-300">
+                {projectData.authorId.headline}
+              </p>
             </div>
           </div>
-          <p className="mt-4 text-gray-700">
+          <p className="mt-4 text-gray-700 dark:text-gray-300">
             {showFullBio ? (
               <span>
                 {formatDescription(projectData.authorId.bio)}
@@ -223,7 +231,7 @@ export default function ClickedProject() {
           </Link>
         </div>
 
-        <div className="mt-8 bg-white shadow-lg p-2 sm:p-6">
+        <div className="mt-8 bg-white dark:bg-gray-700 shadow-lg p-2 sm:p-6">
           <Discussions
             projectId={projectData._id}
             authorId={projectData.authorId}
