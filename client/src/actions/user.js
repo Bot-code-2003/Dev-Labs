@@ -13,7 +13,7 @@ const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 export const login = (formData, navigate) => async (dispatch) => {
   try {
     const { data } = await API.post("/user/login", formData); // Contains the {token: token}
-    console.log(data);
+    // console.log(data);
 
     const action = {
       type: "LOGIN",
@@ -51,9 +51,9 @@ export const signup = (formData, navigate) => async (dispatch) => {
 /** Edit image action*/
 export const editImage = (changedImage, userId) => async (dispatch) => {
   try {
-    console.log("editImage action called");
+    // console.log("editImage action called");
     // console.log(changedImage);
-    console.log(userId);
+    // console.log(userId);
     await API.patch("/user/editImage", { changedImage, userId });
     console.log("Image updated successfully");
   } catch (error) {
@@ -63,10 +63,10 @@ export const editImage = (changedImage, userId) => async (dispatch) => {
 
 export const getUserInfo = (userId) => async (dispatch) => {
   try {
-    console.log("getUserInfo action called", userId);
+    // console.log("getUserInfo action called", userId);
 
     const { data } = await API.get(`/user/getUserInfo/${userId}`);
-    console.log("Received user info from server: ", data);
+    // console.log("Received user info from server: ", data);
     dispatch({ type: "GET_USER_INFO", payload: data });
   } catch (error) {
     console.log(error);

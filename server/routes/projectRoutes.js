@@ -30,15 +30,15 @@ router.get("/getProjects", async (req, res) => {
     let sortCriteria;
     switch (filter) {
       case "most liked":
-        console.log("most liked");
+        // console.log("most liked");
         sortCriteria = { likeCount: -1 }; // Sort by likeCount descending
         break;
       case "most recent":
-        console.log("most recent");
+        // console.log("most recent");
         sortCriteria = { createdAt: -1 };
         break;
       case "most viewed":
-        console.log("most viewed");
+        // console.log("most viewed");
         sortCriteria = { projectViews: -1 };
         break;
       default:

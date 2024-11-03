@@ -7,7 +7,7 @@ const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 export const submitProject = (projectData) => async (dispatch) => {
   try {
     const { data } = await API.post("/project/submitProject", projectData);
-    console.log("Recieved data from server: ", data);
+    // console.log("Recieved data from server: ", data);
     dispatch({ type: "SUBMIT_PROJECT", payload: data });
   } catch (error) {
     console.log(error);
@@ -18,7 +18,7 @@ export const getProjects =
   (page = 1, limit = 24, filter = "most recent") =>
   async (dispatch) => {
     try {
-      console.log("Get projects action called", filter);
+      // console.log("Get projects action called", filter);
       const { data } = await API.get(
         `/project/getProjects?page=${page}&limit=${limit}&filter=${filter}`
       );
@@ -42,7 +42,7 @@ export const getProject = (projectId) => async (dispatch) => {
 
 export const likeProject = (projectId, userId) => async (dispatch) => {
   try {
-    console.log("likeProject action called");
+    // console.log("likeProject action called");
     dispatch({ type: "LIKE_PROJECT", payload: { projectId, userId } });
     await API.patch("/project/likeProject", { projectId, userId }); // PATCH request
   } catch (error) {
@@ -52,7 +52,7 @@ export const likeProject = (projectId, userId) => async (dispatch) => {
 
 export const unlikeProject = (projectId, userId) => async (dispatch) => {
   try {
-    console.log("unlikeProject action called");
+    // console.log("unlikeProject action called");
     dispatch({ type: "UNLIKE_PROJECT", payload: { projectId, userId } });
     await API.post("/project/unlikeProject", { projectId, userId });
   } catch (error) {
@@ -62,7 +62,7 @@ export const unlikeProject = (projectId, userId) => async (dispatch) => {
 
 export const incProjectView = (projectId) => async (dispatch) => {
   try {
-    console.log("incProjectView action called");
+    // console.log("incProjectView action called");
     dispatch({ type: "INC_PROJECT_VIEW", payload: projectId });
     await API.patch("/project/incProjectView", { projectId });
   } catch (error) {
@@ -81,9 +81,9 @@ export const clickedProjectAction = (clickedProject) => async (dispatch) => {
 // Action to get projects related to the logged-in user
 export const getUserProjects = (userId) => async (dispatch) => {
   try {
-    console.log("getUserProjects action called");
+    // console.log("getUserProjects action called");
     const { data } = await API.post("/project/getUserProjects", { userId });
-    console.log("Received user projects from server: ", data);
+    // console.log("Received user projects from server: ", data);
     dispatch({ type: "GET_USER_PROJECTS", payload: data });
   } catch (error) {
     console.error("Error fetching user projects:", error);
@@ -92,9 +92,9 @@ export const getUserProjects = (userId) => async (dispatch) => {
 
 export const getAuthorProjects = (authorId) => async (dispatch) => {
   try {
-    console.log("getAuthorProjects action called", authorId);
+    // console.log("getAuthorProjects action called", authorId);
     const { data } = await API.post("/project/getAuthorProjects", { authorId });
-    console.log("Received author projects from server: ", data);
+    // console.log("Received author projects from server: ", data);
     dispatch({ type: "GET_AUTHOR_PROJECTS", payload: data });
   } catch (error) {
     console.error("Error fetching author projects:", error);
@@ -103,7 +103,7 @@ export const getAuthorProjects = (authorId) => async (dispatch) => {
 
 export const deleteProject = (projectId) => async (dispatch) => {
   try {
-    console.log("deleteProject action called: ", projectId);
+    // console.log("deleteProject action called: ", projectId);
     await API.delete(`/project/deleteProject/${projectId}`);
     dispatch({ type: "DELETE_PROJECT", payload: projectId });
   } catch (error) {
