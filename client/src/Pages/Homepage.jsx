@@ -75,7 +75,7 @@ const Homepage = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gray-200 dark:bg-gray-800 min-h-screen">
       <div className="w-full px-3 sm:px-6 py-6 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-3">
           {projects.map((project) => (
