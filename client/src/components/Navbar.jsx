@@ -170,9 +170,9 @@ const Navbar = () => {
                 <MenuItem onClick={() => handleMenuItemClick("Most Liked")}>
                   Most Liked
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("Most Viewed")}>
+                {/* <MenuItem onClick={() => handleMenuItemClick("Most Viewed")}>
                   Most Viewed
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={() => handleMenuItemClick("Most Recent")}>
                   Most Recent
                 </MenuItem>
