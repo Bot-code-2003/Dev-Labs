@@ -23,7 +23,7 @@ router.post("/submitProject", async (req, res) => {
 router.get("/getProjects", async (req, res) => {
   const { page = 1, limit = 24, filter = "most recent" } = req.query;
   const skip = (page - 1) * limit;
-  console.log("filter: ", filter);
+  // console.log("filter: ", filter);
 
   try {
     // Set sorting criteria based on filter

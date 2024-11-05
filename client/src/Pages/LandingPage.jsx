@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Github, Linkedin, Twitter, Menu, X } from "lucide-react";
+import Nebula from "../assets/nebula.jpeg";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -38,14 +41,24 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-200 text-gray-900">
       {/* Header */}
-      <header className="py-4 px-6 md:px-12 lg:px-16 shadow">
+      <header className="py-4 px-6 md:px-12 lg:px-4 shadow">
         <nav className="flex justify-between items-center">
-          <Link
-            to="/"
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-blue-600"
+          <div
+            onClick={() => navigate("/")}
+            className="cursor-pointer relative w-40 h-12 mr-4 overflow-hidden group"
           >
-            Dev<span className="text-gray-800">Labs</span>
-          </Link>
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
+              <img
+                src={Nebula}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                alt="Nebula Labs"
+              />
+            </div>
+            <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+            <p className="absolute inset-0 flex items-center justify-center text-white text-xl font-semibold z-10">
+              Dev Labs
+            </p>
+          </div>
           <div className="hidden sm:flex items-center space-x-4">
             {user ? (
               <>
@@ -190,20 +203,20 @@ export default function LandingPage() {
         <p className="mb-6">
           Have questions or want to explore more features? We’re here to help!
         </p>
-        <div className="flex flex-col sm:flex-row gap-2 mx-auto w-full">
+        <div className="flex flex-col px-4 sm:px-0 sm:flex-row gap-2 justify-center w-full">
           <Link to="/contact">
-            <button className="bg-white text-blue-600 px-6 py-2  shadow hover:bg-gray-100 transition">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
               Contact Us
             </button>
           </Link>
           <Link to="/about">
-            <button className="bg-white text-blue-600 px-6 py-2  shadow hover:bg-gray-100 transition">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
               About Us
             </button>
           </Link>
           <Link to="/privacy">
-            <button className="bg-white text-blue-600 px-6 py-2  shadow hover:bg-gray-100 transition">
-              Privacy
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
+              Privacy Policy
             </button>
           </Link>
         </div>
@@ -216,14 +229,19 @@ export default function LandingPage() {
             © {new Date().getFullYear()} DevLabs. All rights reserved.
           </p>
           <div className="flex space-x-4">
-            <Link to="#" aria-label="GitHub">
+            <Link
+              to="https://github.com/Bot-code-2003"
+              target="_blank"
+              aria-label="GitHub"
+            >
               <Github className="h-5 w-5 text-gray-400" />
             </Link>
-            <Link to="#" aria-label="LinkedIn">
+            <Link
+              target="_blank"
+              to="https://www.linkedin.com/in/dharmadeep-madisetty-oct2003"
+              aria-label="LinkedIn"
+            >
               <Linkedin className="h-5 w-5 text-gray-400" />
-            </Link>
-            <Link to="#" aria-label="Twitter">
-              <Twitter className="h-5 w-5 text-gray-400" />
             </Link>
           </div>
         </div>

@@ -24,7 +24,11 @@ const App = () => {
   const showNavbar =
     location.pathname !== "/login" &&
     location.pathname !== "/signup" &&
-    location.pathname !== "/";
+    location.pathname !== "/" &&
+    location.pathname !== "/thankyou" &&
+    location.pathname !== "/about" &&
+    location.pathname !== "/privacy" &&
+    location.pathname !== "/contact";
 
   return (
     <div className="font-helvetica bg-gray-50">
