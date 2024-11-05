@@ -240,6 +240,7 @@ export default function SignUp() {
                 setFormData({ ...formData, currentPosition: e.target.value })
               }
             />
+
             <SelectInput
               label="College Name"
               id="college"
@@ -257,6 +258,12 @@ export default function SignUp() {
                 setFormData({ ...formData, college: e.target.value })
               }
             />
+            <p className="text-sm text-gray-700 mb-2">
+              Contact if your college is not listed.{" "}
+              <Link to="/contact" className="text-blue-500">
+                contact
+              </Link>
+            </p>
             <SelectInput
               label="Nation"
               id="nation"
