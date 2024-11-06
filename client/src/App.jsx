@@ -16,6 +16,7 @@ import ToggleExample from "./components/ToggleExample";
 import About from "./Pages/About";
 import Privacy from "./Pages/Privacy";
 import ContactUs from "./Pages/Contact";
+import Collab from "./Pages/Collab";
 
 const App = () => {
   const location = useLocation();
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/collab" element={<Collab />}</Route>
         {/* <Route path="/exp" element={<ToggleExample />} /> */}
       </Routes>
     </div>
