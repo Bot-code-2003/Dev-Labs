@@ -96,7 +96,7 @@ const Navbar = () => {
     }
   }, [selectedFilter, dispatch]);
 
-  const menuItems = [{ text: "Explore", link: "/explore" }];
+  const menuItems = [{ text: "Explore", link: "/explore" }, {text: "Collab", link: "/collab"}];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
   const loggedInUserName = loggedInUser?.username || "User";
   const loggedInProfileImage = loggedInUser?.profileImage;
