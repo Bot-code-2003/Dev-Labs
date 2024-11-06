@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    // milestones : {
+
+    // }
+    milestonesAchieved: {
+      type: [String],
+      default: [],
+    },
     username: {
       type: String,
       required: true,
@@ -32,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
     skills: {
       type: String, // Array of strings for skills
-      default: [],
+      default: "",
     },
     currentPosition: {
       type: String,

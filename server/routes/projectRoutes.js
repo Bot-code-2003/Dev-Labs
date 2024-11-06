@@ -1,18 +1,65 @@
+import mongoose from "mongoose"; // Ensure this is correct
 import Project from "../models/Project.js";
+import User from "../models/User.js";
 import express from "express";
 
 const router = express.Router();
 
-// Route to submit a new project
 router.post("/submitProject", async (req, res) => {
   try {
     const projectData = req.body;
+
+    // Convert authorId to ObjectId correctly
+    const authorId = new mongoose.Types.ObjectId(req.body.authorId);
+
     const newProject = new Project({
       ...projectData,
-      authorId: req.body.authorId,
-    }); // Ensure authorId is included
+      authorId: authorId, // Correctly passing the ObjectId
+    });
     await newProject.save();
-    res.status(201).send(newProject);
+
+    // Fetch the user
+    const user = await User.findById(authorId);
+    if (user) {
+      console.log("user: ", user);
+    }
+
+    // Ensure milestonesAchieved is initialized as an empty array if it's undefined
+    user.milestonesAchieved = user.milestonesAchieved || [];
+
+    // Check if a new milestone is reached
+    let recentMilestone = null;
+
+    // Count the projects that the author has created
+    const projectCount = await Project.countDocuments({
+      authorId: authorId, // Use ObjectId here
+    });
+
+    console.log("projectCount: ", projectCount);
+
+    // Milestone checks
+    if (
+      projectCount === 1 &&
+      !user.milestonesAchieved.includes("First Project Shared")
+    ) {
+      console.log("First project shared");
+      user.milestonesAchieved.push("First Project Shared");
+      recentMilestone = "First Project Shared";
+    }
+
+    if (
+      projectCount === 10 &&
+      !user.milestonesAchieved.includes("10 Projects Shared")
+    ) {
+      user.milestonesAchieved.push("10 Projects Shared");
+      recentMilestone = "10 Projects Shared"; // Update recent milestone
+    }
+
+    // Save the updated user with new milestone (if any)
+    await user.save();
+
+    // Respond with the new project and recent milestone (if any)
+    res.status(201).send({ newProject, recentMilestone });
   } catch (error) {
     console.error("Error submitting project:", error);
     res.status(500).send("Server error while submitting project");

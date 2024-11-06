@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 /**
  *
@@ -24,6 +24,14 @@ export const login = (formData, navigate) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     alert("Invalid Credentials");
+  }
+};
+
+export const clearMilestone = () => async (dispatch) => {
+  try {
+    dispatch({ type: "CLEAR_MILESTONE" });
+  } catch (error) {
+    console.log(error);
   }
 };
 

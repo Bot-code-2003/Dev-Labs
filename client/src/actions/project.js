@@ -1,14 +1,26 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-// const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
+/**
+ * Route to share the project
+ *
+ * @param projectData
+ * @returns - projectData and Milestone
+ */
 export const submitProject = (projectData) => async (dispatch) => {
   try {
     const { data } = await API.post("/project/submitProject", projectData);
-    // console.log("Recieved data from server: ", data);
+    console.log("Recieved data from server: ", data);
     dispatch({ type: "SUBMIT_PROJECT", payload: data });
+
+    // Check if a new milestone is reached and update it in the global state.
+    if (data.recentMilestone) {
+      console.log("New milestone reached: ", data.recentMilestone);
+      dispatch({ type: "SUBMIT_MILESTONE", payload: data.recentMilestone });
+    }
   } catch (error) {
     console.log(error);
   }

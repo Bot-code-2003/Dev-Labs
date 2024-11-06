@@ -135,12 +135,11 @@ export default function ShareProject() {
     setIsSubmitting(true);
     console.log(projectData);
 
-    // Uncomment to dispatch the submitProject action
     setTimeout(() => {
       dispatch(submitProject(projectData))
         .then(() => {
           setIsSubmitting(false);
-          window.location.href = "/explore"; // Call navigate after successful submission
+          navigate("/explore"); // Call navigate after successful submission
         })
         .catch(() => {
           setIsSubmitting(false);

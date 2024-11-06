@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 const initialState = {
   authData: null,
   authorInfo: null,
+  milestone: "",
 };
 
 export default (state = initialState, action) => {
@@ -40,12 +41,19 @@ export default (state = initialState, action) => {
 
       return { ...state, authData: action.payload };
 
+    case "CLEAR_MILESTONE":
+      return { ...state, milestone: "" };
     case "GET_USER_INFO":
       return {
         ...state,
         authorInfo: action.payload, // Store the fetched author info
       };
 
+    case "SUBMIT_MILESTONE":
+      return {
+        ...state,
+        milestone: action.payload,
+      };
     default:
       return state;
   }
