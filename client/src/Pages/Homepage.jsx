@@ -5,12 +5,8 @@ import {
   getProjects,
   clickedProjectAction,
   incProjectView,
-  // clearMilestone,
 } from "../actions/project";
 import { clearMilestone } from "../actions/user";
-import Lottie from "lottie-react";
-import Loading from "../assets/lotties/Animation - 1729259117182.json";
-import FirstProjectShared from "../assets/lotties/First Project Award.json";
 import CircularProgress from "@mui/material/CircularProgress";
 import ProjectCard from "../components/ProjectCard"; // Import the new ProjectCard component
 
@@ -22,11 +18,10 @@ const Homepage = () => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false); // Loading state
-  const [showMilestoneAnimation, setShowMilestoneAnimation] = useState(true); // State to control milestone animation display
+  const [showPopup, setShowPopup] = useState(false); // State to control popup message display
 
   const projects = useSelector((state) => state.projects.projects); // Get projects in descending order
   const milestone = useSelector((state) => state.users.milestone); // Get the current milestone
-  // console.log("milestone: ", milestone);
 
   const totalPages = useSelector((state) => state.projects.totalPages);
   const currentPage = useSelector((state) => state.projects.currentPage);
@@ -70,40 +65,40 @@ const Homepage = () => {
     navigate(`/project/${projectId}`);
   };
 
-  // Hide the milestone animation after a short delay
+  // Show the popup message when the milestone is achieved
   useEffect(() => {
-    if (milestone === "First Project Shared" && showMilestoneAnimation) {
+    if (milestone === "First Project Shared") {
+      setShowPopup(true);
+      dispatch(clearMilestone()); // Clear the milestone after showing the popup
       const timer = setTimeout(() => {
-        setShowMilestoneAnimation(false); // Hide animation after it plays once
-        dispatch(clearMilestone()); // Clear the milestone after the animation
-      }, 2000); // Duration of animation (adjust as necessary)
+        setShowPopup(false); // Hide the popup after a short delay
+      }, 3000); // Duration for which the popup is visible
 
       return () => clearTimeout(timer);
     }
-  }, [milestone, showMilestoneAnimation, dispatch]);
+  }, [milestone, dispatch]);
 
   if (projects.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen bg-white">
-        <Lottie animationData={Loading} className="w-[200px] sm:w-[400px]" />
+        <CircularProgress />
       </div>
     );
   }
 
   return (
     <div className="bg-gray-200 dark:bg-gray-800 min-h-screen relative">
-      {/* Milestone Animation Overlay */}
-      {milestone === "First Project Shared" && showMilestoneAnimation && (
-        <div className="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-85 z-[1000]">
-          <p className="text-lg sm:text-5xl font-bold text-purple-500">
-            🥳 First Project Shared 🎊
-          </p>
-          <Lottie
-            animationData={FirstProjectShared}
-            className="w-[200px] sm:w-[400px]"
-          />
-        </div>
-      )}
+      {/* Popup Message */}
+      {/* {showPopup && ( */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-white text-black px-6 py-4 border border-black shadow-lg z-[1000]">
+        <h2 className="text-xl font-semibold text-center">
+          🎉 Congratulations! 🎉
+        </h2>
+        <p className="text-md text-center">
+          You have shared your first project!
+        </p>
+      </div>
+      {/* )} */}
 
       <div className="w-full px-3 sm:px-6 py-6 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-3">
