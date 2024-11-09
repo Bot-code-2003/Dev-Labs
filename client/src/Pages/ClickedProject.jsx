@@ -9,8 +9,14 @@ import LinkIcon from "@mui/icons-material/Link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import loadingAnimation from "../assets/lotties/Animation - 1729259117182.json";
+import Lottie from "lottie-react";
 
 export default function ClickedProject() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectId } = useParams();
@@ -55,8 +61,9 @@ export default function ClickedProject() {
 
   if (!projectData) {
     return (
-      <div className="flex items-center justify-center h-screen text-xl text-gray-700 dark:text-gray-300">
-        Loading project data...
+      <div className="flex justify-center items-center h-screen bg-gray-200 dark:bg-gray-800">
+        {/* <CircularProgress /> */}
+        <Lottie animationData={loadingAnimation} loop={true} />
       </div>
     );
   }
@@ -179,7 +186,7 @@ export default function ClickedProject() {
         </div>
 
         {/* About the creator section */}
-        <div className="mt-8 bg-gray-200 dark:bg-gray-700 shadow-lg p-3 sm:p-6">
+        <div className="mt-8 bg-gray-100 dark:bg-gray-700 shadow-lg p-3 sm:p-6">
           <h2 className="text-2xl font-semibold mb-4 dark:text-gray-300">
             About the Creator
           </h2>
@@ -231,7 +238,7 @@ export default function ClickedProject() {
           </Link>
         </div>
 
-        <div className="mt-8 bg-white dark:bg-gray-700 shadow-lg p-2 sm:p-6">
+        <div className="mt-8 bg-gray-100 dark:bg-gray-700 shadow-lg p-2 sm:p-6">
           <Discussions
             projectId={projectData._id}
             authorId={projectData.authorId}

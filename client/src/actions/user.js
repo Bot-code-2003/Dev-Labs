@@ -69,6 +69,22 @@ export const editImage = (changedImage, userId) => async (dispatch) => {
   }
 };
 
+// Redux Action to Edit User Details
+export const editUserDetails = (updatedDetails, userId) => async (dispatch) => {
+  try {
+    console.log("editUserDetails action called", updatedDetails);
+
+    const { data } = await API.patch(
+      `/user/editDetails/${userId}`,
+      updatedDetails
+    );
+
+    dispatch({ type: "EDIT_USER_DETAILS", payload: data });
+  } catch (error) {
+    console.error("Edit user details error:", error);
+  }
+};
+
 export const getUserInfo = (userId) => async (dispatch) => {
   try {
     // console.log("getUserInfo action called", userId);

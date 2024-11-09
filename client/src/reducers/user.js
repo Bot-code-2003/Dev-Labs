@@ -49,6 +49,9 @@ export default (state = initialState, action) => {
         authorInfo: action.payload, // Store the fetched author info
       };
 
+    case "EDIT_USER_DETAILS":
+      return { ...state, user: { ...state.user, ...action.payload } }; // Update user details
+
     case "SUBMIT_MILESTONE":
       return {
         ...state,

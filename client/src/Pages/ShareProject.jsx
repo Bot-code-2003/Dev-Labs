@@ -161,8 +161,8 @@ export default function ShareProject() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto bg-white shadow-md overflow-hidden">
+    <div className="min-h-screen bg-gray-200 dark:bg-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto bg-gray-100 dark:bg-gray-300 shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 via-blue-300 to-blue-500 p-6">
           <h1 className="text-2xl font-bold text-white">
             Showcase your Best work to the world

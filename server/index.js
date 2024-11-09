@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 // Connect to MongoDB and start the server
 mongoose
-  .connect(url, {
+  .connect("mongodb://localhost:27017/Dev-labs", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

@@ -4,13 +4,13 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import Face4Icon from "@mui/icons-material/Face4";
 import { Link } from "react-router-dom";
 
-const ProjectCard = ({ project, onClick }) => {
+const ProjectCard = ({ project, onClick, deleteProject }) => {
   return (
     <div>
       <Link
         to={`/project/${project._id}`}
         onClick={onClick}
-        className="block bg-gray-200 dark:bg-gray-700 shadow-md mb-6 hover:shadow-xl dark:hover:shadow-lg hover:dark:shadow-gray-600"
+        className="block bg-gray-100 dark:bg-gray-600 shadow-md mb-6 hover:shadow-xl dark:hover:shadow-lg hover:dark:shadow-gray-700"
       >
         <div className="relative h-56 overflow-hidden">
           <img
@@ -31,7 +31,7 @@ const ProjectCard = ({ project, onClick }) => {
               {project.authorId?.profileImage ? (
                 <img
                   src={project.authorId.profileImage}
-                  className="w-10 h-10 object-cover rounded-full"
+                  className="w-10 h-10 object-cover"
                   alt={project.authorId.username || "Author"}
                 />
               ) : (

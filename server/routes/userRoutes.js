@@ -146,6 +146,59 @@ router.patch("/editImage", async (req, res) => {
   }
 });
 
+// Redux Action to Edit User Details
+// Edit User Details Route
+router.patch("/editDetails/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updatedDetails = req.body; // Contains fields like username, bio, headline, etc.
+
+    // Find the user by ID and update fields
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedDetails },
+      { new: true, runValidators: true } // Return updated document
+    );
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Send the updated user details
+    const {
+      username,
+      email,
+      profileImage,
+      headline,
+      bio,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
+      createdAt,
+    } = user;
+    res
+      .status(200)
+      .send({
+        username,
+        email,
+        profileImage,
+        headline,
+        bio,
+        identity,
+        skills,
+        currentPosition,
+        college,
+        nation,
+        createdAt,
+      });
+  } catch (error) {
+    console.error("Edit user details error:", error);
+    res.status(500).send("Server error during edit user details");
+  }
+});
+
 // Get User Info Route
 router.get("/getUserInfo/:userId", async (req, res) => {
   try {

@@ -8,8 +8,14 @@ import {
   incProjectView,
 } from "../actions/project";
 import ProjectCard from "../components/ProjectCard"; // Import the ProjectCard component
+import loadingAnimation from "../assets/lotties/Animation - 1729259117182.json";
+import Lottie from "lottie-react";
 
 const AuthorProfile = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const dispatch = useDispatch();
   const { authorId } = useParams();
   const navigate = useNavigate();
@@ -37,9 +43,10 @@ const AuthorProfile = () => {
 
   if (loading) {
     return (
-      <p className="text-center p-10 text-gray-700 dark:text-gray-300">
-        Loading author profile...
-      </p>
+      <div className="flex justify-center items-center h-screen bg-gray-200 dark:bg-gray-800">
+        {/* <CircularProgress /> */}
+        <Lottie animationData={loadingAnimation} loop={true} />
+      </div>
     );
   }
 
@@ -53,10 +60,10 @@ const AuthorProfile = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-200 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Profile Header */}
-        <div className="shadow-xl overflow-hidden bg-white dark:bg-gray-800">
+        <div className="shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-600">
           <div className="md:flex">
             <div className="md:flex-shrink-0 p-6 bg-gradient-to-br from-blue-400 to-indigo-400">
               <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
@@ -90,7 +97,7 @@ const AuthorProfile = () => {
         </div>
 
         {/* Professional Info */}
-        <div className="shadow-xl p-4 sm:p-8 bg-white dark:bg-gray-800">
+        <div className="shadow-xl p-4 sm:p-8 bg-gray-100 dark:bg-gray-600">
           <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
             Professional Information
           </h2>
@@ -115,7 +122,7 @@ const AuthorProfile = () => {
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">
+              <h3 className="text-lg font-semibold mb-2 text-gray-600 dark:text-gray-300">
                 Education & Location
               </h3>
               <div className="space-y-2">
@@ -135,7 +142,7 @@ const AuthorProfile = () => {
         </div>
 
         {/* Projects Section */}
-        <div className="shadow-xl p-4 sm:p-6 bg-white dark:bg-gray-800">
+        <div className="shadow-xl p-4 sm:p-6 bg-gray-100 dark:bg-gray-600">
           <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
             {author.username}'s Projects
           </h2>

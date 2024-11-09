@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { editImage } from "../actions/user";
+import { editImage, editUserDetails } from "../actions/user";
 import { getUserProjects, deleteProject } from "../actions/project";
 import { useDispatch, useSelector } from "react-redux";
+import ProjectCard from "../components/ProjectCard";
 
 const PersonalSpace = () => {
   const dispatch = useDispatch();
@@ -23,24 +24,30 @@ const PersonalSpace = () => {
   } = loggedInUser;
 
   const [newImage, setNewImage] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    headline: loggedInUserHeadline,
+    bio: loggedInUserBio,
+    skills: loggedInUserSkills,
+    currentPosition: loggedInUserCurrentPosition,
+    college: loggedInUserCollege,
+    nation: loggedInUserNation,
+  });
+
   const userProjects = useSelector((state) => state.projects.userProjects);
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
-    if (userProjects.length === 0) {
-      if (loggedInUserId) {
-        setLoading(true);
-        dispatch(getUserProjects(loggedInUserId)).finally(() =>
-          setLoading(false)
-        );
-      }
+    if (userProjects.length === 0 && loggedInUserId) {
+      setLoading(true);
+      dispatch(getUserProjects(loggedInUserId)).finally(() =>
+        setLoading(false)
+      );
     }
   }, [dispatch, loggedInUserId]);
 
-  const handleImageEdit = () => {
-    document.getElementById("file-input").click();
-  };
+  const handleImageEdit = () => document.getElementById("file-input").click();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -70,8 +77,28 @@ const PersonalSpace = () => {
     }
   };
 
+  // Edit Modal Functions
+  const openEditModal = () => setEditModalOpen(true);
+  const closeEditModal = () => setEditModalOpen(false);
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUpdateDetails = async () => {
+    setLoading(true);
+    await dispatch(editUserDetails(formData, loggedInUserId));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...loggedInUser, ...formData })
+    );
+    setLoading(false);
+    closeEditModal();
+  };
+
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 relative">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* User Profile Section */}
         <div className="shadow-xl overflow-hidden bg-white">
@@ -80,7 +107,7 @@ const PersonalSpace = () => {
               <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
                 <img
                   src={newImage || loggedInUserImage}
-                  className="w-full h-full object-cover border-4 border-white shadow-inner rounded-full"
+                  className="w-full h-full object-cover border-4 border-white shadow-inner"
                   alt="Profile"
                 />
                 <button
@@ -114,7 +141,12 @@ const PersonalSpace = () => {
                 <h1 className="text-3xl font-bold mb-2 md:mb-0 text-gray-900">
                   {loggedInUserName}
                 </h1>
-                <p className="text-sm text-gray-600">{loggedInUserEmail}</p>
+                <button
+                  onClick={openEditModal}
+                  className="bg-blue-500 text-white px-4 py-2 shadow hover:bg-blue-600 transition"
+                >
+                  Edit Profile
+                </button>
               </div>
               <p className="text-xl italic mb-4 text-gray-700">
                 "{loggedInUserHeadline || "No headline available"}"
@@ -122,29 +154,157 @@ const PersonalSpace = () => {
               <p className="mb-4 text-gray-600">
                 {loggedInUserBio || "No bio available"}
               </p>
-              <p className="mb-4 text-gray-600">
-                <strong>Skills:</strong> {loggedInUserSkills || "Not specified"}
+              <p className="text-gray-600">
+                Skills: {loggedInUserSkills || "No skills listed"}
               </p>
-              <p className="mb-4 text-gray-600">
-                <strong>College:</strong>{" "}
-                {loggedInUserCollege || "Not specified"}
+              <p className="text-gray-600">
+                Position:{" "}
+                {loggedInUserCurrentPosition || "No position available"}
               </p>
-              <p className="mb-4 text-gray-600">
-                <strong>Current Position:</strong>{" "}
-                {loggedInUserCurrentPosition || "Not specified"}
+              <p className="text-gray-600">
+                College: {loggedInUserCollege || "No college info"}
               </p>
-              <p className="mb-4 text-gray-600">
-                <strong>Nation:</strong> {loggedInUserNation || "Not specified"}
-              </p>
-              <p className="text-gray-500 text-sm">
-                Member since:{" "}
-                {new Date(loggedInUserCreatedAt).toLocaleDateString()}
+              <p className="text-gray-600">
+                Nation: {loggedInUserNation || "No nation info"}
               </p>
             </div>
           </div>
         </div>
 
-        {/* User Projects Section */}
+        {/* Modal for Editing Profile */}
+        {editModalOpen && (
+          <div className=" fixed inset-0 -top-10 z-10 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 max-w-5xl max-h-[90vh] overflow-scroll">
+              <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+              {/** For username */}
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                name="username"
+                value={loggedInUserName}
+                onChange={handleFormChange}
+                placeholder="Username"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="headline"
+              >
+                Headline
+              </label>
+              <input
+                id="headline"
+                type="text"
+                name="headline"
+                value={formData.headline}
+                onChange={handleFormChange}
+                placeholder="Headline"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="bio"
+              >
+                Bio
+              </label>
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleFormChange}
+                placeholder="Bio"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="skills"
+              >
+                Skills
+              </label>
+              <input
+                id="skills"
+                type="text"
+                name="skills"
+                value={formData.skills}
+                onChange={handleFormChange}
+                placeholder="Skills"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="currentPosition"
+              >
+                Current Position
+              </label>
+              <input
+                id="currentPosition"
+                type="text"
+                name="currentPosition"
+                value={formData.currentPosition}
+                onChange={handleFormChange}
+                placeholder="Current Position"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="college"
+              >
+                College
+              </label>
+              <input
+                id="college"
+                type="text"
+                name="college"
+                value={formData.college}
+                onChange={handleFormChange}
+                placeholder="College"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <label
+                className="text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="nation"
+              >
+                Nation
+              </label>
+              <input
+                id="nation"
+                type="text"
+                name="nation"
+                value={formData.nation}
+                onChange={handleFormChange}
+                placeholder="Nation"
+                className="w-full mb-3 p-2 border border-gray-300 "
+              />
+
+              <button
+                onClick={handleUpdateDetails}
+                className="bg-blue-500 text-white px-4 py-2 w-full"
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update Profile"}
+              </button>
+              <button
+                onClick={closeEditModal}
+                className="mt-3 text-gray-600 underline w-full text-center"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="shadow-xl p-4 sm:p-8 bg-white">
           <h2 className="text-2xl font-bold mb-6 text-gray-900">
             Your Projects
@@ -154,35 +314,23 @@ const PersonalSpace = () => {
           ) : userProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {userProjects.map((project) => (
-                <div key={project._id} className="group">
-                  <div className="bg-gray-50 shadow-md hover:shadow-lg">
-                    <img
-                      src={project.thumbnail}
-                      alt={project.projectName}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-6">
-                      <h3 className="font-semibold text-xl text-gray-900 mb-2">
-                        {project.projectName}
-                      </h3>
-                      <div className="flex justify-between items-center">
-                        <button
-                          onClick={() => handleDeleteProject(project._id)}
-                          className={`text-red-500 hover:text-red-700 transition ${
-                            deleteLoading ? "opacity-50 cursor-not-allowed" : ""
-                          }`}
-                          disabled={deleteLoading}
-                        >
-                          {deleteLoading ? "Deleting..." : <DeleteIcon />}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div key={project._id}>
+                  <ProjectCard
+                    project={project}
+                    onClick={() => {}}
+                    // Include delete button in ProjectCard
+                  />
+                  <button
+                    onClick={() => handleDeleteProject(project._id)}
+                    className="w-full bg-red-400 text-white px-4 py-2 shadow hover:bg-red-500 transition"
+                  >
+                    Delete Project
+                  </button>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-600">No projects available.</p>
+            <p className="text-gray-600">No projects found.</p>
           )}
         </div>
       </div>
