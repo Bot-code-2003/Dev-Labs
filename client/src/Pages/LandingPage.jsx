@@ -39,7 +39,7 @@ export default function LandingPage() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-200 text-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-300 text-gray-900">
       {/* Header */}
       <header className="py-4 px-6 md:px-12 lg:px-4 shadow">
         <nav className="flex justify-between items-center">
@@ -63,14 +63,14 @@ export default function LandingPage() {
             {user ? (
               <>
                 <Link
-                  to="/explore"
+                  to="/projects"
                   className="text-blue-600 hover:text-blue-800 transition"
                 >
                   Explore
                 </Link>
                 <Link
                   to="/personalspace"
-                  className="bg-blue-600 text-white px-4 py-2  shadow transition hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 shadow transition hover:bg-blue-700"
                 >
                   Personal Space
                 </Link>
@@ -85,7 +85,7 @@ export default function LandingPage() {
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-600 text-white px-4 py-2  shadow transition hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 shadow transition hover:bg-blue-700"
                 >
                   Sign Up
                 </Link>
@@ -105,11 +105,11 @@ export default function LandingPage() {
           </button>
         </nav>
         {isMenuOpen && (
-          <div className="mt-4 sm:hidden bg-pink p-4 shadow-lg ">
+          <div className="mt-4 sm:hidden bg-pink p-4 shadow-lg">
             {user ? (
               <>
                 <Link
-                  to="/explore"
+                  to="/projects"
                   className="block py-2 text-blue-600 hover:text-blue-800 transition"
                 >
                   Explore
@@ -146,10 +146,13 @@ export default function LandingPage() {
         className="relative w-full h-screen bg-cover bg-center"
         style={{
           backgroundImage: "url('/hero.jpg')",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
           backgroundSize: "cover",
         }}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10 flex flex-col justify-center items-center h-full px-6 text-center text-white">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
             Elevate Your Projects
@@ -157,24 +160,35 @@ export default function LandingPage() {
           <p className="text-lg sm:text-xl mb-8">
             Connect, showcase, and grow within a vibrant developer community.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/signup">
-              <button className="bg-blue-600 w-full hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold  transition ">
-                Get Started <ArrowRight className="ml-2 h-5 w-5 inline-block" />
-              </button>
-            </Link>
-            <Link to="/explore">
-              <button className="bg-white w-full hover:bg-blue-600 text-blue-500 hover:text-white px-8 py-3 text-lg font-semibold  transition ">
-                Explore Projects{" "}
-                <ArrowRight className="ml-2 h-5 w-5 inline-block" />
-              </button>
-            </Link>
+          <div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/signup">
+                <button className="bg-blue-600 w-full hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold transition">
+                  Get Started{" "}
+                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
+                </button>
+              </Link>
+              <Link to="/projects">
+                <button className="bg-white w-full hover:bg-blue-600 text-blue-500 hover:text-white px-8 py-3 text-lg font-semibold transition">
+                  Explore Projects{" "}
+                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
+                </button>
+              </Link>
+            </div>
+            <div className="mt-4 w-full">
+              <Link to="/digestlandingpage">
+                <button className="bg-yellow-500 w-full hover:bg-yellow-600 text-white px-8 py-3 text-lg font-semibold transition">
+                  Dev Labs Digest{" "}
+                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 sm:px-6 md:px-12 lg:px-16 bg-gray-50">
+      <section className="py-16 px-4 sm:px-6 md:px-12 lg:px-16 bg-gray-200">
         <h2 className="text-3xl font-bold text-center text-blue-600 mb-12">
           Our Features
         </h2>
@@ -184,9 +198,9 @@ export default function LandingPage() {
               <img
                 src={feature.image}
                 alt={feature.title}
-                className="w-full h-48 object-cover rounded-t-md"
+                className="w-full h-48 object-cover"
               />
-              <div className="p-6 bg-white rounded-b-md">
+              <div className="p-6 bg-white">
                 <h3 className="text-xl font-semibold text-blue-600 mb-2">
                   {feature.title}
                 </h3>
@@ -205,18 +219,23 @@ export default function LandingPage() {
         </p>
         <div className="flex flex-col px-4 sm:px-0 sm:flex-row gap-2 justify-center w-full">
           <Link to="/contact">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
               Contact Us
             </button>
           </Link>
           <Link to="/about">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
               About Us
             </button>
           </Link>
           <Link to="/privacy">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
               Privacy Policy
+            </button>
+          </Link>
+          <Link to="/devlabs-digest">
+            <button className="bg-yellow-500 text-white px-6 py-2 w-full shadow hover:bg-yellow-600 transition">
+              Dev Labs Digest
             </button>
           </Link>
         </div>

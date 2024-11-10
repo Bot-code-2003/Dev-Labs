@@ -13,3 +13,36 @@ body {
   font-weight: normal; /* You can specify different font weights */
   font-style: normal; /* You can specify italic, oblique, etc. */
 }
+
+.markdown-container .content {
+  margin-bottom: 30px;
+}
+
+.markdown-container .content p {
+  margin-bottom: 20px;
+}
+
+.markdown-container .content h1,
+.markdown-container .content h2,
+.markdown-container .content h3 {
+  margin-bottom: 20px;
+}
+
+.markdown-container .content ul {
+  margin-bottom: 20px;
+}
+
+.markdown-container .content blockquote {
+  margin: 20px 0;
+  padding-left: 20px;
+  border-left: 5px solid #00c6c6;
+}
+
+.markdown-container .content a {
+  color: #00c6c6;
+  text-decoration: none;
+}
+
+.markdown-container .content a:hover {
+  text-decoration: underline;
+}

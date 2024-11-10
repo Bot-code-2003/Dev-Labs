@@ -17,6 +17,8 @@ import About from "./Pages/About";
 import Privacy from "./Pages/Privacy";
 import ContactUs from "./Pages/Contact";
 import Collab from "./Pages/Collab";
+import DigestLandingPage from "./Pages/DigestLandingPage";
+import BlogLandingPage from "./Pages/BlogLandingPage";
 
 const App = () => {
   const location = useLocation();
@@ -29,7 +31,9 @@ const App = () => {
     location.pathname !== "/thankyou" &&
     location.pathname !== "/about" &&
     location.pathname !== "/privacy" &&
-    location.pathname !== "/contact";
+    location.pathname !== "/contact" &&
+    location.pathname !== "/collab" &&
+    location.pathname !== "/digest";
 
   return (
     <div className="font-helvetica bg-gray-50">
@@ -37,7 +41,7 @@ const App = () => {
       {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/explore" element={<Homepage />} />
+        <Route path="/projects" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/shareproject" element={<ShareProject />} />
@@ -50,7 +54,8 @@ const App = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/collab" element={<Collab />} />
-        {/* <Route path="/exp" element={<ToggleExample />} /> */}
+        <Route path="/digestlandingpage" element={<DigestLandingPage />} />
+        <Route path="/digest" element={<BlogLandingPage />} />
       </Routes>
     </div>
   );

@@ -96,7 +96,10 @@ const Navbar = () => {
     }
   }, [selectedFilter, dispatch]);
 
-  const menuItems = [{ text: "Explore", link: "/explore" }, {text: "Collab", link: "/collab"}];
+  const menuItems = [
+    { text: "Projects", link: "/projects" },
+    { text: "Digest", link: "/digestlandingpage" },
+  ];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
   const loggedInUserName = loggedInUser?.username || "User";
   const loggedInProfileImage = loggedInUser?.profileImage;
@@ -104,7 +107,7 @@ const Navbar = () => {
   return (
     <div>
       {/* Desktop Navbar */}
-      <nav className="flex justify-between items-center p-4 border-b border-gray-300 bg-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <nav className="flex justify-between items-center p-4 border-b border-gray-300 bg-gray-300 dark:bg-gray-900 dark:border-gray-700">
         <div className="flex items-center">
           <div
             onClick={() => navigate("/")}
@@ -249,6 +252,11 @@ const Navbar = () => {
           )}
         </div>
       </nav>
+      {window.location.pathname === "/projects" && !loggedIn && (
+        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-sm text-center py-1 px-4">
+          sign up to share your project.
+        </div>
+      )}
 
       {/* Mobile Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>

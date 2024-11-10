@@ -209,6 +209,7 @@ export default function SignUp() {
                 "Android Developer",
                 "React Native Developer",
                 "Flutter Developer",
+                "A random developer",
                 ,
               ]}
               required
@@ -217,7 +218,7 @@ export default function SignUp() {
                 setFormData({ ...formData, identity: e.target.value })
               }
             />
-            <TextInput
+            {/* <TextInput
               label="Skills"
               id="skills"
               name="skills"
@@ -228,43 +229,44 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, skills: e.target.value })
               }
-            />
-            <SelectInput
+            /> */}
+            {/* <SelectInput
               label="Current Position"
               id="currentPosition"
               name="currentPosition"
-              options={["Student", "Developer", "Freelancer"]}
+              options={["Student", "Developer", "Freelancer", "Other"]}
               required
               value={formData.currentPosition}
               onChange={(e) =>
                 setFormData({ ...formData, currentPosition: e.target.value })
               }
-            />
+            /> */}
 
-            <SelectInput
+            {/* <SelectInput
               label="College Name"
               id="college"
               name="college"
               options={[
-                "G. Pulla Reddy Engineering College",
-                "MS Ramaiah Institute of Technology",
-                "G. Pullaiah College of Engineering and Technology",
-                "IIIT Bhubaneswar",
                 "Chaitanya Bharathi Institute of Technology",
+                "G. Pulla Reddy Engineering College",
+                "G. Pullaiah College of Engineering and Technology",
+                "GITAM University",
+                "IIIT Bhubaneswar",
+                "MS Ramaiah Institute of Technology",
               ]}
               required
               value={formData.college}
               onChange={(e) =>
                 setFormData({ ...formData, college: e.target.value })
               }
-            />
-            <p className="text-sm text-gray-700 mb-2">
+            /> */}
+            {/* <p className="text-sm text-gray-700 mb-2">
               Contact if your college is not listed.{" "}
               <Link to="/contact" className="text-blue-500">
                 contact
               </Link>
-            </p>
-            <SelectInput
+            </p> */}
+            {/* <SelectInput
               label="Nation"
               id="nation"
               name="nation"
@@ -274,7 +276,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, nation: e.target.value })
               }
-            />
+            /> */}
 
             <button
               type="submit"
