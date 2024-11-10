@@ -30,7 +30,7 @@ const MilestoneNotification = ({ milestone, closePopup }) => {
   };
 
   return (
-    <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-md bg-white text-gray-800 p-4 rounded-sm shadow-2xl z-50">
+    <div className="fixed top-4 left-4 right-4 md:left-1/2 border-4 border-white md:-translate-x-1/2 md:max-w-md bg-gradient-to-r from-purple-200 via-green-100 to-blue-200  text-gray-800 p-4 rounded-sm shadow-2xl z-50">
       <div className="flex items-center space-x-4">
         <div className="text-3xl">{icon}</div>
         <div className="flex-1 min-w-0">

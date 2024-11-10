@@ -35,7 +35,7 @@ router.post("/submitProject", async (req, res) => {
       authorId: authorId, // Use ObjectId here
     });
 
-    console.log("projectCount: ", projectCount);
+    // console.log("projectCount: ", projectCount);
 
     // Milestone checks
     if (

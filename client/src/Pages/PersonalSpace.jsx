@@ -98,12 +98,12 @@ const PersonalSpace = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 relative">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8  dark:text-gray-300  bg-gray-200 dark:bg-gray-800 relative">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* User Profile Section */}
-        <div className="shadow-xl overflow-hidden bg-white">
+        <div className="shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-700">
           <div className="md:flex">
-            <div className="md:flex-shrink-0 p-6 bg-gradient-to-br from-blue-400 to-indigo-400">
+            <div className="md:flex-shrink-0 p-6 bg-gradient-to-br from-blue-400 to-indigo-400 dark:from-blue-600 dark:to-purple-600">
               <div className="relative flex justify-center items-center w-48 h-48 mx-auto md:w-40 md:h-40">
                 <img
                   src={newImage || loggedInUserImage}
@@ -138,7 +138,7 @@ const PersonalSpace = () => {
             </div>
             <div className="p-8 md:flex-grow">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold mb-2 md:mb-0 text-gray-900">
+                <h1 className="text-3xl font-bold mb-2 md:mb-0 ">
                   {loggedInUserName}
                 </h1>
                 <button
@@ -148,23 +148,21 @@ const PersonalSpace = () => {
                   Edit Profile
                 </button>
               </div>
-              <p className="text-xl italic mb-4 text-gray-700">
+              <p className="text-xl italic mb-4 ">
                 "{loggedInUserHeadline || "No headline available"}"
               </p>
-              <p className="mb-4 text-gray-600">
-                {loggedInUserBio || "No bio available"}
-              </p>
-              <p className="text-gray-600">
+              <p className="mb-4 ">{loggedInUserBio || "No bio available"}</p>
+              <p className="">
                 Skills: {loggedInUserSkills || "No skills listed"}
               </p>
-              <p className="text-gray-600">
+              <p className="">
                 Position:{" "}
                 {loggedInUserCurrentPosition || "No position available"}
               </p>
-              <p className="text-gray-600">
+              <p className="">
                 College: {loggedInUserCollege || "No college info"}
               </p>
-              <p className="text-gray-600">
+              <p className="">
                 Nation: {loggedInUserNation || "No nation info"}
               </p>
             </div>
@@ -174,8 +172,16 @@ const PersonalSpace = () => {
         {/* Modal for Editing Profile */}
         {editModalOpen && (
           <div className=" fixed inset-0 -top-10 z-10 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 max-w-5xl max-h-[90vh] overflow-scroll">
-              <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <div className="bg-gray-100 dark:bg-gray-200 dark:text-gray-600 p-6 max-w-5xl max-h-[90vh] overflow-scroll">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+                <button
+                  onClick={closeEditModal}
+                  className="p-2 border border-black"
+                >
+                  X
+                </button>
+              </div>
               {/** For username */}
 
               <label
@@ -305,12 +311,10 @@ const PersonalSpace = () => {
           </div>
         )}
 
-        <div className="shadow-xl p-4 sm:p-8 bg-white">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">
-            Your Projects
-          </h2>
+        <div className="shadow-xl p-4 sm:p-8 bg-gray-100 dark:bg-gray-700">
+          <h2 className="text-2xl font-bold mb-6 ">Your Projects</h2>
           {loading ? (
-            <p className="text-gray-600">Loading projects...</p>
+            <p className="text-gray-500">Loading projects...</p>
           ) : userProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {userProjects.map((project) => (
@@ -330,7 +334,7 @@ const PersonalSpace = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-600">No projects found.</p>
+            <p className="text-gray-400">No projects found.</p>
           )}
         </div>
       </div>

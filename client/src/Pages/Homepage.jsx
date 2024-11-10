@@ -13,7 +13,7 @@ import loadingAnimation from "../assets/lotties/Animation - 1729259117182.json";
 import Lottie from "lottie-react";
 import MilestoneNotification from "../components/MilestoneNotification ";
 
-const ITEMS_PER_PAGE = 9; // Number of projects per page
+const ITEMS_PER_PAGE = 15; // Number of projects per page
 
 const Homepage = () => {
   const location = useLocation();
@@ -25,6 +25,10 @@ const Homepage = () => {
 
   const projects = useSelector((state) => state.projects.projects);
   const milestone = useSelector((state) => state.users.milestone);
+  if (milestone) {
+    console.log("milestone in homepage: ", milestone);
+  }
+
   const totalPages = useSelector((state) => state.projects.totalPages);
   const currentPage = useSelector((state) => state.projects.currentPage);
 
@@ -39,7 +43,7 @@ const Homepage = () => {
 
   const handleScroll = useCallback(() => {
     const bottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
     if (bottom && !loading && currentPage < totalPages) {
       setLoading(true); // Set loading to true before fetching
       setTimeout(() => {
@@ -72,11 +76,13 @@ const Homepage = () => {
   useEffect(() => {
     if (milestone === "First Project Shared") {
       setShowPopup(true);
-      dispatch(clearMilestone());
     }
   }, [milestone, dispatch]);
 
-  const closePopup = () => setShowPopup(false);
+  const closePopup = () => {
+    dispatch(clearMilestone());
+    setShowPopup(false);
+  };
 
   if (projects.length === 0 && loading) {
     return (

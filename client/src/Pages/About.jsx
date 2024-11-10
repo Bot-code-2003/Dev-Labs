@@ -7,6 +7,7 @@ export default function About() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <section className="font-sans text-gray-800">
       {/* Header Section */}
@@ -18,15 +19,14 @@ export default function About() {
       >
         <div className="relative z-10 max-w-4xl">
           <p className="text-2xl md:text-3xl font-semibold mb-4">
-            Dev Labs — Where Developers Showcase and Connect
+            Dev Labs — Empowering Developers to Innovate
           </p>
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
-            Share Your Projects. <br /> Advance Your Skills. <br /> Build Your
-            Reputation.
+            Showcase Projects, <br /> Gain Insights, <br /> Forge Connections.
           </h1>
           <button
             onClick={() => navigate("/signup")}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 "
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 transition duration-300"
           >
             Sign Up
           </button>
@@ -41,14 +41,13 @@ export default function About() {
             About Dev Labs
           </h2>
           <p className="mb-4">
-            Discover. Showcase. Connect. Dev Labs is a platform where developers
-            can share their finest work, grow together, and elevate the
-            standards of web development.
+            Dev Labs is a community-driven platform where developers share
+            projects, receive feedback, and engage in collaborative learning.
           </p>
           <p>
-            Our innovative platform provides a space for developers of all
-            levels to showcase their projects, receive valuable feedback, and
-            connect with like-minded individuals in the tech community.
+            We provide a space for tech enthusiasts at every level to gain
+            exposure, hone their skills, and build their network with other
+            developers.
           </p>
         </section>
 
@@ -56,15 +55,13 @@ export default function About() {
         <section className="text-lg text-gray-600">
           <h2 className="text-4xl font-bold mb-6 text-blue-600">Our Mission</h2>
           <p className="mb-4">
-            At Dev Labs, we envision a world where developers at every level
-            have a place to share, learn, and inspire. We are dedicated to
-            building a community that values quality, creativity, and meaningful
-            connections.
+            Dev Labs is on a mission to cultivate a supportive environment where
+            developers grow, learn, and innovate together.
           </p>
           <p>
-            Our goal is to foster an environment of continuous learning and
-            collaboration, where developers can push the boundaries of what's
-            possible in web development.
+            We believe that by fostering a collaborative space, developers can
+            drive the standards of web development forward through shared
+            knowledge and meaningful connections.
           </p>
         </section>
 
@@ -72,14 +69,13 @@ export default function About() {
         <section className="md:col-span-2">
           <div className="text-lg text-gray-600">
             <h2 className="text-4xl font-bold mb-6 text-center text-blue-600">
-              What We Do
+              What We Offer
             </h2>
             <p className="mb-6">
-              Dev Labs is a hub where web developers can upload their best
-              projects, gather valuable feedback, and engage in discussions with
-              fellow creators. Through tools like upvotes, comments, and
-              replies, we foster an environment that celebrates innovation and
-              encourages growth.
+              Dev Labs offers a suite of features for developers to engage,
+              learn, and showcase their achievements. Our platform highlights
+              the journey of each creator, empowering them to learn from and
+              contribute to the community.
             </p>
             <div className="grid md:grid-cols-3 gap-8 mt-8">
               <div className="bg-white p-6 shadow-md hover:shadow-lg transition duration-300">
@@ -87,26 +83,26 @@ export default function About() {
                   Project Showcase
                 </h3>
                 <p>
-                  Upload and display your best work to a community of passionate
-                  developers.
+                  Display your best projects and gain recognition within a
+                  dedicated community.
                 </p>
               </div>
               <div className="bg-white p-6 shadow-md hover:shadow-lg transition duration-300">
                 <h3 className="text-xl font-semibold mb-3 text-blue-500">
-                  Peer Feedback
+                  Real Feedback
                 </h3>
                 <p>
-                  Receive constructive feedback and insights from experienced
-                  professionals.
+                  Get practical insights from fellow developers to improve and
+                  refine your work.
                 </p>
               </div>
               <div className="bg-white p-6 shadow-md hover:shadow-lg transition duration-300">
                 <h3 className="text-xl font-semibold mb-3 text-blue-500">
-                  Community Engagement
+                  Collaborative Growth
                 </h3>
                 <p>
-                  Engage in meaningful discussions and build lasting connections
-                  in the tech world.
+                  Engage with others, share experiences, and build valuable
+                  professional connections.
                 </p>
               </div>
             </div>
@@ -116,17 +112,17 @@ export default function About() {
         {/* Join Us Section */}
         <section className="md:col-span-2 flex flex-col items-center text-center space-y-4 text-lg text-gray-600">
           <h2 className="text-4xl font-bold mb-6 text-center text-blue-600">
-            Join Us
+            Join Our Community
           </h2>
           <p className="max-w-2xl">
-            Whether you're an industry expert or just getting started, Dev Labs
-            welcomes you to a platform that values ingenuity, collaboration, and
-            forward-thinking development. Let's build a stronger community, one
-            project at a time.
+            Dev Labs is open to developers at all stages. Whether you're
+            launching your first project or refining your craft, our community
+            offers resources, support, and a space to connect with others in the
+            tech industry.
           </p>
           <button
             onClick={() => navigate("/signup")}
-            className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8"
+            className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 transition duration-300"
           >
             Get Started
           </button>

@@ -178,21 +178,22 @@ router.patch("/editDetails/:userId", async (req, res) => {
       nation,
       createdAt,
     } = user;
-    res
-      .status(200)
-      .send({
-        username,
-        email,
-        profileImage,
-        headline,
-        bio,
-        identity,
-        skills,
-        currentPosition,
-        college,
-        nation,
-        createdAt,
-      });
+
+    // console.log("Updated user details:", user);
+
+    res.status(200).send({
+      username,
+      email,
+      profileImage,
+      headline,
+      bio,
+      identity,
+      skills,
+      currentPosition,
+      college,
+      nation,
+      createdAt,
+    });
   } catch (error) {
     console.error("Edit user details error:", error);
     res.status(500).send("Server error during edit user details");

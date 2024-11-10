@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Github, Linkedin, Twitter, Menu, X } from "lucide-react";
+import { ArrowRight, Github, Linkedin, Menu, X } from "lucide-react";
 import Nebula from "../assets/nebula.jpeg";
 import { useNavigate } from "react-router-dom";
 
@@ -105,7 +105,7 @@ export default function LandingPage() {
           </button>
         </nav>
         {isMenuOpen && (
-          <div className="mt-4 sm:hidden bg-pink p-4  shadow-lg">
+          <div className="mt-4 sm:hidden bg-pink p-4 shadow-lg ">
             {user ? (
               <>
                 <Link
@@ -159,12 +159,12 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/signup">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold  transition">
+              <button className="bg-blue-600 w-full hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold  transition ">
                 Get Started <ArrowRight className="ml-2 h-5 w-5 inline-block" />
               </button>
             </Link>
             <Link to="/explore">
-              <button className="bg-white hover:bg-blue-600 text-blue-500 hover:text-white px-8 py-3 text-lg font-semibold  transition">
+              <button className="bg-white w-full hover:bg-blue-600 text-blue-500 hover:text-white px-8 py-3 text-lg font-semibold  transition ">
                 Explore Projects{" "}
                 <ArrowRight className="ml-2 h-5 w-5 inline-block" />
               </button>
@@ -180,13 +180,13 @@ export default function LandingPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature) => (
-            <div key={feature.title} className=" shadow-lg overflow-hidden">
+            <div key={feature.title} className="shadow-lg overflow-hidden ">
               <img
                 src={feature.image}
                 alt={feature.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover rounded-t-md"
               />
-              <div className="p-6 bg-white">
+              <div className="p-6 bg-white rounded-b-md">
                 <h3 className="text-xl font-semibold text-blue-600 mb-2">
                   {feature.title}
                 </h3>
@@ -205,17 +205,17 @@ export default function LandingPage() {
         </p>
         <div className="flex flex-col px-4 sm:px-0 sm:flex-row gap-2 justify-center w-full">
           <Link to="/contact">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
               Contact Us
             </button>
           </Link>
           <Link to="/about">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
               About Us
             </button>
           </Link>
           <Link to="/privacy">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
+            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition ">
               Privacy Policy
             </button>
           </Link>
