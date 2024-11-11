@@ -133,7 +133,7 @@ const Navbar = () => {
                 key={item.text}
                 className={`text-gray-700 dark:text-gray-300 py-3 px-4 border border-gray-400 dark:border-gray-200 text-center hover:border-black dark:hover:border-white ${
                   location.pathname === item.link
-                    ? "bg-gray-300 dark:bg-gray-700"
+                    ? "bg-gray-400 dark:bg-gray-700"
                     : ""
                 }`}
               >

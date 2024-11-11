@@ -29,7 +29,7 @@ const DigestLandingPage = () => {
           <a
             href="/digest"
             target="_blank"
-            className="inline-block bg-yellow-500 hover:bg-yellow-400 text-gray-900 px-8 py-4 text-lg font-semibold  shadow-xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up animation-delay-600"
+            className="inline-block bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 text-white px-8 py-4 text-lg font-semibold  shadow-xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up animation-delay-600"
           >
             Start Exploring
           </a>
@@ -192,7 +192,7 @@ const DigestLandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-500 text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">
             Ready to Level Up Your Skills?
@@ -204,7 +204,7 @@ const DigestLandingPage = () => {
           </p>
           <a
             href="/digest"
-            className="inline-block bg-gray-200 text-blue-700 hover:bg-yellow-300 hover:text-blue-800 px-8 py-4 text-lg font-semibold  transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-block bg-gray-200 text-blue-700 hover:bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 hover:text-blue-800 px-8 py-4 text-lg font-semibold  transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             Dive Into the Digest
           </a>

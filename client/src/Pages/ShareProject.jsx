@@ -139,7 +139,7 @@ export default function ShareProject() {
       dispatch(submitProject(projectData))
         .then(() => {
           setIsSubmitting(false);
-          navigate("/explore"); // Call navigate after successful submission
+          navigate("/projects"); // Call navigate after successful submission
         })
         .catch(() => {
           setIsSubmitting(false);
