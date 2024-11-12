@@ -61,7 +61,7 @@ export default function ClickedProject() {
 
   if (!projectData) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-200 dark:bg-gray-800">
+      <div className="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-800">
         {/* <CircularProgress /> */}
         <Lottie animationData={loadingAnimation} loop={true} />
       </div>
@@ -81,9 +81,9 @@ export default function ClickedProject() {
       : projectData.authorId.bio;
 
   return (
-    <div className="bg-gray-200 dark:bg-gray-800 min-h-screen">
+    <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
-        <div className="bg-gray-100 dark:bg-gray-700 shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-gray-700 shadow-lg overflow-hidden">
           <div className="relative">
             <img
               src={projectData.thumbnail}
@@ -186,7 +186,7 @@ export default function ClickedProject() {
         </div>
 
         {/* About the creator section */}
-        <div className="mt-8 bg-gray-100 dark:bg-gray-700 shadow-lg p-3 sm:p-6">
+        <div className="mt-8 bg-white dark:bg-gray-700 shadow-lg p-3 sm:p-6">
           <h2 className="text-2xl font-semibold mb-4 dark:text-gray-300">
             About the Creator
           </h2>
@@ -238,7 +238,7 @@ export default function ClickedProject() {
           </Link>
         </div>
 
-        <div className="mt-8 bg-gray-100 dark:bg-gray-700 shadow-lg p-2 sm:p-6">
+        <div className="mt-8 bg-white dark:bg-gray-700 shadow-lg p-2 sm:p-6">
           <Discussions
             projectId={projectData._id}
             authorId={projectData.authorId}

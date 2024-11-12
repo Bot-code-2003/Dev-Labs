@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import MarkdownRenderer from "./MarkdownRender";
+import MarkdownRender from "./MarkdownRender";
+import { useDispatch } from "react-redux";
+import { submitArticle } from "../actions/articleAction";
 
 const MarkdownEditor = () => {
-  const gradients = [
-    "from-slate-900 to-slate-700",
-    "from-violet-300 to-pink-300",
-    "from-blue-300 to-cyan-300",
-    "from-emerald-500 to-emerald-900",
-    "from-teal-200 to-teal-500",
-    "from-teal-400 to-yellow-300",
-    "from-rose-400 to-red-500",
-  ];
-
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [markdown, setMarkdown] = useState("");
   const [randomIndex, setRandomIndex] = useState("");
+  const [slug, setSlug] = useState("");
+  const [articleCategory, setArticleCategory] = useState("");
 
   // Handle text changes in the editor
   const handleMarkdownChange = (event) => {
@@ -22,12 +17,14 @@ const MarkdownEditor = () => {
   };
 
   const handlePublish = () => {
-    // console.log("Publishing markdown:", markdown);
-    console.log("Title:", title);
-
-    // select a random number on a range 0 to 6
-    const random = Math.floor(Math.random() * 6);
+    // random number from 0 to 12
+    const random = Math.floor(Math.random() * 13);
     setRandomIndex(random);
+    console.log("category", articleCategory);
+
+    dispatch(
+      submitArticle(title, markdown, randomIndex, slug, articleCategory)
+    );
   };
   // console.log("Random index:", randomIndex);
 
@@ -42,6 +39,26 @@ const MarkdownEditor = () => {
           onChange={(e) => setTitle(e.target.value)}
           value={title}
           type="text"
+        />
+        <select
+          name="category"
+          id=""
+          onChange={(e) => (
+            setArticleCategory(e.target.value), console.log(e.target.value)
+          )}
+          value={articleCategory}
+          className="h-10 border mb-5"
+        >
+          <option value="techstories">Tech Stories</option>
+          <option value="techinsights">Tech Insights</option>
+          <option value="foryoungentrepreneurs">For young entrepreneurs</option>
+        </select>
+        <input
+          className="h-10 border mb-5"
+          type="text"
+          placeholder="Slug"
+          onChange={(e) => setSlug(e.target.value)}
+          value={slug}
         />
         <textarea
           className=" border"
@@ -60,7 +77,7 @@ const MarkdownEditor = () => {
       </div>
       <div className="col-span-2">
         <h2>Preview</h2>
-        <MarkdownRenderer
+        <MarkdownRender
           markdownContent={markdown}
           // thumbnail="https://via.placeholder.com/800x400"
           title={title}

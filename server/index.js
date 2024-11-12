@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import articleRoutes from "./routes/articleRoutes.js";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -25,6 +26,7 @@ app.use(cors({ origin: "*" }));
 app.use("/user", userRoutes);
 app.use("/project", projectRoutes);
 app.use("/review", reviewRoutes);
+app.use("/article", articleRoutes);
 
 // Serve index.html for root route
 app.get("/", (req, res) => {

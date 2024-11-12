@@ -176,7 +176,7 @@ export default function LandingPage() {
               </Link>
             </div>
             <div className="mt-4 w-full">
-              <Link to="/digestlandingpage">
+              <Link to="/digest">
                 <button className="bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 w-full hover:bg-yellow-600 text-white px-8 py-3 text-lg font-semibold transition">
                   Dev Labs Digest{" "}
                   <ArrowRight className="ml-2 h-5 w-5 inline-block" />
@@ -233,7 +233,7 @@ export default function LandingPage() {
               Privacy Policy
             </button>
           </Link>
-          <Link to="/digestlandingpage">
+          <Link to="/digest">
             <button className="bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 text-white px-6 py-2 w-full shadow hover:bg-yellow-600 transition">
               Dev Labs Digest
             </button>

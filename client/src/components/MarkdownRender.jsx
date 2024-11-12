@@ -2,16 +2,55 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default function MarkdownRender({ markdownContent, title }) {
+export default function MarkdownRender({
+  markdownContent,
+  title,
+  randomIndex,
+}) {
+  console.log(randomIndex);
+
   return (
-    <div className="markdown-container bg-gradient-to-b from-gray-50 to-white text-gray-800 min-h-screen dark:bg-gradient-to-b dark:from-gray-800 dark:to-black dark:text-gray-300">
+    <div className="markdown-container text-gray-800 min-h-screen dark:bg-gradient-to-b dark:from-gray-800 dark:to-black dark:text-gray-300">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <article className="prose prose-lg max-w-none dark:prose-invert">
           <header className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-center text-white mb-4 dark:text-gray-100 bg-gradient-to-r min-h-48 from-teal-400 to-yellow-300 p-10 flex items-center justify-center">
+            <div>
+              <img
+                className="w-full h-64 object-cover mb-5"
+                src={
+                  randomIndex === 0
+                    ? "/articlebg/article1.jpg"
+                    : randomIndex === 1
+                    ? "/articlebg/article2.png"
+                    : randomIndex === 2
+                    ? "/articlebg/article3.png"
+                    : randomIndex === 3
+                    ? "/articlebg/article4.png"
+                    : randomIndex === 4
+                    ? "/articlebg/article5.webp"
+                    : randomIndex === 5
+                    ? "/articlebg/1.png"
+                    : randomIndex === 6
+                    ? "/articlebg/2.png"
+                    : randomIndex === 7
+                    ? "/articlebg/3.png"
+                    : randomIndex === 8
+                    ? "/articlebg/4.png"
+                    : randomIndex === 9
+                    ? "/articlebg/5.png"
+                    : randomIndex === 10
+                    ? "/articlebg/6.png"
+                    : randomIndex === 11
+                    ? "/articlebg/7.png"
+                    : "/articlebg/8.png"
+                }
+                alt=""
+              />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4  flex items-center justify-center">
               {title}
             </h1>
-            <div className="w-24 h-1 bg-blue-500 mx-auto dark:bg-blue-400"></div>
+            {/* <div className="w-24 h-1 bg-blue-500 mx-auto dark:bg-blue-400"></div> */}
           </header>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}

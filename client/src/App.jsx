@@ -19,21 +19,27 @@ import ContactUs from "./Pages/Contact";
 import Collab from "./Pages/Collab";
 import DigestLandingPage from "./Pages/DigestLandingPage";
 import BlogLandingPage from "./Pages/BlogLandingPage";
+import MarkdownEditor from "./components/MarkdownEditor";
+import ClickedArticle from "./Pages/ClickedArticle";
+import NavbarArticle from "./components/NavbarArticle";
 
 const App = () => {
   const location = useLocation();
 
   // Conditionally render Navbar based on current path
   const showNavbar =
-    location.pathname !== "/login" &&
-    location.pathname !== "/signup" &&
-    location.pathname !== "/" &&
-    location.pathname !== "/thankyou" &&
-    location.pathname !== "/about" &&
-    location.pathname !== "/privacy" &&
-    location.pathname !== "/contact" &&
-    location.pathname !== "/collab" &&
-    location.pathname !== "/digest";
+    ![
+      "/login",
+      "/signup",
+      "/",
+      "/thankyou",
+      "/about",
+      "/privacy",
+      "/contact",
+      "/collab",
+      "/digest",
+      "/digestlandingpage",
+    ].includes(location.pathname) && !location.pathname.startsWith("/article/");
 
   return (
     <div className="font-helvetica bg-gray-50">
@@ -56,6 +62,16 @@ const App = () => {
         <Route path="/collab" element={<Collab />} />
         <Route path="/digestlandingpage" element={<DigestLandingPage />} />
         <Route path="/digest" element={<BlogLandingPage />} />
+        <Route path="/addBlog" element={<MarkdownEditor />} />
+        <Route
+          path="/article/:slug"
+          element={
+            <>
+              <NavbarArticle />
+              <ClickedArticle />
+            </>
+          }
+        />
       </Routes>
     </div>
   );
