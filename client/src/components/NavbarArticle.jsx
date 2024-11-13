@@ -70,8 +70,11 @@ const NavbarArticle = () => {
             </Link>
           </li>
           <li>
-            <Link to="/about" className="text-white hover:text-blue-300 block">
-              About
+            <Link
+              to="/articles"
+              className="text-white hover:text-blue-300 block"
+            >
+              Articles
             </Link>
           </li>
           <li>
@@ -83,8 +86,12 @@ const NavbarArticle = () => {
             </Link>
           </li>
           <li>
-            <Link to="/blog" className="text-white hover:text-blue-300 block">
-              Blog
+            <Link
+              to="/"
+              // target="_blank"
+              className="text-white hover:text-blue-300 block"
+            >
+              Dev Labs
             </Link>
           </li>
         </ul>

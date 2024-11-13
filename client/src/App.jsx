@@ -22,6 +22,7 @@ import BlogLandingPage from "./Pages/BlogLandingPage";
 import MarkdownEditor from "./components/MarkdownEditor";
 import ClickedArticle from "./Pages/ClickedArticle";
 import NavbarArticle from "./components/NavbarArticle";
+import Articles from "./Pages/Articles";
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
   // Conditionally render Navbar based on current path
   const showNavbar =
     ![
+      "/",
       "/login",
       "/signup",
       "/",
@@ -39,6 +41,7 @@ const App = () => {
       "/collab",
       "/digest",
       "/digestlandingpage",
+      "/articles",
     ].includes(location.pathname) && !location.pathname.startsWith("/article/");
 
   return (
@@ -63,6 +66,7 @@ const App = () => {
         <Route path="/digestlandingpage" element={<DigestLandingPage />} />
         <Route path="/digest" element={<BlogLandingPage />} />
         <Route path="/addBlog" element={<MarkdownEditor />} />
+        <Route path="/articles" element={<Articles />} />
         <Route
           path="/article/:slug"
           element={

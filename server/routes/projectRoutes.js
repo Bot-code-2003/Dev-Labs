@@ -5,6 +5,31 @@ import express from "express";
 
 const router = express.Router();
 
+// Update project details
+router.patch("/editProject/:projectId", async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const updatedDetails = req.body; // Get the updated details from the request body
+
+    // Find the project by ID and update it with the new details
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      updatedDetails,
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Send back the updated project data
+    res.status(200).json(updatedProject);
+  } catch (error) {
+    console.error("Error updating project:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 router.post("/submitProject", async (req, res) => {
   try {
     const projectData = req.body;
@@ -21,7 +46,7 @@ router.post("/submitProject", async (req, res) => {
     // Fetch the user
     const user = await User.findById(authorId);
     if (user) {
-      console.log("user: ", user);
+      // console.log("user: ", user);
     }
 
     // Ensure milestonesAchieved is initialized as an empty array if it's undefined

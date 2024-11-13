@@ -33,26 +33,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "/placeholder.svg?height=250&width=250",
     },
-    identity: {
-      type: String,
-      default: "Frontend Developer",
-    },
-    skills: {
-      type: String, // Array of strings for skills
-      default: "",
-    },
-    currentPosition: {
-      type: String,
-      default: "Student",
-    },
-    college: {
-      type: String,
-      default: "G. Pulla Reddy Engineering College",
-    },
-    nation: {
-      type: String,
-      default: "India",
-    },
+
     createdAt: {
       type: Date,
       default: Date.now,

@@ -96,51 +96,6 @@ const AuthorProfile = () => {
           </div>
         </div>
 
-        {/* Professional Info */}
-        <div className="shadow-xl p-4 sm:p-8 bg-gray-100 dark:bg-gray-600">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-            Professional Information
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">
-                Current Role
-              </h3>
-              <div className="space-y-2">
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">Identity:</span>{" "}
-                  {author.identity}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">Current Position:</span>{" "}
-                  {author.currentPosition}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">Skills:</span>{" "}
-                  {author.skills || "Not specified"}
-                </p>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-600 dark:text-gray-300">
-                Education & Location
-              </h3>
-              <div className="space-y-2">
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">College:</span> {author.college}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">Nation:</span> {author.nation}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">Member since:</span>{" "}
-                  {new Date(author.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Projects Section */}
         <div className="shadow-xl p-4 sm:p-6 bg-gray-100 dark:bg-gray-600">
           <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">

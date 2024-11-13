@@ -195,7 +195,7 @@ export default function SignUp() {
                 setFormData({ ...formData, password: e.target.value })
               }
             />
-            <SelectInput
+            {/* <SelectInput
               label="Your Identity"
               id="identity"
               name="identity"
@@ -217,7 +217,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, identity: e.target.value })
               }
-            />
+            /> */}
             {/* <TextInput
               label="Skills"
               id="skills"

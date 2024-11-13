@@ -160,8 +160,25 @@ export default function ShareProject() {
     }));
   };
 
+  const [showWarning, setShowWarning] = useState(true);
+
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+      {showWarning && (
+        <div className="fixed top-10 left-[50%] transform -translate-x-1/2 min-w-[300px] py-4 z-50 px-8 bg-gradient-to-r from-red-500 via-red-400 to-red-500 text-white mb-4 ">
+          <h1>
+            Warning : Once submitted project cant be edited. You can only delete
+            the project
+          </h1>
+          <button
+            onClick={() => setShowWarning(false)}
+            className="absolute top-2 right-2 text-white text-sm"
+          >
+            {" "}
+            X
+          </button>
+        </div>
+      )}
       <div className="max-w-7xl mx-auto bg-gray-100 dark:bg-gray-300 shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 via-blue-300 to-blue-500 p-6">
           <h1 className="text-2xl font-bold text-white">
@@ -189,7 +206,7 @@ export default function ShareProject() {
               />
             </div>
 
-            {/** Project Type select */}
+            {/* * Project Type select */}
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -255,7 +272,7 @@ export default function ShareProject() {
                 className="block text-sm font-medium text-gray-700 mb-1"
                 htmlFor="link"
               >
-                Project Link (e.g., GitHub, live demo) (Optional)
+                Related Link (e.g., GitHub, live demo) (Optional)
               </label>
               <input
                 id="link"
@@ -263,7 +280,7 @@ export default function ShareProject() {
                 value={projectData.link}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter project link (e.g., GitHub, live demo)"
+                placeholder="Enter related link."
               />
             </div>
 

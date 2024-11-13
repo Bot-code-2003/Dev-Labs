@@ -42,7 +42,7 @@ const ArticleCard = ({ article, onClick }) => {
       <Link
         to={`/article/${article.slug}`}
         onClick={onClick}
-        className="block bg-white dark:bg-gray-700 shadow-lg mb-6 hover:shadow-xl transition duration-300"
+        className="h-full block bg-white  shadow-lg mb-1 hover:shadow-xl transition duration-300"
       >
         <img
           className="w-full h-52 object-cover mb-1"
@@ -50,11 +50,11 @@ const ArticleCard = ({ article, onClick }) => {
           alt={article.title}
         />
         <div className="p-4">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate">
+          <h2 className="text-md font-semibold text-gray-800  mb-2">
             {article.title}
           </h2>
 
-          <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300 mt-3">
+          <div className="flex items-center justify-between text-xs text-gray-600  mt-3">
             <div className="flex items-center space-x-1">
               <ThumbUpAltIcon style={{ fontSize: 16 }} />
               <span>{article.likes || 0} Likes</span>

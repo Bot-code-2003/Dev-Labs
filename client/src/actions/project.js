@@ -1,8 +1,8 @@
 import axios from "axios";
 
-// const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
+const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
+// const API = axios.create({ baseURL: "http://localhost:5000" });
 
 /**
  * Route to share the project
@@ -61,6 +61,24 @@ export const likeProject = (projectId, userId) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const editProject =
+  (updatedProjectDetails, projectId) => async (dispatch) => {
+    try {
+      console.log("editProject action called", updatedProjectDetails);
+
+      // Send the update request to the backend
+      const { data } = await API.patch(
+        `/project/editProject/${projectId}`,
+        updatedProjectDetails
+      );
+
+      // Dispatching the action to update the store with the updated project details
+      dispatch({ type: "EDIT_PROJECT", payload: data });
+    } catch (error) {
+      console.error("Edit project error:", error);
+    }
+  };
 
 export const unlikeProject = (projectId, userId) => async (dispatch) => {
   try {

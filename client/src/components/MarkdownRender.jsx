@@ -102,6 +102,7 @@ export default function MarkdownRender({
               ),
               a: ({ node, ...props }) => (
                 <a
+                  target="_blank"
                   className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
                   {...props}
                 />

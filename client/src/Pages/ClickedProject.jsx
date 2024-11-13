@@ -84,11 +84,21 @@ export default function ClickedProject() {
     <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
         <div className="bg-white dark:bg-gray-700 shadow-lg overflow-hidden">
-          <div className="relative">
+          <div
+            className="relative"
+            style={{
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
             <img
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
               src={projectData.thumbnail}
               alt={projectData.projectName}
-              className="w-full h-44 sm:h-64 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <h1 className="text-2xl text-center sm:text-4xl font-bold text-white">

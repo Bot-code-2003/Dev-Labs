@@ -21,18 +21,18 @@ export default function LandingPage() {
       title: "Showcase Your Work",
       description:
         "Present your projects to a global audience and gain visibility.",
-      image: "/showcase.jpeg",
+      image: "/landingpage/1.png",
     },
     {
       title: "Connect with Peers",
       description:
         "Collaborate and network with talented developers worldwide.",
-      image: "/connect.jpg",
+      image: "/landingpage/2.png",
     },
     {
       title: "Grow Your Skills",
       description: "Receive constructive feedback and continuously improve.",
-      image: "/grow.jpg",
+      image: "/landingpage/3.png",
     },
   ];
 
@@ -40,229 +40,187 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-300 text-gray-900">
-      {/* Header */}
-      <header className="py-4 px-6 md:px-12 lg:px-4 shadow">
-        <nav className="flex justify-between items-center">
-          <div
-            onClick={() => navigate("/")}
-            className="cursor-pointer relative w-40 h-12 mr-4 overflow-hidden group"
-          >
-            <div className="absolute inset-0 w-full h-full overflow-hidden">
-              <img
-                src={Nebula}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                alt="Nebula Labs"
-              />
-            </div>
-            <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-            <p className="absolute inset-0 flex items-center justify-center text-white text-xl font-semibold z-10">
-              Dev Labs
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center space-x-4">
-            {user ? (
-              <>
-                <Link
-                  to="/projects"
-                  className="text-blue-600 hover:text-blue-800 transition"
-                >
-                  Explore
-                </Link>
-                <Link
-                  to="/personalspace"
-                  className="bg-blue-600 text-white px-4 py-2 shadow transition hover:bg-blue-700"
-                >
-                  Personal Space
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="text-blue-600 hover:text-blue-800 transition"
-                >
-                  Log In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="bg-blue-600 text-white px-4 py-2 shadow transition hover:bg-blue-700"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-          <button
-            className="sm:hidden text-gray-700"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </nav>
-        {isMenuOpen && (
-          <div className="mt-4 sm:hidden bg-pink p-4 shadow-lg">
-            {user ? (
-              <>
-                <Link
-                  to="/projects"
-                  className="block py-2 text-blue-600 hover:text-blue-800 transition"
-                >
-                  Explore
-                </Link>
-                <Link
-                  to="/personalspace"
-                  className="block py-2 text-blue-600 hover:text-blue-800 transition"
-                >
-                  Personal Space
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="block py-2 text-blue-600 hover:text-blue-800 transition"
-                >
-                  Log In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block py-2 text-blue-600 hover:text-blue-800 transition"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        )}
-      </header>
-
       {/* Hero Section */}
       <section
-        className="relative w-full h-screen bg-cover bg-center"
         style={{
-          backgroundImage: "url('/hero.jpg')",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
+          backgroundImage: `url(/digestbg.jpg)`,
           backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+          backgroundBlendMode: "overlay",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}
+        className="relative text-white min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-r from-blue-600 to-indigo-800"
       >
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="relative z-10 flex flex-col justify-center items-center h-full px-6 text-center text-white">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
-            Elevate Your Projects
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+            Welcome to <span className="text-blue-400">Dev Labs</span>
           </h1>
-          <p className="text-lg sm:text-xl mb-8">
-            Connect, showcase, and grow within a vibrant developer community.
+          <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-300">
+            Empowering developers and entrepreneurs to showcase and grow.
           </p>
-          <div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/signup">
-                <button className="bg-blue-600 w-full hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold transition">
-                  Get Started{" "}
-                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
-                </button>
-              </Link>
-              <Link to="/projects">
-                <button className="bg-white w-full hover:bg-blue-600 text-blue-500 hover:text-white px-8 py-3 text-lg font-semibold transition">
-                  Explore Projects{" "}
-                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
-                </button>
-              </Link>
+          <a
+            href="/projects"
+            className="inline-block bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white px-8 py-4 text-lg font-semibold shadow-xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up animation-delay-600"
+          >
+            Start Exploring <ArrowRight className="inline-block ml-2" />
+          </a>
+        </div>
+      </section>
+
+      {/* What is Dev Labs Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-200">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-8">
+            What is Dev Labs?
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+            Dev Labs connects developers and creators by showcasing projects in
+            a sleek, modern way. Whether you're a novice or experienced
+            developer, it’s the perfect platform to showcase your work, receive
+            feedback, and engage with a community of like-minded individuals.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-12 text-center">
+            Why Choose Dev Labs?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gray-200 p-8 shadow-md transition-all duration-300 hover:shadow-xl">
+              <svg
+                className="w-12 h-12 text-blue-600 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                />
+              </svg>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Build, Share, and Grow
+              </h3>
+              <p className="text-gray-600">
+                Showcase your projects, receive feedback, and grow with the help
+                of the Dev Labs community.
+              </p>
             </div>
-            <div className="mt-4 w-full">
-              <Link to="/digest">
-                <button className="bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 w-full hover:bg-yellow-600 text-white px-8 py-3 text-lg font-semibold transition">
-                  Dev Labs Digest{" "}
-                  <ArrowRight className="ml-2 h-5 w-5 inline-block" />
-                </button>
-              </Link>
+            <div className="bg-gray-200 p-8 shadow-md transition-all duration-300 hover:shadow-xl">
+              <svg
+                className="w-12 h-12 text-green-600 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                />
+              </svg>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Stay Ahead with Insights
+              </h3>
+              <p className="text-gray-600">
+                Learn from expert insights and tips to stay at the forefront of
+                web development trends.
+              </p>
+            </div>
+            <div className="bg-gray-200 p-8 shadow-md transition-all duration-300 hover:shadow-xl">
+              <svg
+                className="w-12 h-12 text-purple-600 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
+              </svg>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                A Community That Cares
+              </h3>
+              <p className="text-gray-600">
+                Get the support you need from a community of passionate
+                developers and entrepreneurs.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 sm:px-6 md:px-12 lg:px-16 bg-gray-200">
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-12">
-          Our Features
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature) => (
-            <div key={feature.title} className="shadow-lg overflow-hidden ">
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6 bg-white">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-200">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-blue-800 mb-12">
+            What We Offer
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-gray-50 overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl"
+              >
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="w-full h-48 object-cover object-center"
+                />
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-blue-700 mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Discover Section */}
-      <section className="bg-blue-600 text-white py-12 px-2 text-center">
-        <h2 className="text-2xl font-bold mb-4">Discover More</h2>
-        <p className="mb-6">
-          Have questions or want to explore more features? We’re here to help!
-        </p>
-        <div className="flex flex-col px-4 sm:px-0 sm:flex-row gap-2 justify-center w-full">
-          <Link to="/contact">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
-              Contact Us
-            </button>
-          </Link>
-          <Link to="/about">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
-              About Us
-            </button>
-          </Link>
-          <Link to="/privacy">
-            <button className="bg-white text-blue-600 px-6 py-2 w-full shadow hover:bg-gray-100 transition">
-              Privacy Policy
-            </button>
-          </Link>
-          <Link to="/digest">
-            <button className="bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 text-white px-6 py-2 w-full shadow hover:bg-yellow-600 transition">
-              Dev Labs Digest
-            </button>
-          </Link>
+      {/* Call-to-Action Section */}
+      <section className="bg-gradient-to-r from-blue-500 to-indigo-400 text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            Ready to Showcase Your Work?
+          </h2>
+          <p className="text-lg sm:text-xl mb-8 max-w-3xl mx-auto">
+            Join our platform today and get started with showcasing your
+            projects, connecting with others, and advancing your skills.
+          </p>
+          <a
+            href="/signup"
+            className="inline-block bg-gray-200 text-blue-700  px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            Signup Now <ArrowRight className="inline-block ml-2" />
+          </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 md:px-12 lg:px-16 bg-gray-800 text-white">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} DevLabs. All rights reserved.
+      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-lg mb-4">
+            Empowering developers and entrepreneurs to thrive in the digital
+            world.
           </p>
-          <div className="flex space-x-4">
-            <Link
-              to="https://github.com/Bot-code-2003"
-              target="_blank"
-              aria-label="GitHub"
-            >
-              <Github className="h-5 w-5 text-gray-400" />
-            </Link>
-            <Link
-              target="_blank"
-              to="https://www.linkedin.com/in/dharmadeep-madisetty-oct2003"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="h-5 w-5 text-gray-400" />
-            </Link>
-          </div>
+          <p className="text-sm text-gray-400">
+            &copy; {new Date().getFullYear()} Dev Labs. All Rights Reserved.
+          </p>
         </div>
       </footer>
     </div>

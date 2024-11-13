@@ -4,13 +4,13 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import Face4Icon from "@mui/icons-material/Face4";
 import { Link } from "react-router-dom";
 
-const ProjectCard = ({ project, onClick, deleteProject }) => {
+const ProjectCard = ({ project, onClick }) => {
   return (
     <div>
       <Link
         to={`/project/${project._id}`}
         onClick={onClick}
-        className="block bg-gray-100 dark:bg-gray-600 shadow-md mb-6 hover:shadow-xl dark:hover:shadow-lg hover:dark:shadow-gray-700"
+        className="block bg-white dark:bg-gray-500 shadow-md mb-6 hover:shadow-xl dark:hover:shadow-lg hover:dark:shadow-gray-700"
       >
         <div className="relative h-56 overflow-hidden">
           <img
@@ -26,7 +26,7 @@ const ProjectCard = ({ project, onClick, deleteProject }) => {
           </div>
         </div>
         <div className="p-3">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               {project.authorId?.profileImage ? (
                 <img
@@ -41,23 +41,17 @@ const ProjectCard = ({ project, onClick, deleteProject }) => {
                 <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
                   {project.authorId?.username || "Unknown Author"}
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300">
-                  {project.authorId?.college || "College not specified"}
-                </p>
               </div>
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-300 mb-1 bg-blue-200 dark:bg-blue-800 px-2 py-1 inline-block">
-              {project.projectType}
-            </p>
-          </div>
-          <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
-            <div className="flex items-center space-x-1">
-              <ThumbUpAltIcon style={{ fontSize: 16 }} />
-              <span>{project.projectLikes?.length || 0} Likes</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <span>•</span>
-              <p>{moment(project.createdAt).fromNow()}</p>
+            <div className="flex items-center gap-2 justify-between text-xs text-gray-600 dark:text-gray-300">
+              <div className="flex items-center space-x-1">
+                <ThumbUpAltIcon style={{ fontSize: 16 }} />
+                <span>{project.projectLikes?.length || 0} Likes</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <span>•</span>
+                <p>{moment(project.createdAt).fromNow()}</p>
+              </div>
             </div>
           </div>
         </div>

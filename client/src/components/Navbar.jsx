@@ -98,7 +98,7 @@ const Navbar = () => {
 
   const menuItems = [
     { text: "Projects", link: "/projects" },
-    { text: "Digest", link: "/digestlandingpage" },
+    { text: "Digest", link: "/digest" },
   ];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
   const loggedInUserName = loggedInUser?.username || "User";
@@ -129,6 +129,7 @@ const Navbar = () => {
           <div className="hidden sm:flex space-x-6">
             {menuItems.map((item) => (
               <Link
+                target={item.text === "Digest" ? "_blank" : ""}
                 to={item.link}
                 key={item.text}
                 className={`text-gray-700 dark:text-gray-300 py-3 px-4 border border-gray-400 dark:border-gray-200 text-center hover:border-black dark:hover:border-white ${
@@ -199,7 +200,7 @@ const Navbar = () => {
                 className="bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-200 flex items-center gap-1 hover:bg-gray-300 dark:hover:bg-gray-600 text-blue-500 dark:text-blue-300 px-4 py-2"
               >
                 <ScienceIcon fontSize="small" />
-                Share Project
+                Share Work
               </button>
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -254,7 +255,7 @@ const Navbar = () => {
       </nav>
       {window.location.pathname === "/projects" && !loggedIn && (
         <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-sm text-center py-1 px-4">
-          sign up to share your project.
+          🚀 Sign up to share your project.
         </div>
       )}
 

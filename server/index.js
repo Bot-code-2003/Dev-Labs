@@ -35,8 +35,8 @@ app.get("/", (req, res) => {
 
 // Connect to MongoDB and start the server
 mongoose
-  .connect("mongodb://localhost:27017/Dev-labs", {
-    // .connect(url, {
+  // .connect("mongodb://localhost:27017/Dev-labs", {
+  .connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
