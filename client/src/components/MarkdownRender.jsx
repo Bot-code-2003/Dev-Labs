@@ -1,13 +1,26 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Lottie from "lottie-react";
+import LoadingAnimation from "../assets/lotties/Animation - 1729259117182.json"; // Import your Lottie animation file
 
 export default function MarkdownRender({
   markdownContent,
   title,
   randomIndex,
 }) {
-  console.log(randomIndex);
+  // If markdownContent or title is missing, show a loading indicator
+  if (!markdownContent || !title) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Lottie
+          animationData={LoadingAnimation}
+          loop={true}
+          className="w-52 h-52"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="markdown-container text-gray-800 min-h-screen dark:bg-gradient-to-b dark:from-gray-800 dark:to-black dark:text-gray-300">
@@ -47,23 +60,22 @@ export default function MarkdownRender({
                 alt=""
               />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4  flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 flex items-center justify-center">
               {title}
             </h1>
-            {/* <div className="w-24 h-1 bg-blue-500 mx-auto dark:bg-blue-400"></div> */}
           </header>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               h1: ({ node, ...props }) => (
                 <h1
-                  className="text-3xl font-bold mt-8 mb-4 dark:text-gray-200  "
+                  className="text-3xl font-bold mt-8 mb-4 dark:text-gray-200"
                   {...props}
                 />
               ),
               h2: ({ node, ...props }) => (
                 <h2
-                  className="text-2xl font-semibold mt-6 mb-3 dark:text-gray-200 "
+                  className="text-2xl font-semibold mt-6 mb-3 dark:text-gray-200"
                   {...props}
                 />
               ),
@@ -144,7 +156,6 @@ export default function MarkdownRender({
                   {...props}
                 />
               ),
-
               mark: ({ node, ...props }) => (
                 <mark
                   className="bg-yellow-100 text-yellow-800 rounded px-1 py-0.5 dark:bg-yellow-700 dark:text-yellow-200"

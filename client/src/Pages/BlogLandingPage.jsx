@@ -1,7 +1,7 @@
-"use client";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react"; // Importing useState here
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../assets/lotties/Animation - 1729259117182.json";
+import Lottie from "lottie-react";
 import {
   getArticles,
   getFeaturedArticles,
@@ -17,11 +17,23 @@ const SectionTitle = ({ children }) => (
   </h2>
 );
 
-const ArticleGrid = ({ articles }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {articles.map((article) => (
-      <ArticleCard key={article._id} article={article} />
-    ))}
+const ArticleGrid = ({ articles, loading }) => (
+  <div>
+    {loading ? (
+      <div className="flex justify-center items-center h-64">
+        <Lottie
+          animationData={Loading}
+          loop={true}
+          style={{ height: 150, width: 150 }}
+        />
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {articles.map((article) => (
+          <ArticleCard key={article._id} article={article} />
+        ))}
+      </div>
+    )}
   </div>
 );
 
@@ -35,7 +47,6 @@ const HeroSection = () => (
       backgroundAttachment: "fixed",
       backgroundRepeat: "no-repeat",
       backgroundBlendMode: "overlay",
-      // backgroundColor: "rgba(0, 0, 0, 0.5)",
     }}
   >
     <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -67,13 +78,25 @@ export default function BlogLandingPage() {
     foryoungentrepreneurs,
   } = useSelector((state) => state.articles);
 
+  const [isloading, setLoading] = useState(true); // Correct usage of useState inside the component
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(getArticles());
-    dispatch(getFeaturedArticles());
-    dispatch(getArticlesByCategory("techstories"));
-    dispatch(getArticlesByCategory("techinsights"));
-    dispatch(getArticlesByCategory("foryoungentrepreneurs"));
+    const fetchData = async () => {
+      try {
+        window.scrollTo(0, 0);
+        await dispatch(getArticles());
+        await dispatch(getFeaturedArticles());
+        await dispatch(getArticlesByCategory("techstories"));
+        await dispatch(getArticlesByCategory("techinsights"));
+        await dispatch(getArticlesByCategory("foryoungentrepreneurs"));
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false); // Set loading to false when data fetching is complete
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -88,22 +111,28 @@ export default function BlogLandingPage() {
       <main className="container mx-auto px-4 py-6">
         <section className="mb-16">
           <SectionTitle>Recent Articles</SectionTitle>
-          <ArticleGrid articles={articles.slice(0, 3)} />
+          <ArticleGrid loading={isloading} articles={articles.slice(0, 3)} />
         </section>
 
         <section className="mb-16">
           <SectionTitle>Tech Stories</SectionTitle>
-          <ArticleGrid articles={techstories.slice(0, 3)} />
+          <ArticleGrid loading={isloading} articles={techstories.slice(0, 3)} />
         </section>
 
         <section className="mb-16">
           <SectionTitle>For Young Entrepreneurs</SectionTitle>
-          <ArticleGrid articles={foryoungentrepreneurs.slice(0, 3)} />
+          <ArticleGrid
+            loading={isloading}
+            articles={foryoungentrepreneurs.slice(0, 3)}
+          />
         </section>
 
         <section className="mb-16">
           <SectionTitle>Tech Insights</SectionTitle>
-          <ArticleGrid articles={techinsights.slice(0, 3)} />
+          <ArticleGrid
+            loading={isloading}
+            articles={techinsights.slice(0, 3)}
+          />
         </section>
       </main>
     </div>
