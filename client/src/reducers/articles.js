@@ -13,6 +13,15 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case "INCREMENT_VIEWS":
+      return {
+        ...state,
+        articles: state.articles.map((article) =>
+          article.slug === action.payload
+            ? { ...article, views: article.views + 1 }
+            : article
+        ),
+      };
     case "GET_ARTICLE":
       return {
         ...state,

@@ -65,14 +65,21 @@ const NavbarArticle = () => {
           } md:flex md:space-x-6 mt-4 md:mt-0 space-y-2 md:space-y-0`}
         >
           <li>
-            <Link to="/digest" className="text-white hover:text-blue-300 block">
+            <Link
+              to="/digest"
+              className={`text-white hover:text-blue-300 block ${
+                location.pathname === "/digest" ? "underline" : ""
+              }`}
+            >
               Home
             </Link>
           </li>
           <li>
             <Link
               to="/articles"
-              className="text-white hover:text-blue-300 block"
+              className={`text-white hover:text-blue-300 block ${
+                location.pathname === "/articles" ? "underline" : ""
+              }`}
             >
               Articles
             </Link>

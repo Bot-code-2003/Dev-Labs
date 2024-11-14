@@ -3,8 +3,11 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { incrementViews } from "../actions/articleAction";
+import { useDispatch } from "react-redux";
 
-const ArticleCard = ({ article, onClick }) => {
+const ArticleCard = ({ article }) => {
+  const dispatch = useDispatch();
   const getImage = (randomIndex) => {
     switch (randomIndex) {
       case 0:
@@ -37,11 +40,15 @@ const ArticleCard = ({ article, onClick }) => {
         return "/articlebg/1.png";
     }
   };
+
+  const articleClick = (slug) => {
+    dispatch(incrementViews(slug));
+  };
   return (
     <div>
       <Link
         to={`/article/${article.slug}`}
-        onClick={onClick}
+        onClick={() => articleClick(article.slug)}
         className="h-full block bg-white  shadow-lg mb-1 hover:shadow-xl transition duration-300"
       >
         <img

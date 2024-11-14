@@ -39,25 +39,41 @@ const Articles = () => {
         <div className="hidden md:flex gap-4">
           <p
             onClick={() => setCategory("")}
-            className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+            className={`px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer ${
+              category === ""
+                ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300"
+                : ""
+            }`}
           >
             All
           </p>
           <p
             onClick={handleCategoryClick("techstories")}
-            className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+            className={`px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer ${
+              category === "techstories"
+                ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300"
+                : ""
+            }`}
           >
             Tech Stories
           </p>
           <p
             onClick={handleCategoryClick("techinsights")}
-            className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+            className={`px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer ${
+              category === "techinsights"
+                ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300"
+                : ""
+            }`}
           >
             Tech Insights
           </p>
           <p
             onClick={handleCategoryClick("foryoungentrepreneurs")}
-            className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+            className={`px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer ${
+              category === "foryoungentrepreneurs"
+                ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300"
+                : ""
+            }`}
           >
             For Young Entrepreneurs
           </p>
@@ -73,31 +89,31 @@ const Articles = () => {
 
         {/** Dropdown menu for mobile */}
         {isDropdownOpen && (
-          <div className="absolute top-14 right-4 w-48 bg-white shadow-lg p-2 z-10 md:hidden">
+          <div className="absolute top-14 right-4 w-48 bg-gray1via-gray-100 shadow-lg p-2 z-10 md:hidden">
             <p
               onClick={() => {
                 setCategory("");
                 setIsDropdownOpen(false);
               }}
-              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer"
             >
               All
             </p>
             <p
               onClick={handleCategoryClick("techstories")}
-              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer"
             >
               Tech Stories
             </p>
             <p
               onClick={handleCategoryClick("techinsights")}
-              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer"
             >
               Tech Insights
             </p>
             <p
               onClick={handleCategoryClick("foryoungentrepreneurs")}
-              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-200 via-white to-gray-200 cursor-pointer"
+              className="px-3 py-1 border hover:bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 cursor-pointer"
             >
               For Young Entrepreneurs
             </p>

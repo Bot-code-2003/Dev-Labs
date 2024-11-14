@@ -13,6 +13,18 @@ router.get("/getArticles", async (req, res) => {
   }
 });
 
+router.patch("/incViews", async (req, res) => {
+  const { slug } = req.body;
+  try {
+    const article = await Article.findOne({ slug: slug });
+    article.views++;
+    await article.save();
+    res.status(200).send("Views incremented");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get("/getArticle/:slug", async (req, res) => {
   const { slug } = req.params;
   try {

@@ -3,6 +3,15 @@ import axios from "axios";
 const API = axios.create({ baseURL: "https://dev-labs-server.vercel.app" });
 // const API = axios.create({ baseURL: "http://localhost:5000" });
 
+export const incrementViews = (slug) => async (dispatch) => {
+  try {
+    dispatch({ type: "INCREMENT_VIEWS", payload: slug });
+    await API.patch("/article/incViews", { slug });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getArticle = (slug) => async (dispatch) => {
   try {
     console.log("getArticle action called", slug);
