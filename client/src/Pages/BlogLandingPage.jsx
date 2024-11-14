@@ -79,11 +79,18 @@ export default function BlogLandingPage() {
     const fetchData = async () => {
       try {
         window.scrollTo(0, 0);
-        await dispatch(getArticles());
-        await dispatch(getFeaturedArticles());
-        await dispatch(getArticlesByCategory("techstories"));
-        await dispatch(getArticlesByCategory("techinsights"));
-        await dispatch(getArticlesByCategory("foryoungentrepreneurs"));
+        if (techstories.length === 0) {
+          await dispatch(getArticlesByCategory("techstories"));
+        }
+        if (articles.length === 0) {
+          await dispatch(getArticles());
+        }
+        if (techinsights.length === 0) {
+          await dispatch(getArticlesByCategory("techinsights"));
+        }
+        if (foryoungentrepreneurs.length === 0) {
+          await dispatch(getArticlesByCategory("foryoungentrepreneurs"));
+        }
       } catch (error) {
         console.error("Error fetching articles:", error);
       } finally {
