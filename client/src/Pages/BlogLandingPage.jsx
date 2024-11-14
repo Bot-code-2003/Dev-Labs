@@ -70,13 +70,8 @@ const HeroSection = () => (
 
 export default function BlogLandingPage() {
   const dispatch = useDispatch();
-  const {
-    articles,
-    featuredArticles,
-    techstories,
-    techinsights,
-    foryoungentrepreneurs,
-  } = useSelector((state) => state.articles);
+  const { articles, techstories, techinsights, foryoungentrepreneurs } =
+    useSelector((state) => state.articles);
 
   const [isloading, setLoading] = useState(true); // Correct usage of useState inside the component
 

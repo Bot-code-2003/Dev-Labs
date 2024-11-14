@@ -15,7 +15,7 @@ const ClickedArticle = () => {
     state.articles.articles.find((article) => article.slug === slug)
   );
 
-  // Get the clickedArticle from the Redux state for cases when the article isn't in the articles array
+  // If refreshed then this is.
   const clickedArticle = useSelector((state) => state.articles.clickedArticle);
 
   // Use loading states to manage loading experience
@@ -27,9 +27,8 @@ const ClickedArticle = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // If article is not found in the list, fetch it
     if (!article) {
-      dispatch(getArticle(slug));
+      dispatch(getArticle(slug)); // this populates the clickedArticle.
     }
   }, [dispatch, slug, article]);
 
@@ -45,13 +44,15 @@ const ClickedArticle = () => {
   // Determine which article data to use
   const displayArticle = article || clickedArticle;
   const category = displayArticle?.articleCategory;
-  console.log("category : ", category);
+  console.log("category from either dislayed or article : ", category);
 
   // Fetch the articles of the same category
-  const categoryArticles = useSelector((state) =>
-    category ? state.articles[`${category}All`] || [] : []
-  );
-
+  const categoryArticles =
+    useSelector((state) =>
+      state.articles.articles.filter(
+        (article) => article.articleCategory === category
+      )
+    ) || useSelector((state) => state.articles[`${category}All`]);
   console.log("related : ", categoryArticles);
 
   // Render loading state

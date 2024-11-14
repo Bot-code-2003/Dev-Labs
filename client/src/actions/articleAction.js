@@ -54,12 +54,9 @@ export const getArticlesByCategory = (category) => async (dispatch) => {
     const { data } = await API.get(
       `/article/getArticlesByCategory/${category}`
     );
+    console.log("catedgory  actious: ", data);
 
-    // Include the category in the payload
-    dispatch({
-      type: "GET_ARTICLES_BY_CATEGORY",
-      payload: { category, articles: data },
-    });
+    dispatch({ type: "GET_ARTICLES_BY_CATEGORY", payload: data });
   } catch (error) {
     console.log(error);
   }
