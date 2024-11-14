@@ -48,6 +48,7 @@ export default (state = initialState, action) => {
       };
 
     case "GET_ARTICLES_BY_CATEGORY_ALL":
+      console.log(action.payload.category, action.payload.articles);
       return {
         ...state,
         [action.payload.category + "All"]: action.payload.articles,

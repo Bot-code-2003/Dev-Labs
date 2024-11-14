@@ -10,61 +10,67 @@ const ClickedArticle = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
 
-  // Check if article exists in the list of articles
+  // Get the clicked article based on the slug
   const article = useSelector((state) =>
     state.articles.articles.find((article) => article.slug === slug)
   );
 
-  // If refreshed then this is.
+  // Get the clickedArticle if it exists
   const clickedArticle = useSelector((state) => state.articles.clickedArticle);
-
-  // Use loading states to manage loading experience
   const isLoading = useSelector((state) => state.articles.loading);
   const isCategoryLoading = useSelector(
     (state) => state.articles.categoryLoading
   );
 
+  // Dispatch actions to fetch article data and category data
   useEffect(() => {
     window.scrollTo(0, 0);
-
     if (!article) {
-      dispatch(getArticle(slug)); // this populates the clickedArticle.
+      dispatch(getArticle(slug)); // Fetch the clicked article
     }
   }, [dispatch, slug, article]);
 
-  // Fetch related articles when clickedArticle is populated
   useEffect(() => {
     if (clickedArticle && clickedArticle.articleCategory) {
-      console.log("clickedArticle");
-
-      dispatch(getArticlesByCategoryAll(clickedArticle.articleCategory));
+      dispatch(getArticlesByCategoryAll(clickedArticle.articleCategory)); // Fetch related articles by category
     }
   }, [dispatch, clickedArticle]);
 
-  // Determine which article data to use
+  // Use the clickedArticle or fallback to the article fetched by the slug
   const displayArticle = article || clickedArticle;
   const category = displayArticle?.articleCategory;
-  console.log("category from either dislayed or article : ", category);
 
-  // Fetch the articles of the same category
-  const categoryArticles =
-    useSelector((state) =>
-      state.articles.articles.filter(
-        (article) => article.articleCategory === category
-      )
-    ) || useSelector((state) => state.articles[`${category}All`]);
-  console.log("related : ", categoryArticles);
+  // Fetch related articles from the state
+  const categoryArticles = useSelector((state) => {
+    // First, check if the category is in the state.articles.articles list.
+    const filteredArticles = state.articles.articles.filter(
+      (article) => article.articleCategory === category
+    );
 
-  // Render loading state
+    // If articles are not found, check if the categoryAll (like techstoriesAll) exists.
+    if (filteredArticles.length === 0 && category) {
+      return state.articles[`${category}All`] || []; // Dynamically access categoryAll.
+    }
+
+    // If we have filtered articles, return them.
+    return filteredArticles;
+  });
+
+  // Log to see if state is updated correctly
+  useEffect(() => {
+    console.log("The state: ", categoryArticles);
+  }, [categoryArticles]);
+
+  // Handle loading states
   if (isLoading || !displayArticle) {
     return <div>Loading article...</div>;
   }
 
-  // Show loading for related articles
-  if (isCategoryLoading) {
+  if (isCategoryLoading || !categoryArticles) {
     return <div>Loading related articles...</div>;
   }
 
+  // Define image based on the randomIndex for the article background
   const getImage = (randomIndex) => {
     switch (randomIndex) {
       case 0:
@@ -113,33 +119,40 @@ const ClickedArticle = () => {
       />
 
       {/** Show related article links of the same category */}
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-6 underline">Related articles</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {categoryArticles.map((article) =>
-            article._id !== displayArticle._id ? (
-              <Link
-                key={article._id}
-                to={`/article/${article.slug}`}
-                className="block"
-              >
-                <div
-                  style={{
-                    backgroundImage: `url(${getImage(article.randomIndex)})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                  className="bg-white p-4 shadow-lg hover:shadow-xl transition duration-300 h-full"
-                >
-                  <h3 className="text-lg font-semibold text-white hover:text-blue-500 bg-opacity-60 bg-black p-3">
-                    {article.title}
-                  </h3>
-                </div>
-              </Link>
-            ) : null
-          )}
+      {categoryArticles?.length > 0 && (
+        <div className="p-4">
+          <h2 className="text-2xl font-bold mb-6 underline">
+            Related articles
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {categoryArticles.map(
+              (article) =>
+                article._id !== displayArticle._id && (
+                  <Link
+                    key={article._id}
+                    to={`/article/${article.slug}`}
+                    className="block"
+                  >
+                    <div
+                      style={{
+                        backgroundImage: `url(${getImage(
+                          article.randomIndex
+                        )})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }}
+                      className="bg-white p-4 shadow-lg hover:shadow-xl transition duration-300 h-full"
+                    >
+                      <h3 className="text-lg font-semibold text-white hover:text-blue-500 bg-opacity-60 bg-black p-3">
+                        {article.title}
+                      </h3>
+                    </div>
+                  </Link>
+                )
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
