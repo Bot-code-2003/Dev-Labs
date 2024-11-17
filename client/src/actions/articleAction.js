@@ -34,59 +34,26 @@ export const getArticles = () => async (dispatch) => {
   }
 };
 
-export const getArticlesByCategoryAll = (category) => async (dispatch) => {
-  try {
-    const { data } = await API.get(
-      `/article/getArticlesByCategoryAll/${category}`
-    );
-    console.log("getArticlesByCategoryAll action called", data);
-
-    dispatch({ type: "GET_ARTICLES_BY_CATEGORY_ALL", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getArticlesByCategory = (category) => async (dispatch) => {
-  try {
-    console.log("getArticlesByCategory action called", category);
-
-    const { data } = await API.get(
-      `/article/getArticlesByCategory/${category}`
-    );
-    console.log("catedgory  actious: ", data);
-
-    dispatch({ type: "GET_ARTICLES_BY_CATEGORY", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getFeaturedArticles = () => async (dispatch) => {
-  try {
-    const { data } = await API.get("/article/getFeaturedArticles");
-    dispatch({ type: "GET_FEATURED_ARTICLES", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const submitArticle =
-  (title, markdown, randomIndex, slug, articleCategory) => async (dispatch) => {
+  (title, description, markdown, articleHeaderImage, imageCredit, slug) =>
+  async (dispatch) => {
     console.log(
       "submitArticle action called",
       title,
+      description,
       markdown,
-      randomIndex,
-      slug,
-      articleCategory
+      articleHeaderImage,
+      imageCredit,
+      slug
     );
 
     const { data } = await API.post("/article/submit", {
       title,
+      description,
       markdown,
-      randomIndex,
+      articleHeaderImage,
+      imageCredit,
       slug,
-      articleCategory,
     });
 
     console.log("Recieved data: ", data);

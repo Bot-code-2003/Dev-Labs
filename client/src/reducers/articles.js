@@ -1,12 +1,5 @@
 const initialState = {
   articles: [],
-  featuredArticles: [],
-  techstories: [],
-  techinsights: [],
-  foryoungentrepreneurs: [],
-  techstoriesAll: [],
-  techinsightsAll: [],
-  foryoungentrepreneursAll: [],
   clickedArticle: {},
   loading: false, // Add loading state here if not already defined
 };
@@ -33,25 +26,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         articles: action.payload,
-      };
-
-    case "GET_FEATURED_ARTICLES":
-      return {
-        ...state,
-        featuredArticles: action.payload,
-      };
-
-    case "GET_ARTICLES_BY_CATEGORY":
-      return {
-        ...state,
-        [action.payload.category]: action.payload.articles,
-      };
-
-    case "GET_ARTICLES_BY_CATEGORY_ALL":
-      console.log(action.payload.category, action.payload.articles);
-      return {
-        ...state,
-        [action.payload.category + "All"]: action.payload.articles,
       };
 
     default:

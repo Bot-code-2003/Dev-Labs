@@ -7,32 +7,19 @@ const NavbarArticle = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const navBgs = [
-    "/articlebg/article1.jpg",
-    "/articlebg/article2.png",
-    "/articlebg/article3.png",
-    "/articlebg/article4.png",
-    "/articlebg/article5.webp",
-    "/articlebg/1.png",
-  ];
-
-  // Randomly select a background image on component mount
-  useEffect(() => {
-    const randomBg = navBgs[Math.floor(Math.random() * navBgs.length)];
-    setBgImage(randomBg);
-  }, []); // Empty dependency array ensures this runs only once when the component mounts
+  // Empty dependency array ensures this runs only once when the component mounts
 
   return (
     <nav
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundBlendMode: "multiply",
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
-      }}
-      className="relative px-4 py-4 md:py-6 shadow-lg"
+      // style={{
+      //   backgroundImage: `url(/blog/darkred.jpg)`,
+      //   backgroundSize: "cover",
+      //   backgroundPosition: "center",
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundBlendMode: "multiply",
+      //   backgroundColor: "rgba(0, 0, 0, 0.3)",
+      // }}
+      className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 relative px-4 py-4 md:py-6 shadow-lg"
     >
       <div className="container mx-auto">
         <div className="flex justify-between items-center">

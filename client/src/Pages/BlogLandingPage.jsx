@@ -2,19 +2,13 @@ import React, { useEffect, useState } from "react"; // Importing useState here
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../assets/lotties/Animation - 1729259117182.json";
 import Lottie from "lottie-react";
-import {
-  getArticles,
-  getFeaturedArticles,
-  getArticlesByCategory,
-} from "../actions/articleAction";
+import { getArticles } from "../actions/articleAction";
 import ArticleCard from "../components/ArticleCard";
 import NavbarArticle from "../components/NavbarArticle";
 import { Link } from "react-router-dom";
 
 const SectionTitle = ({ children }) => (
-  <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">
-    {children}
-  </h2>
+  <h2 className="text-3xl font-bold mb-6 text-white">{children}</h2>
 );
 
 const ArticleGrid = ({ articles, loading }) => (
@@ -41,7 +35,7 @@ const HeroSection = () => (
   <div
     className="relative bg-cover bg-center bg-no-repeat h-[60vh] flex items-center justify-center text-white"
     style={{
-      backgroundImage: "url(/digestbg.jpg)",
+      backgroundImage: "url(/blog/alien2.jpg)",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
@@ -49,14 +43,14 @@ const HeroSection = () => (
       backgroundBlendMode: "overlay",
     }}
   >
-    <div className="absolute inset-0 bg-black opacity-50"></div>
-    <div className="relative z-10 text-center max-w-3xl mx-auto px-4">
+    <div className="absolute inset-0 bg-black opacity-10 "></div>
+    <div className="relative z-10 text-center max-w-3xl mx-auto py-4 px-4">
       <h1 className="text-4xl md:text-5xl font-bold mb-4">
-        Welcome to Dev Labs Digest
+        Welcome to Dev Labs: Beyond the Infinite
       </h1>
       <p className="text-xl mb-8">
-        Curated content, expert advice, and tech stories to inspire and empower
-        developers and entrepreneurs in a fast-paced digital world.
+        Dev Labs: Beyond the Infinite explores mind-bending paradoxes and the
+        vast mysteries of space, where logic and the cosmos collide.
       </p>
       <Link
         to="/articles"
@@ -68,10 +62,67 @@ const HeroSection = () => (
   </div>
 );
 
+const Footer = () => (
+  <footer className="bg-gray-800 text-white py-6">
+    <div className="container mx-auto text-center">
+      <p className="text-sm">
+        &copy; {new Date().getFullYear()} Dev Labs. All Rights Reserved.
+      </p>
+      <p className="text-sm mt-2">Built with passion by the Dev Labs Team</p>
+    </div>
+  </footer>
+);
+
+const AboutSection = () => (
+  <div
+    className="container mx-auto px-4 py-8"
+    style={{
+      backgroundImage: "url(/blog/about.jpg)",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: "fixed",
+      backgroundRepeat: "no-repeat",
+      backgroundBlendMode: "overlay",
+    }}
+  >
+    <SectionTitle>About Me</SectionTitle>
+    <div className="bg-white p-6 shadow-lg dark:bg-gray-800 dark:text-white">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="md:col-span-3 flex flex-col justify-between">
+          <p className="text-lg mb-4">
+            Hi, I'm the owner of Dev Labs, a platform to showcase your
+            creativity. I'm deeply passionate about science fiction, which
+            inspired me to start this blog on space theories and paradoxes.
+            Growing up, I was always fascinated by the wonders of the universe
+            and the mysteries surrounding our fate. I spent countless hours
+            watching channels like Kurzgesagt in a Nutshell, What If, and
+            Destiny. These channels ignited my curiosity about the forces that
+            shape our lives and how the universe itself is the ultimate deciding
+            factor in our journey.
+          </p>
+          <p className="text-lg">
+            Through this blog, I hope to explore these profound ideas and engage
+            with like-minded individuals who share the same curiosity about
+            space and the mind-bending paradoxes that come with it.
+          </p>
+        </div>
+        <div className="md:col-span-1 flex justify-center items-stretch">
+          {" "}
+          {/* Ensure image stretches to match content height */}
+          <img
+            className="w-full max-h-56 object-cover object-top shadow-lg" // Ensure image fills the height of the parent
+            src="https://honeywell.scene7.com/is/image/honeywell/AeroBT-Astronaut-on-a-bench_2880x1440:1-1-square?wid=1245&hei=1245&dpr=off" // Replace with your actual image path
+            alt="Your Image"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 export default function BlogLandingPage() {
   const dispatch = useDispatch();
-  const { articles, techstories, techinsights, foryoungentrepreneurs } =
-    useSelector((state) => state.articles);
+  const { articles } = useSelector((state) => state.articles);
 
   const [isloading, setLoading] = useState(true); // Correct usage of useState inside the component
 
@@ -79,17 +130,8 @@ export default function BlogLandingPage() {
     const fetchData = async () => {
       try {
         window.scrollTo(0, 0);
-        if (techstories.length === 0) {
-          await dispatch(getArticlesByCategory("techstories"));
-        }
         if (articles.length === 0) {
           await dispatch(getArticles());
-        }
-        if (techinsights.length === 0) {
-          await dispatch(getArticlesByCategory("techinsights"));
-        }
-        if (foryoungentrepreneurs.length === 0) {
-          await dispatch(getArticlesByCategory("foryoungentrepreneurs"));
         }
       } catch (error) {
         console.error("Error fetching articles:", error);
@@ -102,41 +144,21 @@ export default function BlogLandingPage() {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="bg-gray-100 dark:bg-gray-900">
       <div className="mb-4">
         <NavbarArticle />
       </div>
       <div className="container mx-auto px-4 py-4">
         <HeroSection />
       </div>
-
       <main className="container mx-auto px-4 py-6">
-        <section className="mb-16">
-          <SectionTitle>Recent Articles</SectionTitle>
-          <ArticleGrid loading={isloading} articles={articles.slice(0, 3)} />
-        </section>
-
-        <section className="mb-16">
-          <SectionTitle>Tech Stories</SectionTitle>
-          <ArticleGrid loading={isloading} articles={techstories.slice(0, 3)} />
-        </section>
-
-        <section className="mb-16">
-          <SectionTitle>For Young Entrepreneurs</SectionTitle>
-          <ArticleGrid
-            loading={isloading}
-            articles={foryoungentrepreneurs.slice(0, 3)}
-          />
-        </section>
-
-        <section className="mb-16">
-          <SectionTitle>Tech Insights</SectionTitle>
-          <ArticleGrid
-            loading={isloading}
-            articles={techinsights.slice(0, 3)}
-          />
-        </section>
+        <SectionTitle>Latest Articles</SectionTitle>
+        <ArticleGrid articles={articles} loading={isloading} />
       </main>
+      <div className="container mx-auto px-4 py-4">
+        <AboutSection /> {/* About section added here */}
+      </div>
+      <Footer />
     </div>
   );
 }

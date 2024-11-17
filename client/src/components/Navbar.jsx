@@ -98,7 +98,7 @@ const Navbar = () => {
 
   const menuItems = [
     { text: "Projects", link: "/projects" },
-    { text: "Digest", link: "/digest" },
+    // { text: "Infinity", link: "/digest" },
   ];
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
   const loggedInUserName = loggedInUser?.username || "User";

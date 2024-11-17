@@ -21,11 +21,15 @@ const ArticleSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
-  randomIndex: {
-    type: Number,
-    default: 0,
+  articleHeaderImage: {
+    type: String,
+    default: "",
   },
-  articleCategory: {
+  imageCredit: {
+    type: String,
+    default: "",
+  },
+  description: {
     type: String,
     default: "",
   },

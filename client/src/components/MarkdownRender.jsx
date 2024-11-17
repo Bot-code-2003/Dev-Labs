@@ -2,171 +2,143 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Lottie from "lottie-react";
-import LoadingAnimation from "../assets/lotties/Animation - 1729259117182.json"; // Import your Lottie animation file
+import LoadingAnimation from "../assets/lotties/Animation - 1729259117182.json";
 
 export default function MarkdownRender({
   markdownContent,
   title,
-  randomIndex,
+  description,
+  articleHeaderImage,
+  imageCredit,
 }) {
-  // If markdownContent or title is missing, show a loading indicator
   if (!markdownContent || !title) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <Lottie
           animationData={LoadingAnimation}
           loop={true}
-          className="w-52 h-52"
+          className="w-24 h-24"
         />
       </div>
     );
   }
 
   return (
-    <div className="markdown-container text-gray-800 min-h-screen dark:bg-gradient-to-b dark:from-gray-800 dark:to-black dark:text-gray-300">
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <article className="prose prose-lg max-w-none dark:prose-invert">
-          <header className="mb-12">
-            <div>
-              <img
-                className="w-full h-64 object-cover mb-5"
-                src={
-                  randomIndex === 0
-                    ? "/articlebg/article1.jpg"
-                    : randomIndex === 1
-                    ? "/articlebg/article2.png"
-                    : randomIndex === 2
-                    ? "/articlebg/article3.png"
-                    : randomIndex === 3
-                    ? "/articlebg/article4.png"
-                    : randomIndex === 4
-                    ? "/articlebg/article5.webp"
-                    : randomIndex === 5
-                    ? "/articlebg/1.png"
-                    : randomIndex === 6
-                    ? "/articlebg/2.png"
-                    : randomIndex === 7
-                    ? "/articlebg/3.png"
-                    : randomIndex === 8
-                    ? "/articlebg/4.png"
-                    : randomIndex === 9
-                    ? "/articlebg/5.png"
-                    : randomIndex === 10
-                    ? "/articlebg/6.png"
-                    : randomIndex === 11
-                    ? "/articlebg/7.png"
-                    : "/articlebg/8.png"
-                }
-                alt=""
-              />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 flex items-center justify-center">
+    <div className="min-h-screen font-mono bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <article>
+          <header className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
               {title}
             </h1>
+            {description && (
+              <p className="text-md italic text-gray-500 dark:text-gray-400 ">
+                {description}
+              </p>
+            )}
+            {articleHeaderImage && (
+              <div>
+                <img
+                  src={articleHeaderImage}
+                  alt=""
+                  className="w-full h-auto object-cover mt-6"
+                />
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Image credit: {imageCredit}
+                </p>
+              </div>
+            )}
           </header>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               h1: ({ node, ...props }) => (
-                <h1
-                  className="text-3xl font-bold mt-8 mb-4 dark:text-gray-200"
-                  {...props}
-                />
+                <h1 className="text-2xl font-bold mt-8 mb-4" {...props} />
               ),
               h2: ({ node, ...props }) => (
-                <h2
-                  className="text-2xl font-semibold mt-6 mb-3 dark:text-gray-200"
-                  {...props}
-                />
+                <h2 className="text-xl font-semibold mt-6 mb-3" {...props} />
               ),
               h3: ({ node, ...props }) => (
-                <h3
-                  className="text-xl font-medium mt-4 mb-2 dark:text-gray-300"
-                  {...props}
-                />
+                <h3 className="text-lg font-medium mt-4 mb-2" {...props} />
               ),
               p: ({ node, ...props }) => (
-                <p
-                  className="mb-4 leading-relaxed dark:text-gray-300"
-                  {...props}
-                />
+                <p className="mb-4 leading-relaxed" {...props} />
               ),
               ul: ({ node, ...props }) => (
-                <ul
-                  className="list-disc pl-6 mb-4 dark:text-gray-300"
-                  {...props}
-                />
+                <ul className="list-disc pl-5 mb-4" {...props} />
               ),
               ol: ({ node, ...props }) => (
-                <ol
-                  className="list-decimal pl-6 mb-4 dark:text-gray-300"
-                  {...props}
-                />
+                <ol className="list-decimal pl-5 mb-4" {...props} />
               ),
-              li: ({ node, ...props }) => (
-                <li className="mb-2 dark:text-gray-300" {...props} />
-              ),
+              li: ({ node, ...props }) => <li className="mb-1" {...props} />,
               blockquote: ({ node, ...props }) => (
                 <blockquote
-                  className="border-l-4 border-blue-500 pl-4 italic my-4 dark:border-blue-400 dark:text-gray-300"
+                  className="border-l-4 border-gray-300 dark:border-gray-700 pl-4 italic my-4 text-gray-600 dark:text-gray-400"
                   {...props}
                 />
               ),
               a: ({ node, ...props }) => (
                 <a
+                  className="text-blue-600 hover:underline dark:text-blue-400"
                   target="_blank"
-                  className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                  rel="noopener noreferrer"
                   {...props}
                 />
               ),
-              img: ({ node, ...props }) => (
-                <img
-                  className="max-w-full h-auto rounded-lg shadow-md my-4"
-                  {...props}
-                />
-              ),
+              img: ({ node, ...props }) => {
+                const { src, alt } = props;
+
+                return (
+                  <div className="my-4">
+                    <img className="w-full h-auto" {...props} alt={alt || ""} />
+                    {alt && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                        Image credit: {alt}
+                      </p>
+                    )}
+                  </div>
+                );
+              },
+
               code: ({ node, inline, ...props }) =>
                 inline ? (
                   <code
-                    className="bg-gray-100 rounded px-1 py-0.5 dark:bg-gray-700 dark:text-gray-200"
+                    className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5  text-sm"
                     {...props}
                   />
                 ) : (
-                  <pre className="bg-gray-100 rounded p-4 overflow-x-auto dark:bg-gray-700 dark:text-gray-200">
+                  <pre className="bg-gray-100 dark:bg-gray-800 p-3  overflow-x-auto text-sm my-4">
                     <code {...props} />
                   </pre>
                 ),
               table: ({ node, ...props }) => (
                 <div className="overflow-x-auto my-4">
                   <table
-                    className="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+                    className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
                     {...props}
                   />
                 </div>
               ),
               th: ({ node, ...props }) => (
                 <th
-                  className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:bg-gray-700 dark:text-gray-300"
+                  className="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-left text-xs font-medium uppercase"
                   {...props}
                 />
               ),
               td: ({ node, ...props }) => (
                 <td
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
+                  className="px-3 py-2 whitespace-nowrap text-sm"
                   {...props}
                 />
               ),
               mark: ({ node, ...props }) => (
                 <mark
-                  className="bg-yellow-100 text-yellow-800 rounded px-1 py-0.5 dark:bg-yellow-700 dark:text-yellow-200"
+                  className="bg-yellow-100 dark:bg-yellow-900 px-1 py-0.5 "
                   {...props}
                 />
               ),
               strong: ({ node, ...props }) => (
-                <strong
-                  className="font-semibold dark:text-gray-300"
-                  {...props}
-                />
+                <strong className="font-semibold" {...props} />
               ),
             }}
           >
